@@ -23,7 +23,7 @@ const Header = () => {
   return (
     <header
       className={`w-full py-[11px] fixed top-0 left-0 z-50 bg-black 
-      ${isAtTop ? 'bg-opacity-10' : 'bg-opacity-50'}
+      ${isAtTop ? 'bg-opacity-20' : 'bg-opacity-70'}
       `}
     >
       <div className="w-full px-14">

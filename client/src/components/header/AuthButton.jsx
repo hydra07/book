@@ -1,3 +1,4 @@
+import { Button } from '@material-tailwind/react';
 import React, { useState } from 'react';
 import SignIn from '../auth/SignIn';
 import SignUp from '../auth/SignUp';
@@ -21,19 +22,19 @@ const AuthButton = () => {
   return (
     <div>
       <div className="flex items-center gap-2 h-[42px]">
-        <button
+        <Button
           className="border border-white py-2 px-4 rounded-full text-white whitespace-nowrap"
           onClick={handleOpenSignUpDialog}
         >
           <span>Đăng ký</span>
-        </button>
+        </Button>
 
-        <button
+        <Button
           className="bg-green-600 border border-white py-2 px-4 rounded-full text-white whitespace-nowrap"
           onClick={handleOpenSignInDialog}
         >
           <span>Đăng nhập</span>
-        </button>
+        </Button>
       </div>
 
       {showSignUpDialog && (

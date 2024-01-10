@@ -1,22 +1,37 @@
 import React, { useState } from 'react';
+
+import { useDispatch } from 'react-redux';
+import { register } from '../../store/user';
+
 const SingUp = ({ setShowSignInDialog, setShowSignUpDialog }) => {
   const [form, setForm] = useState({
+    name: '',
     email: '',
     password: '',
     repassword: '',
   });
+  const [formData, setFromData] = useState({
+    name: '',
+    email: '',
+    password: '',
+  });
+  const dispatch = useDispatch();
+
   const isFormFilled = form.email && form.password && form.repassword;
   const handleChange = (event) => {
     setForm({ ...form, [event.target.id]: event.target.value });
   };
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
+
     if (form.password !== form.repassword) {
       console.log('not match');
       return;
+    } else {
+      const { repassword, ...rest } = form;
+      setFromData(rest);
+      await console.log(dispatch(register(formData)));
     }
-    console.log(form);
-    console.log('submit');
   };
   const handleOpenSignInDialog = () => {
     setShowSignUpDialog(false);
@@ -34,6 +49,28 @@ const SingUp = ({ setShowSignInDialog, setShowSignUpDialog }) => {
 
       <div>
         <form onSubmit={(event) => handleSubmit(event)}>
+          <div className="mb-4">
+            <div className="flex flex-col">
+              <div className="relative w-full h-14 border rounded-xl border-white">
+                <input
+                  id="name"
+                  type="text"
+                  className="text-white bg-transparent w-full h-full top-0 left-0 absolute pt-5 outline-none px-3 text-base"
+                  required
+                  autoComplete="off"
+                  value={form.name}
+                  onChange={(event) => handleChange(event)}
+                />
+                <label
+                  htmlFor="name"
+                  className="absolute select-none pointer-events-none left-3 block transition-all text-white -translate-y-1/2 z-3 top-[10px] translate-x-1 text-sm focus-visible:bg-red-300"
+                >
+                  Họ và tên
+                </label>
+              </div>
+            </div>
+          </div>
+
           <div className="mb-4">
             <div className="flex flex-col">
               <div className="relative w-full h-14 border rounded-xl border-white">

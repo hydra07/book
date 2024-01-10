@@ -1,6 +1,6 @@
 import { Button } from '@material-tailwind/react';
 import './App.css';
-import Header from './components/header/Header';
+import Header from './components/header';
 function App() {
   return (
     <div className="w-max-[1280px] content-center h-[3000px]">

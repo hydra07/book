@@ -1,5 +1,8 @@
 package com.restfull.api.dtos;
 
+import lombok.Getter;
+
+@Getter
 public class AuthResponseDTO {
 
     private String token;
@@ -7,10 +10,6 @@ public class AuthResponseDTO {
     public AuthResponseDTO(String token) {
         super();
         this.token = token;
-    }
-
-    public String getToken() {
-        return token;
     }
 
 }

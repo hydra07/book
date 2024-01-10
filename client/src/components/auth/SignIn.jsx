@@ -1,16 +1,19 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { login } from '../../store/user';
 const SignIn = ({ setShowSignUpDialog, setShowSignInDialog }) => {
   const [form, setForm] = useState({
     email: '',
     password: '',
   });
-
+  const dispatch = useDispatch();
   const isFormFilled = form.email && form.password;
   const handleChange = (event) => {
     setForm({ ...form, [event.target.id]: event.target.value });
   };
   const handleSubmit = (event) => {
     event.preventDefault();
+    dispatch(login(form));
     console.log(form);
     console.log('submit');
   };
