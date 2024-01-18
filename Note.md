@@ -1,14 +1,16 @@
-# Data Structure
+# Note
+
+## Data Structure
 
 ### User -> Object
 
-- id -> Long `UNIQUE` (khoá chính)
-- password -> String : `mật khẩu được mã hoá`
-- name -> String : `tên hiển thị`
-- email -> String `UNIQUE` : `email đăng nhập`
-- phone -> String `UNIQUE` : `số điện thoại`
-- sex -> boolean : `true: nam, false: nữ`
-- avatar -> `Images` : `link ảnh đại diện`
+- id -> Long `UNIQUE` (khoá chính) [x]
+- password -> String : `mật khẩu được mã hoá` [x]
+- name -> String : `tên hiển thị`[x]
+- email -> String `UNIQUE` : `email đăng nhập` [x]
+- phone -> String `UNIQUE` : `số điện thoại`✅
+- sex -> boolean : `true: nam, false: nữ`✅
+- avatar -> `Images` : `link ảnh đại diện`✅
 - Role -> List : `loại người dùng [User], [Admin], [Premium]`
 - listBook -> `List<Book>` : `danh sách sách đã đăng`
 - listComment -> `List<Comment>` : `danh sách đã comment`
@@ -21,23 +23,23 @@
 
 ### Book -> Object
 
-- id -> Long `UNIQUE` (khoá chính)
-- title -> String : `tên sách`
-- author -> <Author.id> : `tác giả` (khoá ngoại)
-- description -> String : `mô tả sách`
-- image -> `List<Image>` : `ảnh giới thiệu sách (nếu có)`
-- types -> `List<Type>` : `thể loại`
-- views -> Long : `lượt xem`
-- price -> Long : `giá bán` 
-- DataCreate -> Date : `ngày tạo`
-- LastUpdate -> Date : `ngày cập nhật gần nhất`
-- Cover -> `Images` : `ảnh bìa`
-- ListRate -> `List<Rate>` : `danh sách đánh giá`
-- ListComment -> `List<Comment>` : `danh sách comment`
-- Url -> String : `link sách,file epub, pdf,...`
-- ListBookMark -> `List<BookMark>` : `danh sách vị trí bookmark`
-- ListFollow -> `List<User>` : `danh sách người theo dõi`
-- Status -> `Status` : `[Đang tiến hành], [Đã hoàn thành], [Đã ngừng]`
+- id -> Long `UNIQUE` (khoá chính) [x]
+- title -> String : `tên sách` [x]
+- author -> <Author.id> : `tác giả` (khoá ngoại) [ ]
+- description -> String : `mô tả sách` [x]
+<!-- - image -> `List<Image>` : `ảnh giới thiệu sách (nếu có)` -->
+- types -> `List<Type>` : `thể loại` [ ]
+- views -> Long : `lượt xem` [x]
+- price -> Long : `giá bán` [x]
+- DataCreate -> Date : `ngày tạo` [x]
+- LastUpdate -> Date : `ngày cập nhật gần nhất` [x]
+<!-- - Cover -> `Images` : `ảnh bìa` -->
+- ListRate -> `List<Rate>` : `danh sách đánh giá` [x]
+- ListComment -> `List<Comment>` : `danh sách comment` [ ]
+- Url -> String : `link sách,file epub, pdf,...` [x]
+- ListBookMark -> `List<BookMark>` : `danh sách vị trí bookmark` [ ]
+- ListFollow -> `List<User>` : `danh sách người theo dõi` [x]
+- Status -> `Status` : `[Đang tiến hành], [Đã hoàn thành], [Đã ngừng]` [x]
 
 ### Type -> Object
 
