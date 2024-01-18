@@ -38,7 +38,7 @@ const Header = () => {
 
             <div className="flex flex-1 gap-x-6 flex-wrap">
               <div className="py-2.5">
-                <a href="/" className="text-white">
+                <a href="./" className="text-white">
                   Sách
                 </a>
               </div>

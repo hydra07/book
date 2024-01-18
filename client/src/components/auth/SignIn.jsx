@@ -85,12 +85,13 @@ const SignIn = ({ setShowSignUpDialog, setShowSignInDialog }) => {
           >
             <span>Đăng ký</span>
           </button>
-          <p className="text-white">Hoặc đăng nhập với</p>
+          <p className="text-blue-gray-400 py-2 ">Hoặc đăng nhập với</p>
         </form>
         <div className="space-x-3 py-5">
-          <button className="border border-white py-2 px-4 rounded-full text-white whitespace-nowrap ">
-            <span className="flex ">
+          <button className=" border border-white py-2 px-4 rounded-full text-white whitespace-nowrap ">
+            <span className="flex  mx-1">
               <img
+                className='mr-3 bg-blue-500 rounded-sm'
                 src="/svg/facebook.svg"
                 alt=""
                 width={'20px'}
@@ -102,6 +103,7 @@ const SignIn = ({ setShowSignUpDialog, setShowSignInDialog }) => {
           <button className="border border-white py-2 px-4 rounded-full text-white whitespace-nowrap">
             <span className="flex ">
               <img
+                className='mr-3'
                 src="/svg/google.svg"
                 alt=""
                 width={'20px'}

@@ -145,7 +145,7 @@ const SingUp = ({ setShowSignInDialog, setShowSignUpDialog }) => {
           >
             <span>Đăng ký</span>
           </button>
-          <p className="text-white">Hoặc đăng ký với</p>
+          <p className="text-white pt-2 ">Hoặc đăng ký với</p>
         </form>
         <div className="space-x-3 py-5">
           <button className="border border-white py-2 px-4 rounded-full text-white whitespace-nowrap ">
@@ -155,7 +155,7 @@ const SingUp = ({ setShowSignInDialog, setShowSignUpDialog }) => {
                 alt=""
                 width={'20px'}
                 height={'20px'}
-                className="mr-3"
+                className="mr-3  bg-blue-500 rounded-sm"
               />
               Facebook
             </span>
