@@ -1,16 +1,18 @@
 package com.restfull.api.services;
 
-import com.restfull.api.dtos.UserDTO;
-import com.restfull.api.entities.User;
-import com.restfull.api.enums.Role;
-import com.restfull.api.repositories.UserRepository;
-import com.restfull.api.utils.NotFoundException;
-import com.restfull.api.utils.DuplicationException;
+import java.util.List;
+import java.util.Objects;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Objects;
+import com.restfull.api.dtos.user.UserDTO;
+import com.restfull.api.entities.User;
+import com.restfull.api.enums.Role;
+import com.restfull.api.repositories.UserRepository;
+import com.restfull.api.utils.DuplicationException;
+import com.restfull.api.utils.NotFoundException;
+
 @Service
 public class UserService {
 
@@ -42,27 +44,55 @@ public class UserService {
         return new UserDTO(create(new User(dto)));
     }
 
-    public User update(User User) {
-        checkEmailDuplication(User);
-        User p = findById(User.getId());
-        p.setName(User.getName());
-        p.setEmail(User.getEmail());
-        p.setRoles(User.getRoles());
-        return repository.save(p);
+    public User update(User user) {
+        checkPhoneDuplication(user);
+        User _user = findByEmail(user.getEmail());
+        System.out.println(_user.toString());
+        System.out.println(user.toString());
+        _user.setName(user.getName());
+        _user.setPhone(user.getPhone());
+        _user.setAvatar(user.getAvatar());
+        return repository.save(_user);
     }
+    //     public User update(User User) {
+//         checkEmailDuplication(User);
+//         User p = findById(User.getId());
+//         p.setName(User.getName());
+//         p.setEmail(User.getEmail());
+// //        p.setRoles(User.getRoles());
+//         return repository.save(p);
+//     }
 
     public void delete(Long id) {
-        final User p = findById(id);
-        repository.delete(p);
+        final User _user = findById(id);
+        repository.delete(_user);
     }
+
+//    public User addFollower(String email, User user){
+//        final User _user = findByEmail(email);
+//        _user.addFollower(user);
+//        System.out.println(_user.getFollowers());
+//        return repository.save(_user);
+//    }
 
     private void checkEmailDuplication(User User) {
         final String email = User.getEmail();
-        if (email != null && email.length() > 0) {
+        if (!email.isEmpty()) {
             final Long id = User.getId();
-            final User p = repository.findByEmail(email).orElse(null);
-            if (p != null && Objects.equals(p.getEmail(), email) && !Objects.equals(p.getId(), id)) {
+            final User _user = repository.findByEmail(email).orElse(null);
+            if (_user != null && Objects.equals(_user.getEmail(), email) && !Objects.equals(_user.getId(), id)) {
                 throw new DuplicationException("Email duplication: " + email);
+            }
+        }
+    }
+
+    private void checkPhoneDuplication(User user) {
+        final String phone = user.getPhone();
+        if (!phone.isEmpty()) {
+            final String email = user.getEmail();
+            final User _user = repository.findByPhone(phone).orElse(null);
+            if (_user != null && Objects.equals(_user.getPhone(), phone) && !Objects.equals(_user.getEmail(), email)) {
+                throw new DuplicationException("Phone duplication: " + phone);
             }
         }
     }

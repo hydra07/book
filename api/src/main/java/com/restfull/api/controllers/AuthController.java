@@ -1,15 +1,17 @@
 package com.restfull.api.controllers;
 
-import com.restfull.api.dtos.AuthRequestDTO;
-import com.restfull.api.dtos.AuthResponseDTO;
-import com.restfull.api.dtos.RegisterRequestDTO;
-import com.restfull.api.services.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.restfull.api.dtos.auth.AuthRequestDTO;
+import com.restfull.api.dtos.auth.AuthResponseDTO;
+import com.restfull.api.dtos.auth.GoogleRequestDTO;
+import com.restfull.api.dtos.auth.RegisterRequestDTO;
+import com.restfull.api.services.AuthService;
 
 @RestController
 @RequestMapping("/auth")
@@ -27,4 +29,11 @@ public class AuthController {
     public ResponseEntity<AuthResponseDTO> authenticate(@RequestBody AuthRequestDTO dto) {
         return ResponseEntity.ok(authService.authenticate(dto));
     }
+
+    @PostMapping("/google")
+    public ResponseEntity<AuthResponseDTO> authenticateGoogle(@RequestBody GoogleRequestDTO dto) {
+        return ResponseEntity.ok(authService.authenticateGoogle(dto));
+    }
+
+
 }
