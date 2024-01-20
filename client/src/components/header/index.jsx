@@ -22,11 +22,11 @@ const Header = () => {
 
   return (
     <header
-      className={`w-full py-[11px] fixed top-0 left-0 z-50 bg-black 
+      className={`w-full py-[11px] fixed top-0 backdrop-blur-md left-0 z-50 bg-black 
       ${isAtTop ? 'bg-opacity-20' : 'bg-opacity-70'}
       `}
     >
-      <div className="w-full px-14">
+      <div className="w-full  px-14">
         <div className="flex justify-between gap-8">
           <div className="flex gap-12">
             <a

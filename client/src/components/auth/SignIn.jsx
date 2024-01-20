@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { login } from '../../store/user';
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { login } from "../../store/user";
 const SignIn = ({ setShowSignUpDialog, setShowSignInDialog }) => {
   const [form, setForm] = useState({
-    email: '',
-    password: '',
+    email: "",
+    password: "",
   });
   const dispatch = useDispatch();
   const isFormFilled = form.email && form.password;
@@ -15,7 +15,7 @@ const SignIn = ({ setShowSignUpDialog, setShowSignInDialog }) => {
     event.preventDefault();
     dispatch(login(form));
     console.log(form);
-    console.log('submit');
+    console.log("submit");
   };
   const handleOpenSignUpDialog = () => {
     setShowSignUpDialog(true);
@@ -46,7 +46,7 @@ const SignIn = ({ setShowSignUpDialog, setShowSignInDialog }) => {
                   onChange={(event) => handleChange(event)}
                 />
                 <label
-                  htmlFor="email"
+                  htmlFor="email" 
                   className="absolute select-none pointer-events-none left-3 block transition-all text-white -translate-y-1/2 z-3 top-[10px] translate-x-1 text-sm focus-visible:bg-red-300"
                 >
                   Email
@@ -80,7 +80,7 @@ const SignIn = ({ setShowSignUpDialog, setShowSignInDialog }) => {
           <button
             // "text-white py-2 rounded-full cursor-pointer flex items-center justify-center whitespace-nowrap w-full"
             className={`py-2 rounded-full cursor-pointer flex items-center justify-center whitespace-nowrap w-full ${
-              isFormFilled ? 'bg-blue-500 text-white' : 'bg-gray-500 text-white'
+              isFormFilled ? "bg-blue-500 text-white" : "bg-gray-500 text-white"
             }`}
           >
             <span>Đăng ký</span>
@@ -91,11 +91,11 @@ const SignIn = ({ setShowSignUpDialog, setShowSignInDialog }) => {
           <button className=" border border-white py-2 px-4 rounded-full text-white whitespace-nowrap ">
             <span className="flex  mx-1">
               <img
-                className='mr-3 bg-blue-500 rounded-sm'
+                className="mr-3 bg-blue-500 rounded-sm"
                 src="/svg/facebook.svg"
                 alt=""
-                width={'20px'}
-                height={'20px'}
+                width={"20px"}
+                height={"20px"}
               />
               Facebook
             </span>
@@ -103,11 +103,11 @@ const SignIn = ({ setShowSignUpDialog, setShowSignInDialog }) => {
           <button className="border border-white py-2 px-4 rounded-full text-white whitespace-nowrap">
             <span className="flex ">
               <img
-                className='mr-3'
+                className="mr-3"
                 src="/svg/google.svg"
                 alt=""
-                width={'20px'}
-                height={'20px'}
+                width={"20px"}
+                height={"20px"}
               />
               Google
             </span>
@@ -115,7 +115,7 @@ const SignIn = ({ setShowSignUpDialog, setShowSignInDialog }) => {
         </div>
         <div className="py-4 w-full mt-7-5 border-t border-white-overlay text-center rounded-bl-[20px] rounded-br-[20px]">
           <p className="text-white">
-            Bạn đã chưa có tài khoản?{' '}
+            Bạn đã chưa có tài khoản?{" "}
             <button className="text-green-400" onClick={handleOpenSignUpDialog}>
               Đăng ký
             </button>

@@ -2,7 +2,7 @@ import { Button, Switch } from "@material-tailwind/react";
 
 import "./App.css";
 import Header from "./components/header";
-import BookDetail from "./components/container/BookDetail";
+import BookDetail from "./components/pages/BookDetail";
 function App() {
   // function YoutubeItem(props){
   //   console.log(props);
@@ -21,13 +21,14 @@ function App() {
   //   );
   // }
 
+
   return (
-    <div className="w-max-[1280px] content-center h-[3000px]">
-      <BookDetail name="duowng"/>
+    <div   className="bg-blue-gray-600  " >
       
-      {/* <Header />
-      <div className="w-max-[1280px] h-[122px] bg-white"></div>
-      <Button>try</Button> */}
+      
+      <BookDetail/>
+      {/* <div className="w-max-[1280px] h-[122px] bg-white"></div>
+      <Button>try</Button> */} 
       
       {/* <div className="w-max-[1280px] h-[1400px] bg-pink-300">
       <div className="fix-image w-3/6 text-white text-3xl">
