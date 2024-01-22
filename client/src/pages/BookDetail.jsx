@@ -1,10 +1,18 @@
 import BookDescriptions from '../components/book/BookDescriptions';
 import BookImage from '../components/book/BookImage';
 import BookLink from '../components/book/BookLink';
-function BookDetail() {
+function BookDetail({ bookId }) {
   const book = {
     title: 'Cẩm nang xử lý cực phẩm',
-    rating: 3,
+    rate: {
+      Five: 5,
+      Four: 2,
+      Three: 1,
+      Two: 0,
+      One: 10000,
+    },
+    rating: 4.5,
+
     author: 'Mộng Huyễn Tư Thi',
     price: 100,
     image:
@@ -17,9 +25,10 @@ function BookDetail() {
     category: 'Ảo tưởng',
     nxb: 'NXB Lao Động',
     type: 'sách điện tử',
-    decription: ' mo ta',
+    decription:
+      'Tô Phức Đồng sống lại, chuyện cô làm đầu tiên chính là treo hết thảy nhà chồng cực phẩm lên tẩn cho một trận, tay không đánh cả chồng cũ.a',
     comment: 8,
-    feedback: 6,
+    url: 'https://www.youtube.com/embed/5qap5aO4i9A',
   };
 
   return (
