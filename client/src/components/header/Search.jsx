@@ -32,7 +32,7 @@ const Search = () => {
               className="bg-transparent outline-none text-white border-b border-white w-80"
               type="text"
               required
-              placeholder="Nhập tên tác giả, tên sách.."
+              placeholder="Tìm kiếm..."
               value={searchValue}
               onChange={(event) => setSearchValue(event.target.value)}
             />
