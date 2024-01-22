@@ -1,6 +1,7 @@
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import { login } from "../../store/user";
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { login } from '../../store/auth';
+import Google from '../auth/Google';
 const SignIn = ({ setShowSignUpDialog, setShowSignInDialog }) => {
   const [form, setForm] = useState({
     email: "",
@@ -14,8 +15,6 @@ const SignIn = ({ setShowSignUpDialog, setShowSignInDialog }) => {
   const handleSubmit = (event) => {
     event.preventDefault();
     dispatch(login(form));
-    console.log(form);
-    console.log("submit");
   };
   const handleOpenSignUpDialog = () => {
     setShowSignUpDialog(true);
@@ -112,6 +111,7 @@ const SignIn = ({ setShowSignUpDialog, setShowSignInDialog }) => {
               Google
             </span>
           </button>
+          <Google />
         </div>
         <div className="py-4 w-full mt-7-5 border-t border-white-overlay text-center rounded-bl-[20px] rounded-br-[20px]">
           <p className="text-white">
