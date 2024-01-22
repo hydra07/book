@@ -7,6 +7,7 @@ const AuthButton = () => {
   const [showSignInDialog, setShowSignInDialog] = useState(false);
 
   const handleOpenSignUpDialog = () => {
+    // console.log('open');
     setShowSignUpDialog(true);
   };
 
