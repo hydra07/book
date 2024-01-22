@@ -10,8 +10,6 @@ import java.util.Set;
 
 @Repository
 public interface TypeRepository extends JpaRepository<Type, Long> {
-
     Set<Type> findByBooksId(Long id);
-
-    Type findByName(String name);
+    Optional<Type> findByName(String name);
 }

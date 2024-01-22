@@ -2,15 +2,16 @@ package com.restfull.api.services;
 
 import com.restfull.api.dtos.book.TypeDTO;
 import com.restfull.api.entities.Book;
+import com.restfull.api.entities.Image;
 import com.restfull.api.entities.Type;
 import com.restfull.api.repositories.TypeRepository;
 import com.restfull.api.utils.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+
 import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -28,7 +29,9 @@ public class TypeService {
     }
 
     public Type getTypeByName(String name){
-        return repository.findByName(name);
+        return repository.findByName(name).orElseThrow(
+                () -> new NotFoundException("Type not found: " + name)
+        );
     }
 
     public Type create(Type type) { return repository.save(type);}
@@ -55,8 +58,6 @@ public class TypeService {
         return repository.findByBooksId(id);
     }
 
-
-
     public boolean addBookToType(Type type, Book book){
         if(type.getBooks().contains(book)){
             return false;
@@ -74,35 +75,10 @@ public class TypeService {
         repository.save(type);
         return true;
     }
-
-//    public Set<Type> getTypesByStringType(Set<String> types, Book book){
-////        Set<Type> result = new HashSet<>();
-////        types.forEach(
-////                type -> {
-////                    Type _type = getTypeByName(type);
-////                    if(_type == null){
-////                        result.add( new Type(type,book));
-////                    } else {
-////                        _type.addBook(book);
-////                        result.add(_type);
-////                    }
-////                }
-////        );
-////        return result;
-////    }
-
 //    public Set<Type> getTypeByString(Set<String> types){
-//        Set<Type> result = new HashSet<>();
-//        types.forEach(
-//                type -> {
-//                    Type _type = getTypeByName(type);
-//                    result.add(Objects.requireNonNullElseGet(_type, () -> new Type(type)));
-//                }
-//        );
+//        System.out.println("get Type by string");
+//        Set<Type> result = types.stream().map(this::getTypeByName).collect(Collectors.toSet());
+//        System.out.println(result);
 //        return result;
 //    }
-
-    public Set<Type> getTypeByString(Set<String> types){
-        return types.stream().map(this::getTypeByName).collect(Collectors.toSet());
-    }
 }
