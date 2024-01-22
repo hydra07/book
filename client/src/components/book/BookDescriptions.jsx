@@ -1,7 +1,7 @@
-import BookAuthor from "./BookAuthor";
-import BookComment from "./BookComment";
-import ButtonRead from "./ButtonRead";
-import Rating from "./Rating";
+import BookAuthor from './BookAuthor';
+import BookComment from './BookComment';
+import ButtonRead from './ButtonRead';
+import Rating from './Rating';
 const BookDescriptions = ({ book }) => {
   return (
     <div className=" ">
@@ -9,18 +9,19 @@ const BookDescriptions = ({ book }) => {
         <h1 className="text-4xl ">{book.title}</h1>
         <span className="rate flex py-3 ">
           <Rating book={book} />
-          <div className=" ml-4 text-sm">Feedback {book.feedback} </div>
         </span>
-        <BookAuthor book={book}/>
+        <BookAuthor book={book} />
       </div>
-      
+
       <span className="flex flex-row my-8">
-        <p className="text-blue-gray-400 basis-1/10 pt-2 "> Loại sách  </p>
-        <a href="" className="text-white  rounded-lg bg-blue-gray-500 p-2  ">{book.type}</a>
+        <p className="text-blue-gray-400 basis-1/10 pt-2 "> Loại sách </p>
+        <a href="" className="text-white  rounded-lg bg-blue-gray-500 p-2  ">
+          {book.type}
+        </a>
       </span>
-      <ButtonRead/>
-      <p className="text-white pt-8 text-2xl">{book.decription}</p>
-      <BookComment book={book}/>
+      <ButtonRead book={book} />
+      <p className="text-white pt-8 text-md">{book.decription}</p>
+      <BookComment book={book} />
     </div>
   );
 };
