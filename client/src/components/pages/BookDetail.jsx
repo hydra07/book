@@ -1,6 +1,7 @@
 import BookImage from "../book/BookImage";
 import BookDescriptions from "../book/BookDescriptions";
 import BookLink from "../book/BookLink";
+
 function BookDetail() {
   const book = {
     title: "Cẩm nang xử lý cực phẩm",
@@ -34,6 +35,7 @@ function BookDetail() {
         </div>
       </div>
       <div className="carousel"></div>
+      {/* <FooterBook/> */}
     </div>
   );
 }

@@ -25,7 +25,9 @@ function App() {
   return (
     <div   className="bg-blue-gray-600  " >
       
-      
+      <Header/>
+      <br/>
+      <br/>
       <BookDetail/>
       {/* <div className="w-max-[1280px] h-[122px] bg-white"></div>
       <Button>try</Button> */} 
