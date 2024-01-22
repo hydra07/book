@@ -11,7 +11,7 @@ function BookDetail() {
       'https://307a0e78.vws.vegacdn.vn/view/v2/image/img.book/0/0/1/47140.jpg?v=1&w=480&h=700',
     rated: '/svg/rated.svg',
     unrate: '/svg/unrate.svg',
-    feedback: '3',
+    
     date: '09/12/2023',
     condition: 'End',
     category: 'Ảo tưởng',
