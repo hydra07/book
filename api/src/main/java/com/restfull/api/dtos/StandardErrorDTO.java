@@ -2,11 +2,13 @@ package com.restfull.api.dtos;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.Getter;
+import lombok.Setter;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @Getter
+@Setter
 public class StandardErrorDTO {
 
     private Integer status;

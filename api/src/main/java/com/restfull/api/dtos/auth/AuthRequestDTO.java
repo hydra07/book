@@ -1,4 +1,4 @@
-package com.restfull.api.dtos;
+package com.restfull.api.dtos.auth;
 
 
 import lombok.Data;

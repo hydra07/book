@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import AuthButton from './AuthButton';
 import Search from './Search';
+import User from './User';
 const Header = () => {
   const [isAtTop, setIsAtTop] = useState(true);
-
+  const token = useSelector((state) => state.auth.token);
   const handleScroll = () => {
     const scrollY = window.scrollY;
     if (scrollY > 0) {
@@ -52,7 +54,7 @@ const Header = () => {
 
           <div className="flex gap-6 h-fit items-center whitespace-nowrap">
             <Search />
-            <AuthButton />
+            {!token ? <AuthButton /> : <User />}
           </div>
         </div>
       </div>

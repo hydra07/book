@@ -60,7 +60,8 @@ public class SecurityConfig {
                 .requestMatchers(PUBLIC).permitAll()
                 .requestMatchers(HttpMethod.DELETE).hasAuthority("ADMIN") 	// If UserDetails.getAuthorities return [ADMIN, ...]
                 //.requestMatchers(HttpMethod.DELETE).hasRole("ADMIN")		// If UserDetails.getAuthorities return [ROLE_ADMIN, ...]
-                .requestMatchers("/user/**").hasAnyAuthority("ADMIN")
+                .requestMatchers("/user/**").hasAnyAuthority("USER")
+                .requestMatchers("/admin/**").hasAnyAuthority("ADMIN")
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)

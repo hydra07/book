@@ -7,12 +7,17 @@
 - **JAVA**
 - **Maven**
 - **Spring Boot**
+- **Spring Data JPA**
+- **Spring Security**
 
 ### Fontend
 
 - **React**
 - **Vite**
+- **Redux**
+- **Redux Persist**
 - **Tailwindcss**
+- **Axios**
 
 ### Run Project(Development)
 

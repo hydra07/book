@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-
 import { useDispatch } from 'react-redux';
-import { register } from '../../store/user';
+import { register } from '../../store/auth';
+import Google from './Google';
 
 const SingUp = ({ setShowSignInDialog, setShowSignUpDialog }) => {
   const [form, setForm] = useState({
@@ -21,6 +21,7 @@ const SingUp = ({ setShowSignInDialog, setShowSignUpDialog }) => {
   const handleChange = (event) => {
     setForm({ ...form, [event.target.id]: event.target.value });
   };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -33,6 +34,7 @@ const SingUp = ({ setShowSignInDialog, setShowSignUpDialog }) => {
       await console.log(dispatch(register(formData)));
     }
   };
+
   const handleOpenSignInDialog = () => {
     setShowSignUpDialog(false);
     setShowSignInDialog(true);
@@ -160,18 +162,7 @@ const SingUp = ({ setShowSignInDialog, setShowSignUpDialog }) => {
               Facebook
             </span>
           </button>
-          <button className="border border-white py-2 px-4 rounded-full text-white whitespace-nowrap">
-            <span className="flex">
-              <img
-                src="/svg/google.svg"
-                alt=""
-                width={'20px'}
-                height={'20px'}
-                className="mr-3"
-              />
-              Google
-            </span>
-          </button>
+          <Google />
         </div>
         <div className="py-4 w-full mt-7-5 border-t border-white-overlay text-center rounded-bl-[20px] rounded-br-[20px]">
           <p className="text-white">
