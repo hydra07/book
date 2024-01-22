@@ -22,6 +22,7 @@ public class Image {
     @Column(nullable = false, unique = true)
     private String path;
 
+    @JsonBackReference
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "book_id")
     private Book book;
