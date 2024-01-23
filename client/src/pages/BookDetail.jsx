@@ -1,7 +1,8 @@
 import BookDescriptions from '../components/book/BookDescriptions';
 import BookImage from '../components/book/BookImage';
 import BookLink from '../components/book/BookLink';
-function BookDetail({ bookId }) {
+
+function BookDetail() {
   const book = {
     title: 'Cẩm nang xử lý cực phẩm',
     rate: {

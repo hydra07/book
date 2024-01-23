@@ -44,21 +44,4 @@ public class BookDTO {
         this.url = book.getUrl();
     }
 
-    @Override
-    public String toString(){
-        return "BookDTO{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                ", images=" + images +
-                ", types=" + types +
-                ", status='" + status + '\'' +
-                ", price=" + price +
-                ", followedUsers=" + followedUsers +
-                ", rate=" + rate +
-                ", createdAt=" + createdAt +
-                ", lastUpdateAt=" + lastUpdateAt +
-                ", url='" + url + '\'' +
-                '}';
-    }
 }

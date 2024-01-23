@@ -1,13 +1,10 @@
 package com.restfull.api.entities;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.restfull.api.dtos.book.BookDTO;
 import com.restfull.api.enums.Rate;
@@ -33,7 +30,7 @@ import lombok.Data;
 @Entity
 @Table(name = "books")
 @Data
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Book {
     @Id
 //    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "gen_books_id")
@@ -47,6 +44,7 @@ public class Book {
     @Column(nullable = true)
     private String description;
 
+    @JsonManagedReference
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "book", fetch = FetchType.EAGER)
     private List<Image> images = new ArrayList<>();
 
@@ -97,7 +95,6 @@ public class Book {
      * @return
      *
      */
-
     public Book(BookDTO dto) {
         this.title = dto.getTitle();
         this.description = dto.getDescription();
@@ -200,21 +197,22 @@ public class Book {
         return rate.stream().mapToInt(Rate::getValue).average().orElse(0.0);
     }
 
-    public String toString() {
-        return "Book{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                ", images=" + images +
-                ", types=" + types +
-                ", status=" + status +
-                ", price=" + price +
-                ", followedUsers=" + followedUsers +
-                ", rate=" + rate +
-                ", createdAt=" + createdAt +
-                ", lastUpdateAt=" + lastUpdateAt +
-                ", url='" + url + '\'' +
-                '}';
-    }
+//    @Override
+//    public String toString() {
+//        return "Book{" +
+//                "id=" + id +
+//                ", title='" + title + '\'' +
+//                ", description='" + description + '\'' +
+//                ", images=" + images +
+//                ", types=" + types +
+//                ", status=" + status +
+//                ", price=" + price +
+//                ", followedUsers=" + followedUsers +
+//                ", rate=" + rate +
+//                ", createdAt=" + createdAt +
+//                ", lastUpdateAt=" + lastUpdateAt +
+//                ", url='" + url + '\'' +
+//                '}';
+//    }
 
 }
