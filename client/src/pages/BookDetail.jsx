@@ -34,7 +34,7 @@ function BookDetail({ bookId }) {
   return (
     <div className="bg-gray-700 pt-11">
       <BookLink book={book} />
-      <div className="flex flex-row p-5">
+      <div className="flex flex-row pt-3">
         <div className="basis-1/3">
           <BookImage book={book} />
         </div>
