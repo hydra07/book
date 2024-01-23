@@ -3,6 +3,7 @@ package com.restfull.api.controllers;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.restfull.api.entities.Type;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -155,7 +156,8 @@ public class TestController {
     @GetMapping("/token/getType")
     public ResponseEntity<?> getType(){
         try {
-            return ResponseEntity.ok(typeService.getAllTypes());
+            List<Type> types = typeService.getAllTypes();
+            return ResponseEntity.ok(types.stream().map(TypeDTO::new).collect(Collectors.toList()));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -165,13 +167,7 @@ public class TestController {
     public ResponseEntity<String> addBook(@RequestBody BookDTO bookDTO) {
         System.out.println(bookDTO);
         try {
-            System.out.println(bookDTO);
-            Book book = new Book(bookDTO);
-//            book.setTypes(typeService.getTypeByString(bookDTO.getTypes()));
-//            book.setImages(imageService.getImageByString(bookDTO.getImages()));
-            imageService.getImageByString(bookDTO.getImages()).forEach(book::addImage);
-            System.out.println(book);
-            bookService.create(book);
+            bookService.createBook(bookDTO);
             return ResponseEntity.ok("Book added!");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -183,12 +179,11 @@ public class TestController {
     public ResponseEntity<?> getBook() {
         try {
             List<Book> books = bookService.findAll();
-            System.out.println(books);
-            books.forEach(book -> {
-                System.out.println(book.getTypes());
-                System.out.println(book.getImages());
+            books.forEach((book) -> {
+                System.out.println(book.getTypesString());
             });
-            return ResponseEntity.ok(books.stream().map(BookDTO::new).toList());
+            List<BookDTO> bookDTOS = books.stream().map(BookDTO::new).toList();
+            return ResponseEntity.ok(bookDTOS);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(null);
         }

@@ -9,8 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Service;
 import com.restfull.api.utils.NotFoundException;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class BookService {
@@ -33,22 +36,9 @@ public class BookService {
                 () -> new NotFoundException("Book not found: " + id));
     }
 
-
     public Book create(Book book) {
         return repository.save(book);
     }
-
-//    public Book update(Book book){
-//        Book _book = findById(book.getId());
-//        _book.setTitle(book.getTitle());
-//        _book.setDescription(book.getDescription());
-//        _book.setImages(book.getImages());
-//        _book.setPrice(book.getPrice());
-//        _book.setCreatedAt(book.getCreatedAt());
-//        _book.setLastUpdateAt(book.getLastUpdateAt());
-////        _book.setTypes(book.getTypes());
-//        return repository.save(_book);
-//    }
 
     public Book update(Book book){
         Book _book = findById(book.getId());
@@ -59,6 +49,7 @@ public class BookService {
         _book.setCreatedAt(book.getCreatedAt());
         _book.setLastUpdateAt(book.getLastUpdateAt());
         _book.setTypes(book.getTypes());
+        System.out.println(_book);
         return repository.save(_book);
     }
 
@@ -67,40 +58,48 @@ public class BookService {
         repository.delete(book);
     }
 
-    public void addTypeString(Book book, Set<String> types){
-        for(String type: types){
-            if (typeService.getTypeByName(type) == null){
-                typeService.create(new Type(type,book));
-            }
-            book.getTypes().add(typeService.getTypeByName(type));
-        }
-        repository.save(book);
+    public void addType(Book book, Type type){
+        book.getTypes().add(type);
+        type.getBooks().add(book);
+        update(book);
     }
 
-    public void setTypeFromString(Book book, Set<String> types){
-        book.getTypes().clear();
-        addTypeString(book,types);
+    public void removeType(Book book, Type type){
+        book.getTypes().remove(type);
+        type.getBooks().remove(book);
+        update(book);
     }
 
-    public void setImagefromString(Book book, List<String> images){
-        book.getImages().clear();
-        images.forEach(image -> book.getImages().add(new Image(image,book)));
-        repository.save(book);
+    public Book setTypeByString(Set<String> types, Book book){
+        Set<Type> result = types.stream().map(
+                type -> typeService.getTypeByName(type)
+        ).collect(Collectors.toSet());
+        book.setTypes(result);
+        return book;
     }
 
+    public Book setImageByString(List<String> images, Book book){
+        List<Image> result = images.stream().map(
+                image -> {
+                    Image _image = imageService.getImageByPath(image);
+                    if (_image == null){
+                        return imageService.create(new Image(image, book));
+                    }else {
+                        _image.setBook(book);
+                        return imageService.update(_image);
+                    }
+                }
+        ).collect(Collectors.toList());
+        book.setImages(result);
+        return book;
+    }
+
+    @Transactional
     public void createBook(BookDTO bookDTO){
         Book book = new Book(bookDTO);
-        System.out.println(book);
-        book.setTypes(typeService.getTypeByString(bookDTO.getTypes()));
-        book.setImages(imageService.getImageByString(bookDTO.getImages()));
-//        book.setTypes(typeService.getTypesByStringType(bookDTO.getTypes(),book));
-//        bookDTO.getImages().forEach(
-//                image -> book.getImages().add(new Image(image,book))
-//        );
-//        addTypeString(book,bookDTO.getTypes());
-//        setImagefromString(book,bookDTO.getImages());
-//        BookDTO.getTypes().forEach(System.out::println);
-//        create(book);
-        System.out.println(book);
+        repository.save(book);
+        book = setTypeByString(bookDTO.getTypes(), book);
+        book = setImageByString(bookDTO.getImages(), book);
+        update(book);
     }
 }
