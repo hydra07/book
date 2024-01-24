@@ -1,6 +1,10 @@
 package com.restfull.api.entities;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
@@ -23,29 +27,29 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 @Entity
 @Table(name = "books")
-//@Data
+// @Data
 @Getter
 @Setter
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Book {
     @Id
-//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "gen_books_id")
-//    @SequenceGenerator(name = "gen_books_id", sequenceName = "seq_books_id", allocationSize = 1)
+    // @GeneratedValue(strategy = GenerationType.SEQUENCE, generator =
+    // "gen_books_id")
+    // @SequenceGenerator(name = "gen_books_id", sequenceName = "seq_books_id",
+    // allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 250)
+    @Column(nullable = false, length = 250, columnDefinition = "NVARCHAR(250)")
     private String title;
 
-    @Column(nullable = true)
+    @Column(nullable = true, columnDefinition = "NVARCHAR(1000)")
     private String description;
 
     @JsonManagedReference
@@ -55,20 +59,15 @@ public class Book {
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "book_type", joinColumns = @JoinColumn(name = "book_id"), inverseJoinColumns = @JoinColumn(name = "type_id"))
     @JsonManagedReference
-    private Set<Type> types =new HashSet<>();
+    private Set<Type> types = new HashSet<>();
 
     @Enumerated(EnumType.STRING)
     private Status status;
 
     private Double price = 0.0;
 
-
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "user_follow_book",
-            joinColumns = @JoinColumn(name = "book_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id")
-    )
+    @JoinTable(name = "user_follow_book", joinColumns = @JoinColumn(name = "book_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
     private Set<User> followedBook = new HashSet<>();
 
     @Enumerated(EnumType.STRING)
@@ -85,7 +84,7 @@ public class Book {
     }
 
     public Book(String title, String description, List<Image> images, Set<Type> types, Status status, Double price,
-                Set<User> followedBook, Set<Rate> rate, Date createdAt, Date lastUpdateAt, String url) {
+            Set<User> followedBook, Set<Rate> rate, Date createdAt, Date lastUpdateAt, String url) {
         this.title = title;
         this.description = description;
         this.images = images;
@@ -116,6 +115,7 @@ public class Book {
         this.lastUpdateAt = dto.getLastUpdateAt();
         this.url = dto.getUrl();
     }
+
     // ----------------Image----------------
     public List<String> getImagesString() {
         return this.images.stream().map(Image::getPath).toList();
@@ -141,6 +141,7 @@ public class Book {
             this.types = types;
         }
     }
+
     // ----------------FollowedUsers----------------
     public Set<String> getFollowedUsersString() {
         return this.followedBook.stream().map(User::getEmail).collect(Collectors.toSet());
@@ -153,6 +154,7 @@ public class Book {
             this.followedBook = followedUsers;
         }
     }
+
     // ----------------Rate----------------
     public Set<Integer> getRateString() {
         return rate.stream().map(Rate::getValue).collect(Collectors.toSet());
@@ -165,6 +167,7 @@ public class Book {
             this.rate = rate;
         }
     }
+
     public Double getAverageRate() {
         return rate.stream().mapToInt(Rate::getValue).average().orElse(0.0);
     }
