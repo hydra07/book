@@ -47,4 +47,5 @@ function BookDetail() {
     </div>
   );
 }
+
 export default BookDetail;
