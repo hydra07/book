@@ -24,11 +24,11 @@
 ### IMAGES
 
 - Homepage
-  ![BOOK](.images\index.png)
+  ![BOOK](.images/index.png)
 - Book Detail
-  ![BOOK](.images\bookdetail.png)
+  ![BOOK](.images/bookdetail.png)
 - Sign Up
-  ![BOOK](.images\signup.png)
+  ![BOOK](.images/signup.png)
 
 ### Run Project(Development)
 
