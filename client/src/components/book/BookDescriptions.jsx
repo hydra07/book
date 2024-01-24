@@ -1,5 +1,4 @@
 import BookAuthor from './BookAuthor';
-import BookComment from './BookComment';
 import ButtonRead from './ButtonRead';
 import Rating from './Rating';
 const BookDescriptions = ({ book }) => {
@@ -20,8 +19,8 @@ const BookDescriptions = ({ book }) => {
         </a>
       </span>
       <ButtonRead book={book} />
-      <p className="text-white pt-8 text-md">{book.decription}</p>
-      <BookComment book={book} />
+      <p className="text-white pt-8 text-md">{book.description}</p>
+      {/* <BookComment book={book} /> */}
     </div>
   );
 };

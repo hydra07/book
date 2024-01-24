@@ -1,30 +1,26 @@
-import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import BookCard from '../components/home/BookCard';
-import { getBooks } from '../store/book';
-const Home = () => {
-  const dispatch = useDispatch();
-  const listBook = useSelector((state) => state.book.books);
-  const [books, setBooks] = useState([]);
+import React, { useState } from 'react';
+import TypeBook from '../components/home/TypeBook';
+import books, {
+  getAllBookTypes,
+  getListBookByType,
+} from '../components/home/book';
 
-  useEffect(() => {
-    const fetchBooks = async () => {
-      dispatch(getBooks());
-    };
-    fetchBooks();
-  }, [dispatch]);
-  useEffect(() => {
-    setBooks(listBook);
-  }, [listBook]);
+const Home = () => {
+  const [listBook, setListBook] = useState(books);
+  const [listBookType, setListBookType] = useState(getAllBookTypes(listBook));
   return (
-    <div className="w-max-[1280px] content-center h-[3000px]">
-      <div className="w-max-[1280px] h-[1400px] bg-white"></div>
-      <div className="bg-blue-400 h-[1400px] ">
-        {books.map((book) => {
-          return <BookCard book={book} />;
+    <div className="bg-gray-700 h-auto w-screen">
+      <div className="pt-20">
+        {listBookType.map((type) => {
+          return (
+            <TypeBook
+              type={type}
+              books={getListBookByType(listBook, type)}
+              key={type}
+            />
+          );
         })}
       </div>
-      <div className="w-max-[1280px] h-[1400px] bg-black"></div>
     </div>
   );
 };

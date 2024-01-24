@@ -3,6 +3,14 @@ import { useSelector } from 'react-redux';
 import AuthButton from './AuthButton';
 import Search from './Search';
 import User from './User';
+import {
+  Menu,
+  MenuHandler,
+  MenuList,
+  MenuItem,
+  Button,
+} from "@material-tailwind/react";
+import TypeButton from './TypeButton';
 const Header = () => {
   const [isAtTop, setIsAtTop] = useState(true);
   const token = useSelector((state) => state.auth.token);
@@ -45,9 +53,7 @@ const Header = () => {
                 </a>
               </div>
               <div className="py-2.5">
-                <a href="/" className="text-white">
-                  Thể loại
-                </a>
+                <TypeButton />
               </div>
             </div>
           </div>

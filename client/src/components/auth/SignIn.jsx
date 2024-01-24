@@ -1,3 +1,4 @@
+import { Input } from '@material-tailwind/react';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { login } from '../../store/auth';
@@ -33,47 +34,32 @@ const SignIn = ({ setShowSignUpDialog, setShowSignInDialog }) => {
       <div>
         <form onSubmit={(event) => handleSubmit(event)}>
           <div className="mb-4">
-            <div className="flex flex-col">
-              <div className="relative w-full h-14 border rounded-xl border-white">
-                <input
-                  id="email"
-                  type="text"
-                  className="text-white bg-transparent w-full h-full top-0 left-0 absolute pt-5 outline-none px-3 text-base"
-                  required
-                  autoComplete="off"
-                  value={form.email}
-                  onChange={(event) => handleChange(event)}
-                />
-                <label
-                  htmlFor="email"
-                  className="absolute select-none pointer-events-none left-3 block transition-all text-white -translate-y-1/2 z-3 top-[10px] translate-x-1 text-sm focus-visible:bg-red-300"
-                >
-                  Email
-                </label>
-              </div>
-            </div>
+            <Input
+              className="h-14 mb-4"
+              size="lg"
+              color="white"
+              id="email"
+              type="text"
+              label="Email"
+              required
+              autoComplete="off"
+              value={form.email}
+              onChange={(event) => handleChange(event)}
+            />
           </div>
-
           <div className="mb-4">
-            <div className="flex flex-col">
-              <div className="relative w-full h-14 border rounded-xl border-white">
-                <input
-                  id="password"
-                  type="password"
-                  className="text-white bg-transparent w-full h-full top-0 left-0 absolute pt-5 outline-none px-3 text-base "
-                  autoComplete="off"
-                  required
-                  value={form.password}
-                  onChange={(event) => handleChange(event)}
-                />
-                <label
-                  htmlFor="password"
-                  className="absolute select-none pointer-events-none left-3 block transition-all text-white -translate-y-1/2 z-3 top-[10px] translate-x-1 text-sm focus-visible:bg-red-300"
-                >
-                  Mật khẩu
-                </label>
-              </div>
-            </div>
+            <Input
+              className="h-14 mb-4"
+              size="lg"
+              color="white"
+              id="password"
+              type="password"
+              label="Nhập mật khẩu"
+              required
+              autoComplete="off"
+              value={form.password}
+              onChange={(event) => handleChange(event)}
+            />
           </div>
 
           <button
@@ -82,9 +68,9 @@ const SignIn = ({ setShowSignUpDialog, setShowSignInDialog }) => {
               isFormFilled ? 'bg-blue-500 text-white' : 'bg-gray-500 text-white'
             }`}
           >
-            <span>Đăng ký</span>
+            <span>Đăng nhập</span>
           </button>
-          <p className="text-white">Hoặc đăng nhập với</p>
+          <p className="text-white pt-4">Hoặc đăng nhập với</p>
         </form>
         <div className="space-x-3 py-5">
           <button className="border border-white py-2 px-4 rounded-full text-white whitespace-nowrap ">

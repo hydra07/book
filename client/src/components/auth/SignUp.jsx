@@ -1,8 +1,8 @@
+import { Input } from '@material-tailwind/react';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { register } from '../../store/auth';
 import Google from './Google';
-
 const SingUp = ({ setShowSignInDialog, setShowSignUpDialog }) => {
   const [form, setForm] = useState({
     name: '',
@@ -52,91 +52,59 @@ const SingUp = ({ setShowSignInDialog, setShowSignUpDialog }) => {
       <div>
         <form onSubmit={(event) => handleSubmit(event)}>
           <div className="mb-4">
-            <div className="flex flex-col">
-              <div className="relative w-full h-14 border rounded-xl border-white">
-                <input
-                  id="name"
-                  type="text"
-                  className="text-white bg-transparent w-full h-full top-0 left-0 absolute pt-5 outline-none px-3 text-base"
-                  required
-                  autoComplete="off"
-                  value={form.name}
-                  onChange={(event) => handleChange(event)}
-                />
-                <label
-                  htmlFor="name"
-                  className="absolute select-none pointer-events-none left-3 block transition-all text-white -translate-y-1/2 z-3 top-[10px] translate-x-1 text-sm focus-visible:bg-red-300"
-                >
-                  Họ và tên
-                </label>
-              </div>
-            </div>
+            <Input
+              className="h-14"
+              size="lg"
+              color="white"
+              id="name"
+              type="text"
+              label="Họ và tên"
+              required
+              autoComplete="off"
+              value={form.name}
+              onChange={(event) => handleChange(event)}
+            />
           </div>
-
           <div className="mb-4">
-            <div className="flex flex-col">
-              <div className="relative w-full h-14 border rounded-xl border-white">
-                <input
-                  id="email"
-                  type="text"
-                  className="text-white bg-transparent w-full h-full top-0 left-0 absolute pt-5 outline-none px-3 text-base"
-                  required
-                  autoComplete="off"
-                  value={form.email}
-                  onChange={(event) => handleChange(event)}
-                />
-                <label
-                  htmlFor="email"
-                  className="absolute select-none pointer-events-none left-3 block transition-all text-white -translate-y-1/2 z-3 top-[10px] translate-x-1 text-sm focus-visible:bg-red-300"
-                >
-                  Email
-                </label>
-              </div>
-            </div>
+            <Input
+              className="h-14 mb-4"
+              size="lg"
+              color="white"
+              id="email"
+              type="text"
+              label="Email"
+              required
+              autoComplete="off"
+              value={form.email}
+              onChange={(event) => handleChange(event)}
+            />
           </div>
-
           <div className="mb-4">
-            <div className="flex flex-col">
-              <div className="relative w-full h-14 border rounded-xl border-white">
-                <input
-                  id="password"
-                  type="password"
-                  className="text-white bg-transparent w-full h-full top-0 left-0 absolute pt-5 outline-none px-3 text-base "
-                  autoComplete="off"
-                  required
-                  value={form.password}
-                  onChange={(event) => handleChange(event)}
-                />
-                <label
-                  htmlFor="password"
-                  className="absolute select-none pointer-events-none left-3 block transition-all text-white -translate-y-1/2 z-3 top-[10px] translate-x-1 text-sm focus-visible:bg-red-300"
-                >
-                  Mật khẩu
-                </label>
-              </div>
-            </div>
+            <Input
+              className="h-14 mb-4"
+              size="lg"
+              color="white"
+              id="password"
+              type="password"
+              label="Nhập mật khẩu"
+              required
+              autoComplete="off"
+              value={form.password}
+              onChange={(event) => handleChange(event)}
+            />
           </div>
-
           <div className="mb-4">
-            <div className="flex flex-col">
-              <div className="relative w-full h-14 border rounded-xl border-white">
-                <input
-                  id="repassword"
-                  type="password"
-                  className="text-white bg-transparent w-full h-full top-0 left-0 absolute pt-5 outline-none px-3 text-base "
-                  autoComplete="off"
-                  required
-                  value={form.repassword}
-                  onChange={(event) => handleChange(event)}
-                />
-                <label
-                  htmlFor="repassword"
-                  className="absolute select-none pointer-events-none left-3 block transition-all text-white -translate-y-1/2 z-3 top-[10px] translate-x-1 text-sm focus-visible:bg-red-300"
-                >
-                  Nhập lại mật khẩu
-                </label>
-              </div>
-            </div>
+            <Input
+              size="lg"
+              color="white"
+              id="repassword"
+              type="text"
+              label="Nhập lại mật khẩu"
+              required
+              autoComplete="off"
+              value={form.repassword}
+              onChange={(event) => handleChange(event)}
+            />
           </div>
 
           <button
@@ -147,7 +115,7 @@ const SingUp = ({ setShowSignInDialog, setShowSignUpDialog }) => {
           >
             <span>Đăng ký</span>
           </button>
-          <p className="text-white">Hoặc đăng ký với</p>
+          <p className="text-white pt-4">Hoặc đăng ký với</p>
         </form>
         <div className="space-x-3 py-5">
           <button className="border border-white py-2 px-4 rounded-full text-white whitespace-nowrap ">

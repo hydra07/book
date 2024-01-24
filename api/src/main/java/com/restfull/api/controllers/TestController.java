@@ -5,12 +5,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.restfull.api.dtos.HeaderRequestDTO;
 import com.restfull.api.dtos.book.BookDTO;
@@ -181,6 +176,15 @@ public class TestController {
             return ResponseEntity.ok(bookDTOS);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(null);
+        }
+    }
+
+    @GetMapping("/token/getBook/{id}")
+    public ResponseEntity<?> getBookById(@PathVariable("id") Long id) {
+        try {
+            return ResponseEntity.ok(new BookDTO(bookService.findById(id)));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 

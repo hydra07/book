@@ -15,6 +15,12 @@ const authSlice = createSlice({
     handleAuth(builder, login);
     handleAuth(builder, register);
     handleAuth(builder, google);
+
+    builder.addCase(logout.fulfilled, (state) => {
+      state.token = null;
+      state.message = null;
+      state.error = null;
+    });
   },
 });
 
@@ -69,7 +75,10 @@ const login = createAsyncThunk('auth/login', async (user, thunkAPI) => {
     return rejectWithValue(error.response.data);
   }
 });
+const logout = createAsyncThunk('auth/logout', async (_, thunkAPI) => {
+  const { rejectWithValue } = thunkAPI;
+});
 
 export const {} = authSlice.actions;
-export { google, login, register };
+export { google, login, logout, register };
 export default authSlice.reducer;
