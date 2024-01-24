@@ -4,7 +4,6 @@ const Search = () => {
   const [searchValue, setSearchValue] = useState();
   const handleOpenSearch = () => {
     setShowSearch(true);
-    console.log('open');
   };
   const handleCloseSearch = () => {
     setShowSearch(false);

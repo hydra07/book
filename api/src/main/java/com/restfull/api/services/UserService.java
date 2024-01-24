@@ -3,6 +3,7 @@ package com.restfull.api.services;
 import java.util.List;
 import java.util.Objects;
 
+import com.restfull.api.entities.Book;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -67,6 +68,7 @@ public class UserService {
         final User _user = findById(id);
         repository.delete(_user);
     }
+
 
 //    public User addFollower(String email, User user){
 //        final User _user = findByEmail(email);
