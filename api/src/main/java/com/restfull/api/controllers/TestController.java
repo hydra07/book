@@ -3,7 +3,6 @@ package com.restfull.api.controllers;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.restfull.api.entities.Type;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +17,7 @@ import com.restfull.api.dtos.book.BookDTO;
 import com.restfull.api.dtos.book.TypeDTO;
 import com.restfull.api.dtos.user.UserDTO;
 import com.restfull.api.entities.Book;
+import com.restfull.api.entities.Type;
 import com.restfull.api.entities.User;
 import com.restfull.api.services.BookService;
 import com.restfull.api.services.FollowService;
@@ -92,7 +92,6 @@ public class TestController {
             String phone = userDTO.getPhone();
             if (phone.length() != 10)
                 return ResponseEntity.badRequest().body("Phone number must be 10 digits");
-
             User user = new User(userDTO);
             userService.update(user);
             return ResponseEntity.ok("Profile edited!");
@@ -154,7 +153,7 @@ public class TestController {
     }
 
     @GetMapping("/token/getType")
-    public ResponseEntity<?> getType(){
+    public ResponseEntity<?> getType() {
         try {
             List<Type> types = typeService.getAllTypes();
             return ResponseEntity.ok(types.stream().map(TypeDTO::new).collect(Collectors.toList()));
@@ -174,14 +173,10 @@ public class TestController {
         }
     }
 
-
     @GetMapping("/token/getBook")
     public ResponseEntity<?> getBook() {
         try {
             List<Book> books = bookService.findAll();
-            books.forEach((book) -> {
-                System.out.println(book.getTypesString());
-            });
             List<BookDTO> bookDTOS = books.stream().map(BookDTO::new).toList();
             return ResponseEntity.ok(bookDTOS);
         } catch (Exception e) {
@@ -189,4 +184,28 @@ public class TestController {
         }
     }
 
+    @PostMapping("/token/followBook")
+    public ResponseEntity<?> followBook(@RequestHeader("Authorization") String token, @RequestBody BookDTO bookDTO) {
+        try {
+            token = jwtService.validateRequestHeader(token);
+            User user = jwtService.getUser(token);
+            Book book = bookService.findById(bookDTO.getId());
+            bookService.addFollowedUser(book, user);
+            return ResponseEntity.ok("Book followed!");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+    @PostMapping("/token/unFollowBook")
+    public ResponseEntity<?> unfollowBook(@RequestHeader("Authorization") String token, @RequestBody BookDTO bookDTO) {
+        try {
+            token = jwtService.validateRequestHeader(token);
+            User user = jwtService.getUser(token);
+            Book book = bookService.findById(bookDTO.getId());
+            bookService.removeFollowedUser(book, user);
+            return ResponseEntity.ok("Book unfollowed!");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 }

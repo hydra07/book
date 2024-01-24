@@ -26,11 +26,15 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name = "books")
-@Data
-//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+//@Data
+@Getter
+@Setter
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Book {
     @Id
 //    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "gen_books_id")
@@ -50,6 +54,7 @@ public class Book {
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "book_type", joinColumns = @JoinColumn(name = "book_id"), inverseJoinColumns = @JoinColumn(name = "type_id"))
+    @JsonManagedReference
     private Set<Type> types =new HashSet<>();
 
     @Enumerated(EnumType.STRING)
@@ -57,8 +62,14 @@ public class Book {
 
     private Double price = 0.0;
 
-    @ManyToMany(mappedBy = "followedBooks", fetch = FetchType.EAGER)
-    private Set<User> followedUsers = new HashSet<>();
+
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "user_follow_book",
+            joinColumns = @JoinColumn(name = "book_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
+    private Set<User> followedBook = new HashSet<>();
 
     @Enumerated(EnumType.STRING)
     private Set<Rate> rate = new HashSet<>();
@@ -74,14 +85,14 @@ public class Book {
     }
 
     public Book(String title, String description, List<Image> images, Set<Type> types, Status status, Double price,
-            Set<User> followedUsers, Set<Rate> rate, Date createdAt, Date lastUpdateAt, String url) {
+                Set<User> followedBook, Set<Rate> rate, Date createdAt, Date lastUpdateAt, String url) {
         this.title = title;
         this.description = description;
         this.images = images;
         this.types = types;
         this.status = status;
         this.price = price;
-        this.followedUsers = followedUsers;
+        this.followedBook = followedBook;
         this.rate = rate;
         this.createdAt = createdAt;
         this.lastUpdateAt = lastUpdateAt;
@@ -90,7 +101,7 @@ public class Book {
 
     /**
      * Constructor with DTO
-     * 
+     *
      * @param dto (without id,followedUsers,images,types)
      * @return
      *
@@ -105,7 +116,6 @@ public class Book {
         this.lastUpdateAt = dto.getLastUpdateAt();
         this.url = dto.getUrl();
     }
-
     // ----------------Image----------------
     public List<String> getImagesString() {
         return this.images.stream().map(Image::getPath).toList();
@@ -118,19 +128,8 @@ public class Book {
             this.images = images;
         }
     }
-
-    public void addImage(Image image) {
-        if (this.images.contains(image))
-            return;
-        this.images.add(image);
-
-    }
-
-    public void removeImage(Image image) {
-        this.images.remove(image);
-    }
-
     // ----------------Type----------------
+
     public Set<String> getTypesString() {
         return this.types.stream().map(Type::getName).collect(Collectors.toSet());
     }
@@ -142,36 +141,18 @@ public class Book {
             this.types = types;
         }
     }
-
-    public void addType(Type type) {
-        this.types.add(type);
-    }
-
-    public void removeType(Type type) {
-        this.types.remove(type);
-    }
-
     // ----------------FollowedUsers----------------
     public Set<String> getFollowedUsersString() {
-        return this.followedUsers.stream().map(User::getEmail).collect(Collectors.toSet());
+        return this.followedBook.stream().map(User::getEmail).collect(Collectors.toSet());
     }
 
     public void setFollowedUsers(Set<User> followedUsers) {
         if (followedUsers == null || followedUsers.isEmpty()) {
-            this.followedUsers.clear();
+            this.followedBook.clear();
         } else {
-            this.followedUsers = followedUsers;
+            this.followedBook = followedUsers;
         }
     }
-
-    public void addFollowedUser(User user) {
-        this.followedUsers.add(user);
-    }
-
-    public void removeFollowedUser(User user) {
-        this.followedUsers.remove(user);
-    }
-
     // ----------------Rate----------------
     public Set<Integer> getRateString() {
         return rate.stream().map(Rate::getValue).collect(Collectors.toSet());
@@ -184,35 +165,8 @@ public class Book {
             this.rate = rate;
         }
     }
-
-    public void addRate(Rate rate) {
-        this.rate.add(rate);
-    }
-
-    public void removeRate(Rate rate) {
-        this.rate.remove(rate);
-    }
-
     public Double getAverageRate() {
         return rate.stream().mapToInt(Rate::getValue).average().orElse(0.0);
     }
-
-//    @Override
-//    public String toString() {
-//        return "Book{" +
-//                "id=" + id +
-//                ", title='" + title + '\'' +
-//                ", description='" + description + '\'' +
-//                ", images=" + images +
-//                ", types=" + types +
-//                ", status=" + status +
-//                ", price=" + price +
-//                ", followedUsers=" + followedUsers +
-//                ", rate=" + rate +
-//                ", createdAt=" + createdAt +
-//                ", lastUpdateAt=" + lastUpdateAt +
-//                ", url='" + url + '\'' +
-//                '}';
-//    }
 
 }

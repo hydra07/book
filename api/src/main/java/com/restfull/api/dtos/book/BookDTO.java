@@ -43,5 +43,4 @@ public class BookDTO {
         this.lastUpdateAt = book.getLastUpdateAt();
         this.url = book.getUrl();
     }
-
 }
