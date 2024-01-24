@@ -12,7 +12,7 @@ function App() {
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="bookdetail/:id" element={<BookDetail />} />
+        <Route path="bookdetails" element={<BookDetail />} />
         {/* <Route path="/login" element={<Login />} /> */}
         {/* <Route path="/signup" element={<SignUp />} /> */}
         {/* <Route path="/message" element={<Chat />} /> */}

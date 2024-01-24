@@ -1,12 +1,10 @@
 package com.restfull.api.entities;
 
 import java.io.Serializable;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
+import jakarta.persistence.criteria.Predicate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -71,15 +69,9 @@ public class User implements Serializable, UserDetails {
     @Column(nullable = true, length = 1)
     private boolean gender;
 
-    // @Getter
-    // @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
-    // private List<Follow> followers = new ArrayList<>();
-    //
-    // @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
-    // private List<Follow> following = new ArrayList<>();
-
-    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-    @JoinTable(name = "user_follow_book", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "book_id"))
+    @Setter
+    @Getter
+    @ManyToMany(mappedBy = "followedBook",fetch = FetchType.EAGER)
     private Set<Book> followedBooks = new HashSet<>();
 
     @Column(name = "role")
@@ -132,35 +124,10 @@ public class User implements Serializable, UserDetails {
         // this.setStringRoles(dto.getRoles());
     }
 
-    // -----------------FOLLOWER------------------------------------------------------------------------------------------
-    // public List<String> getFollowers() {
-    // return followers.stream().map(f ->
-    // f.getFollower().getEmail()).collect(Collectors.toList());
-    // }
-    // public void setFollower(List<Follow> followers){
-    // if (followers == null || followers.isEmpty())
-    // this.followers.clear();
-    // else
-    // this.followers = followers;
-    // }
-    // public void addFollower(User followerUser){
-    // Follow follower = new Follow(this, followerUser);
-    // this.followers.add(follower);
-    // followerUser.following.add(follower);
-    // this.setFollower(this.followers);
-    // System.out.println(this.followers);
-    // }
-
-    // public void addFollowing(User user){
-    // if(!this.following.contains(user)) this.following.add(user);
-    // }
-    // public void removeFollower(User user){
-    // this.followers.remove(user);
-    // }
-    // public void removeFollowing(User user){
-    // this.following.remove(user);
-    // }
-
+    // -----------------FOLLOW BOOK---------------------------------------------------------------------------------------
+    public Set<String>  getBooksString(){
+        return this.followedBooks.stream().map(Book::getTitle).collect(Collectors.toSet());
+    }
     // -----------------ROLE-----------------------------------------------------------------------------------------------
     public Set<Role> getRoles() {
         return roles.stream().map(r -> Role.fromId(r)).collect(Collectors.toSet());
@@ -170,7 +137,7 @@ public class User implements Serializable, UserDetails {
         if (roles == null || roles.isEmpty())
             this.roles.clear();
         else
-            this.roles = roles.stream().map(r -> r.getId()).collect(Collectors.toSet());
+            this.roles = roles.stream().map(Role::getId).collect(Collectors.toSet());
     }
 
     public void setStringRoles(Set<String> roles) {
