@@ -56,7 +56,10 @@ const AuthButton = () => {
                 className="p-3 absolute top-4 right-4"
                 onClick={handleCloseDialog}
               >
-                <img src="/svg/close.svg" className="w-6 h-6" />
+                <img
+                  src="/svg/close.svg"
+                  className="w-6 h-6 hover:w-7 hover:h-7"
+                />
               </button>
               <div className="mx-10 my-5">
                 <SignUp
@@ -88,7 +91,10 @@ const AuthButton = () => {
                 className="p-3 absolute top-4 right-4"
                 onClick={handleCloseDialog}
               >
-                <img src="/svg/close.svg" className="w-6 h-6" />
+                <img
+                  src="/svg/close.svg"
+                  className="w-6 h-6 hover:w-7 hover:h-7"
+                />
               </button>
               <div className="mx-10 my-5">
                 <SignIn
