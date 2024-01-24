@@ -14,7 +14,7 @@
 
 - **React**
 - **Vite**
-- **Redux**
+- **ReduxToolkit**
 - **Redux Persist**
 - **Tailwindcss**
 - **Axios**
