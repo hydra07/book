@@ -4,6 +4,7 @@ import com.restfull.api.dtos.book.BookDTO;
 import com.restfull.api.entities.Book;
 import com.restfull.api.entities.Image;
 import com.restfull.api.entities.Type;
+import com.restfull.api.entities.User;
 import com.restfull.api.repositories.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -27,6 +28,9 @@ public class BookService {
     @Autowired
     private ImageService imageService;
 
+    @Autowired
+    private UserService userService;
+
     public List<Book> findAll() {
         return repository.findAll();
     }
@@ -48,8 +52,8 @@ public class BookService {
         _book.setPrice(book.getPrice());
         _book.setCreatedAt(book.getCreatedAt());
         _book.setLastUpdateAt(book.getLastUpdateAt());
+        _book.setFollowedBook(book.getFollowedBook());
         _book.setTypes(book.getTypes());
-        System.out.println(_book);
         return repository.save(_book);
     }
 
@@ -58,17 +62,17 @@ public class BookService {
         repository.delete(book);
     }
 
-    public void addType(Book book, Type type){
-        book.getTypes().add(type);
-        type.getBooks().add(book);
-        update(book);
-    }
-
-    public void removeType(Book book, Type type){
-        book.getTypes().remove(type);
-        type.getBooks().remove(book);
-        update(book);
-    }
+//    public void addType(Book book, Type type){
+//        book.getTypes().add(type);
+//        type.getBooks().add(book);
+//        update(book);
+//    }
+//
+//    public void removeType(Book book, Type type){
+//        book.getTypes().remove(type);
+//        type.getBooks().remove(book);
+//        update(book);
+//    }
 
     public Book setTypeByString(Set<String> types, Book book){
         Set<Type> result = types.stream().map(
@@ -76,6 +80,11 @@ public class BookService {
         ).collect(Collectors.toSet());
         book.setTypes(result);
         return book;
+
+    }
+
+    public Set<Type> getType(Book book){
+        return typeService.getTypesByBookId(book.getId());
     }
 
     public Book setImageByString(List<String> images, Book book){
@@ -92,6 +101,21 @@ public class BookService {
         ).collect(Collectors.toList());
         book.setImages(result);
         return book;
+    }
+
+    public void addFollowedUser(Book book, User user){
+        book.getFollowedBook().add(user);
+        System.out.println(book.getFollowedBook());
+        update(book);
+    }
+
+    public void removeFollowedUser(Book book, User user){
+        book.getFollowedBook().removeIf(_user -> _user.getId().equals(user.getId()));
+        update(book);
+    }
+
+    public String isUserFollowedBook(User user, Book book){
+        return " "+user.getFollowedBooks().contains(book) + book.getFollowedBook().contains(user) + " ";
     }
 
     @Transactional

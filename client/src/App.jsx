@@ -4,6 +4,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
 import PrivateRoute from './components/PrivateRoute';
 import Header from './components/header';
+import BookDetail from './pages/BookDetail';
+import Fanpage from './pages/Fanpage';
 import Home from './pages/Home';
 function App() {
   return (
@@ -11,9 +13,8 @@ function App() {
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />
-        {/* <Route path="/login" element={<Login />} /> */}
-        {/* <Route path="/signup" element={<SignUp />} /> */}
-        {/* <Route path="/message" element={<Chat />} /> */}
+        <Route path="bookdetail" element={<BookDetail />} />
+        <Route path="fanpage" element={<Fanpage />} />
         <Route element={<PrivateRoute />}>
           {/* <Route path="/profile" element={<Profile />} /> */}
         </Route>

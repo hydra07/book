@@ -4,13 +4,14 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
-@Data
+//@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "types")
@@ -29,7 +30,9 @@ public class Type {
 
     private String description;
 
+    //--------------------------------------
     @ManyToMany(mappedBy = "types", fetch = FetchType.EAGER)
+    @JsonBackReference
     private Set<Book> books = new HashSet<>();
 
     public Type(String name, boolean license, String description) {
@@ -47,12 +50,12 @@ public class Type {
         super();
         this.name = name;
     }
-    //--------------------------------------
+
     public Set<String> getBooksString(){
         return this.books.stream().map(Book::getTitle).collect(Collectors.toSet());
     }
     public void addBook(Book book){
-        if (this.books.contains(book)){
+        if(this.books.contains(book)){
         }else {
             this.books.add(book);
         }

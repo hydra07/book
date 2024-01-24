@@ -58,23 +58,23 @@ public class TypeService {
         return repository.findByBooksId(id);
     }
 
-    public boolean addBookToType(Type type, Book book){
-        if(type.getBooks().contains(book)){
-            return false;
-        }
-        type.getBooks().add(book);
-        repository.save(type);
-        return true;
-    }
+//    public boolean addBookToType(Type type, Book book){
+//        if(type.getBooks().contains(book)){
+//            return false;
+//        }
+//        type.getBooks().add(book);
+//        repository.save(type);
+//        return true;
+//    }
 
-    public boolean removeBookFromType(Type type, Book book){
-        if(!type.getBooks().contains(book)){
-            return false;
-        }
-        type.getBooks().remove(book);
-        repository.save(type);
-        return true;
-    }
+//    public boolean removeBookFromType(Type type, Book book){
+//        if(!type.getBooks().contains(book)){
+//            return false;
+//        }
+//        type.getBooks().remove(book);
+//        repository.save(type);
+//        return true;
+//    }
 //    public Set<Type> getTypeByString(Set<String> types){
 //        System.out.println("get Type by string");
 //        Set<Type> result = types.stream().map(this::getTypeByName).collect(Collectors.toSet());
