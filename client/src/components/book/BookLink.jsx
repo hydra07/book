@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from "react-router-dom";
 const BookLink = ({ book }) => {
   const navigate = useNavigate();
 
@@ -21,14 +21,14 @@ const BookLink = ({ book }) => {
   };
   return (
     <div className="pl-7 flex whitespace-nowrap">
-      {element({ path: '/', name: 'Trang chủ' })}
+      {element({ path: "/home", name: "Trang chủ" })}
       <img
         src="/svg/slash.svg"
         alt=""
-        width={'20px'}
+        width={"20px"}
         className="drop-shadow-xl"
       />
-      {element({ path: '/bookdetails', name: book.title })}
+      {element({ path: "/bookdetail", name: book.title })}
     </div>
   );
 };

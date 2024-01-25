@@ -7,17 +7,19 @@ import Header from './components/header';
 import BookDetail from './pages/BookDetail';
 import Fanpage from './pages/Fanpage';
 import Home from './pages/Home';
+
 function App() {
   return (
     <BrowserRouter>
       <Header />
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/home" element={<Home />} />
         <Route path="bookdetail" element={<BookDetail />} />
         <Route path="fanpage" element={<Fanpage />} />
         <Route element={<PrivateRoute />}>
           {/* <Route path="/profile" element={<Profile />} /> */}
         </Route>
+        
       </Routes>
       <ToastContainer />
     </BrowserRouter>
