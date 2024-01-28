@@ -1,12 +1,16 @@
+
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { axiosInstanceNoAuth } from "../../configs/axios";
+
 const initialState = {
   books: [],
   error: null,
 };
 
 const bookSlice = createSlice({
+
   name: "book",
+
   initialState,
   reducers: {},
   extraReducers: (builder) => {
@@ -33,7 +37,9 @@ const handleBooks = (builder, bookAction) => {
 };
 
 export const getBooks = createAsyncThunk(
+
   "book/getBooks",
+
   async (_, thunkAPI) => {
     const { rejectWithValue } = thunkAPI;
     try {
@@ -43,7 +49,9 @@ export const getBooks = createAsyncThunk(
     } catch (error) {
       return rejectWithValue(error.response.data);
     }
+
   }
+
 );
 
 export const {} = bookSlice.actions;

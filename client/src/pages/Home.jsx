@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import BookCard from "../components/home/BookCard";
@@ -7,10 +8,13 @@ import { Link } from "react-router-dom";
 
 import { Carousel } from "@material-tailwind/react";
 import CarouselBook from "../components/home/Carousel";
+
+
 const Home = () => {
   const dispatch = useDispatch();
   const listBook = useSelector((state) => state.book.books);
   const [books, setBooks] = useState([]);
+
 
   // useEffect(() => {
   //   axios.get(`http://localhost:8080/test/token/getBook`).then((res) => {
@@ -31,10 +35,13 @@ const Home = () => {
 
     fetchData();
   }, []); console.log("XXXXXXX: ",books.filter((e)=> (e.types).includes("Trùng sinh")));
+
+  
   return (
   
     <div className="w-max-[1280px] content-center h-[3000px]">
       <div className="w-max-[1280px] h-[1400px] bg-white"></div>
+
       <div className="bg-blue-400 h-[1400px]">
         {/* <div className="">
         {books.map((book) => (
@@ -83,6 +90,8 @@ const Home = () => {
         <CarouselBook book = {books.filter((e)=> (e.types).includes("Hien dai") && (e.types).includes('Ngôn tình') && (e.types).includes('Trùng sinh'))}/>
       </div>
       <div className="w-max-[1280px] h-[1400px] "></div>
+
+  
     </div>
   );
 };
