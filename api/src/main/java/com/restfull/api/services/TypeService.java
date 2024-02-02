@@ -1,8 +1,7 @@
 package com.restfull.api.services;
 
 import com.restfull.api.dtos.book.TypeDTO;
-import com.restfull.api.entities.Book;
-import com.restfull.api.entities.Image;
+
 import com.restfull.api.entities.Type;
 import com.restfull.api.repositories.TypeRepository;
 import com.restfull.api.utils.NotFoundException;

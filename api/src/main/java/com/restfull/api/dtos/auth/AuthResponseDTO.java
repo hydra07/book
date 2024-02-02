@@ -8,6 +8,7 @@ import lombok.Setter;
 public class AuthResponseDTO {
     private String token;
     private String message;
+
     public AuthResponseDTO(String token, String message) {
         super();
         this.token = token;

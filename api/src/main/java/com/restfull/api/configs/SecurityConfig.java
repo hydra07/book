@@ -31,7 +31,9 @@ public class SecurityConfig {
 
     private static final String[] PUBLIC = new String[] {
             "/test/**",
-            "/auth/**"
+            "/auth/**",
+            "/book/**",
+            "/type/**",
     };
 
     @Autowired
