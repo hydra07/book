@@ -1,0 +1,221 @@
+[
+{
+"id": 1,
+"title": "Nhà giả kim",
+
+"authorId": 3,
+"description": "Nhà giả kim là một tác phẩm tiểu thuyết kinh điển của nhà văn người Brazil, Paulo Coelho. Cuốn sách xoay quanh hành trình tìm kiếm ý nghĩa cuộc sống và sự chuyển đổi cá nhân của nhân vật chính Santiago. Với sự kết hợp giữa tâm lý học, triết học và tôn giáo, Nhà giả kim đã trở thành một trong những cuốn sách bán chạy nhất trong lịch sử xuất bản.",
+"typesId": [1, 2],
+
+"price": 100,
+"createdAt": "2020-01-01T00:00:00",
+
+"lastUpdateAt": "2020-02-01T00:00:00",
+"url": "https://nhagiakim.com",
+"status": "ONGOING",
+"imageUrl": "https://307a0e78.vws.vegacdn.vn/view/v2/image/img.fm_audio_book/0/0/0/587.jpg?v=2&w=480&h=700"
+},
+{
+"id": 2,
+"title": "Đồi gió hú",
+"authorId": 3,
+"description": "Đồi gió hú của Emily Brontë là một kiệt tác văn học lãng mạn của thế kỷ 19. Cuốn sách kể về tình yêu đầy bi thương giữa Catherine và Heathcliff, cùng với những bí mật, trắc trở trong gia đình Earnshaw. Đồi gió hú đã chạm đến những khía cạnh sâu sắc của tâm hồn con người và được đánh giá cao về sức ảnh hưởng trong văn hóa.",
+"typesId": [1, 2],
+"price": 120,
+"createdAt": "2020-03-01T00:00:00",
+"lastUpdateAt": "2020-04-01T00:00:00",
+"url": "https://doigiohu.com",
+"status": "ONGOING",
+"imageUrl": "https://307a0e78.vws.vegacdn.vn/view/v2/image/img.fm_audio_book/0/0/0/1484.jpg?v=2&w=480&h=700"
+},
+{
+"id": 3,
+"title": "Sherlock Holmes",
+"authorId": 3,
+"description": "Sherlock Holmes của Arthur Conan Doyle là bộ truyện trinh thám kinh điển, tập trung vào những vụ án mà thám tử tài năng Sherlock Holmes giải quyết cùng với đồng đội, bác sĩ John Watson. Cuốn sách không chỉ là những câu chuyện hấp dẫn mà còn là sự sáng tạo của nhà văn với nhân vật siêu thông minh và các kịch bản gây chú ý.",
+"typesId": [1, 2],
+"price": 90,
+"createdAt": "2020-05-01T00:00:00",
+"lastUpdateAt": "2020-06-01T00:00:00",
+"url": "https://sherlockholmes.com",
+
+"status": "ONGOING",
+"imageUrl": "https://307a0e78.vws.vegacdn.vn/view/v2/image/img.book/0/0/1/47113.jpg?v=1&w=480&h=700"
+},
+{
+"id": 4,
+"title": "Dấu chân trên cát",
+"authorId": 3,
+"description": "Dấu chân trên cát của Antoine de Saint-Exupéry là một tác phẩm văn học tuyệt vời, nơi tác giả chia sẻ những suy ngẫm về cuộc sống, tình yêu và ý nghĩa của sự tồn tại. Qua từng trang sách, độc giả sẽ bắt gặp những câu chuyện tuyệt vời và những bài học quý báu về lòng nhân ái và sự hiểu biết.",
+"typesId": [1, 2],
+"price": 110,
+
+"createdAt": "2020-09-01T00:00:00",
+"lastUpdateAt": "2020-10-01T00:00:00",
+"url": "https://dauchantrencat.com",
+"status": "ONGOING",
+"imageUrl": "https://307a0e78.vws.vegacdn.vn/view/v2/image/img.book/0/0/0/28165.jpg?v=1&w=480&h=700"
+},
+{
+"id": 5,
+
+"title": "Hạnh phúc không có sẵn",
+"authorId": 3,
+"description": "Hạnh phúc không có sẵn của Wayne Dyer là một nguồn cảm hứng vô song, giúp độc giả khám phá cách họ có thể tạo ra cuộc sống hạnh phúc và ý nghĩa. Cuốn sách không chỉ là một hướng dẫn thực tế mà còn là một chuyến phiêu lưu tâm lý để khám phá sức mạnh lớn lao bên trong mỗi người.",
+"typesId": [1, 2],
+"price": 80,
+"createdAt": "2020-11-01T00:00:00",
+"lastUpdateAt": "2020-12-01T00:00:00",
+"url": "https://hanhphuckhongcosan.com",
+"status": "ONGOING",
+
+"imageUrl": "https://307a0e78.vws.vegacdn.vn/view/v2/image/img.book/0/0/0/28957.jpg?v=1&w=480&h=700"
+},
+{
+"id": 6,
+"title": "Những ngày thứ ba với Morrie",
+"authorId": 3,
+"description": "Những ngày thứ ba với Morrie của Mitch Albom là một hành trình sâu sắc và ý nghĩa về tình bạn, ý nghĩa cuộc sống và sự hiểu biết về bản thân. Melodic và đầy cảm xúc, cuốn sách là một bài học về tình người và giá trị thực sự trong cuộc sống.",
+"typesId": [1, 2],
+"price": 95,
+"createdAt": "2021-01-01T00:00:00",
+"lastUpdateAt": "2021-02-01T00:00:00",
+"url": "https://ngaythubamorrie.com",
+"status": "ONGOING",
+"imageUrl": "https://307a0e78.vws.vegacdn.vn/view/v2/image/img.book/0/0/0/28897.jpg?v=1&w=480&h=700"
+},
+{
+
+"id": 7,
+"title": "Người mẹ tốt làm thế nào",
+"authorId": 3,
+"description": "Người mẹ tốt làm thế nào của Amy Chua là một tác phẩm nghiên cứu và trải nghiệm cá nhân về việc nuôi dạy con cái. Tác giả chia sẻ những chiến lược và kinh nghiệm của mình, mở ra cuộc thảo luận về cách xây dựng mối quan hệ gia đình và giáo dục con cái hiệu quả.",
+"typesId": [1, 2],
+"price": 105,
+"createdAt": "2021-03-01T00:00:00",
+"lastUpdateAt": "2021-04-01T00:00:00",
+"url": "https://nguoimetotlamthehao.com",
+"status": "ONGOING",
+"imageUrl": "https://307a0e78.vws.vegacdn.vn/view/v2/image/img.book/0/0/1/46942.jpg?v=3&w=480&h=700"
+},
+{
+"id": 8,
+"title": "Những ngày nắng mới",
+"authorId": 3,
+"description": "Những ngày nắng mới là một tập thơ đẹp của nhà thơ nổi tiếng Việt Nam, Xuan Dieu. Trong từng bài thơ, tác giả đưa độc giả vào những cung bậc cảm xúc, từ tình yêu, lòng bi tráng đến những suy tư sâu sắc về cuộc sống và con người.",
+"typesId": [1, 2],
+"price": 75,
+"createdAt": "2021-05-01T00:00:00",
+"lastUpdateAt": "2021-06-01T00:00:00",
+"url": "https://nhungngaynangmoi.com",
+"status": "ONGOING",
+"imageUrl": "https://307a0e78.vws.vegacdn.vn/view/v2/image/img.book/0/0/1/46672.jpg?v=1&w=480&h=700"
+
+},
+{
+"id": 9,
+"title": "Bí mật của tâm hồn",
+"authorId": 3,
+"description": "Bí mật của tâm hồn của Gary Chapman là một hành trình khám phá về tình yêu và mối quan hệ. Tác giả giới thiệu về "Ngôn ngữ tình yêu" và cách hiểu biết ngôn ngữ này có thể làm cho mối quan hệ trở nên sâu sắc và ý nghĩa hơn.",
+"typesId": [1, 2],
+"price": 88,
+"createdAt": "2021-09-01T00:00:00",
+"lastUpdateAt": "2021-10-01T00:00:00",
+"url": "https://bimatcuatamhon.com",
+"status": "ONGOING",
+"imageUrl": "https://307a0e78.vws.vegacdn.vn/view/v2/image/img.book/0/0/1/38711.jpg?v=1&w=480&h=700"
+}
+{
+"id": 10,
+"title": "Bí mật của tâm hồn 1",
+"authorId": 3,
+
+"description": "Bí mật của tâm hồn của Gary Chapman là một hành trình khám phá về tình yêu và mối quan hệ. Tác giả giới thiệu về "Ngôn ngữ tình yêu" và cách hiểu biết ngôn ngữ này có thể làm cho mối quan hệ trở nên sâu sắc và ý nghĩa hơn.",
+"typesId": [1, 2],
+"price": 88,
+"createdAt": "2021-09-01T00:00:00",
+"lastUpdateAt": "2021-10-01T00:00:00",
+"url": "https://bimatcuatamhon.com",
+"status": "ONGOING",
+"imageUrl": "https://307a0e78.vws.vegacdn.vn/view/v2/image/img.book/0/0/1/38711.jpg?v=1&w=480&h=700"
+},
+{
+"id": 11,
+"title": "Bí mật của tâm hồn 2",
+"authorId": 3,
+"description": "Bí mật của tâm hồn của Gary Chapman là một hành trình khám phá về tình yêu và mối quan hệ. Tác giả giới thiệu về "Ngôn ngữ tình yêu" và cách hiểu biết ngôn ngữ này có thể làm cho mối quan hệ trở nên sâu sắc và ý nghĩa hơn.",
+"typesId": [1, 2],
+"price": 88,
+"createdAt": "2021-09-01T00:00:00",
+"lastUpdateAt": "2021-10-01T00:00:00",
+"url": "https://bimatcuatamhon.com",
+"status": "ONGOING",
+"imageUrl": "https://307a0e78.vws.vegacdn.vn/view/v2/image/img.book/0/0/1/38711.jpg?v=1&w=480&h=700"
+},
+{
+"id": 12,
+"title": "Bí mật của tâm hồn 3",
+"authorId": 3,
+"description": "Bí mật của tâm hồn của Gary Chapman là một hành trình khám phá về tình yêu và mối quan hệ. Tác giả giới thiệu về "Ngôn ngữ tình yêu" và cách hiểu biết ngôn ngữ này có thể làm cho mối quan hệ trở nên sâu sắc và ý nghĩa hơn.",
+"typesId": [1, 2],
+"price": 88,
+"createdAt": "2021-09-01T00:00:00",
+"lastUpdateAt": "2021-10-01T00:00:00",
+"url": "https://bimatcuatamhon.com",
+"status": "ONGOING",
+"imageUrl": "https://307a0e78.vws.vegacdn.vn/view/v2/image/img.book/0/0/1/38711.jpg?v=1&w=480&h=700"
+},
+{
+"id": 13,
+"title": "Bí mật của tâm hồn 4",
+"authorId": 3,
+"description": "Bí mật của tâm hồn của Gary Chapman là một hành trình khám phá về tình yêu và mối quan hệ. Tác giả giới thiệu về "Ngôn ngữ tình yêu" và cách hiểu biết ngôn ngữ này có thể làm cho mối quan hệ trở nên sâu sắc và ý nghĩa hơn.",
+"typesId": [1, 2],
+"price": 88,
+"createdAt": "2021-09-01T00:00:00",
+"lastUpdateAt": "2021-10-01T00:00:00",
+"url": "https://bimatcuatamhon.com",
+"status": "ONGOING",
+"imageUrl": "https://307a0e78.vws.vegacdn.vn/view/v2/image/img.book/0/0/1/38711.jpg?v=1&w=480&h=700"
+}
+{
+"id": 14,
+"title": "Thám tử lừng danh Conan",
+"authorId": 3,
+"description": "Thám tử lừng danh Conan là một bộ truyện tranh nổi tiếng của nhà văn Gosho Aoyama. Câu chuyện xoay quanh thám tử học đường tài năng Conan Edogawa, người giải quyết những vụ án hóc búa cùng đồng đội nhỏ tuổi của mình. Bộ truyện kết hợp giữa yếu tố trinh thám và hài hước, thu hút độc giả mọi lứa tuổi.",
+"typesId": [1, 2],
+"price": 65,
+"createdAt": "2021-11-01T00:00:00",
+"lastUpdateAt": "2021-12-01T00:00:00",
+"url": "https://thamtuconan.com",
+"status": "ONGOING",
+"imageUrl": "https://307a0e78.vws.vegacdn.vn/view/v2/image/img.book/0/0/0/23799.jpg?v=2&w=480&h=700"
+},
+{
+"id": 15,
+"title": "Tôi là Malala",
+"authorId": 3,
+"description": "Tôi là Malala là tự truyện của Malala Yousafzai, người trở thành biểu tượng quốc tế trong cuộc chiến đấu cho quyền học của phụ nữ. Cuốn sách kể về cuộc sống của Malala từ thời thơ ấu đến hôm nay, mang lại cảm hứng và nhìn nhận sâu sắc về ý chí và lòng dũng cảm.",
+"typesId": [1, 2],
+"price": 115,
+"createdAt": "2022-01-01T00:00:00",
+"lastUpdateAt": "2022-02-01T00:00:00",
+"url": "https://toilamalala.com",
+"status": "ONGOING",
+"imageUrl": "https://307a0e78.vws.vegacdn.vn/view/v2/image/img.book/0/0/0/29965.jpg?v=1&w=480&h=700"
+
+},
+{
+"id": 16,
+"title": "Đắc nhân tâm",
+"authorId": 3,
+"description": "Đắc nhân tâm của Dale Carnegie là một trong những cuốn sách phát triển bản thân hàng đầu. Tác giả chia sẻ những nguyên tắc cơ bản về cách xây dựng mối quan hệ, giao tiếp hiệu quả và làm việc nhóm một cách thành công. Cuốn sách là nguồn cảm hứng vô tận cho việc phát triển bản thân.",
+"typesId": [1, 2],
+"price": 98,
+"createdAt": "2022-03-01T00:00:00",
+"lastUpdateAt": "2022-04-01T00:00:00",
+"url": "https://dacnhantam.com",
+"status": "ONGOING",
+"imageUrl": "https://307a0e78.vws.vegacdn.vn/view/v2/image/img.book/0/0/0/10990.jpg?v=2&w=480&h=700"
+}
+]
