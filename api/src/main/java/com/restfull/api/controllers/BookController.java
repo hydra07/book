@@ -24,7 +24,7 @@ public class BookController {
     @PostMapping("/add")
     public ResponseEntity<?> add(@RequestBody BookRequestDTO book) {
         System.out.println(book.toString());
-        return ResponseEntity.ok(new BookResponseDTO(bookService.create(book)));
+        return ResponseEntity.ok(new BookResponseDTO(bookService.createBook(book)));
     }
 
     @PostMapping("/find/{id}")

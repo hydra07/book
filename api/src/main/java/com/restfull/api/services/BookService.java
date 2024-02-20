@@ -42,7 +42,7 @@ public class BookService {
     }
 
     @Transactional
-    public Book create(BookRequestDTO bookDto) {
+    public Book createBook(BookRequestDTO bookDto) {
         Book _book = new Book();
         _book.setTitle(bookDto.getTitle());
         _book.setAuthor(authorService.findById(bookDto.getAuthorId()));
