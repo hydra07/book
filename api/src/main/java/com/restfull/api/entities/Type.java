@@ -5,12 +5,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 // @Data
@@ -23,11 +19,9 @@ import lombok.Setter;
 // property = "id")
 public class Type {
     @Id
-     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator =
-     "gen_types_id")
-     @SequenceGenerator(name = "gen_types_id", sequenceName = "seq_types_id",
-     allocationSize = 1)
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "gen_types_id")
+//    @SequenceGenerator(name = "gen_types_id", sequenceName = "seq_types_id", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(unique = true, columnDefinition = "NVARCHAR(250)")
