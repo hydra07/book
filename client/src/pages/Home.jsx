@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import CarouselBook from "../components/home/Carousel";
 
 const Home = () => {
-  const dispatch = useDispatch();
-  const listBook = useSelector((state) => state.book.books);
+ 
+  // const listBook = useSelector((state) => state.book.books);
   const [books, setBooks] = useState([]);
 
   // useEffect(() => {
@@ -76,7 +76,9 @@ const Home = () => {
         <CarouselBook book = {books.filter((e)=> (e.types).includes("Hien dai") && (e.types).includes('Ngôn tình') )}/>
         <CarouselBook book = {books.filter((e)=> (e.types).includes("Hien dai") && (e.types).includes('Ngôn tình') && (e.types).includes('Trùng sinh'))}/>
       </div>
-      <div className="w-max-[1280px] h-[1400px] "></div>
+      <div className="w-max-[1280px] h-[1400px] ">
+        
+      </div>
     </div>
   )
 };
