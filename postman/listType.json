@@ -1,0 +1,33 @@
+[
+    {
+        "id": 1,
+        "name": "Bản quyền",
+        "description": "Các sản phẩm đã được tác giả đăng kí bản quyền và cần có VIP để đọc."
+    },
+    {
+        "id": 2,
+        "name": "Kinh dị",
+        "description": "Một thể loại với mục đích tạo ra những cảm xúc như lo lắng, sợ hãi hay làm độc giả, khán giả giật mình bằng những nội dung kinh hoàng."
+    },
+    {
+        "id": 3,
+        "name": "Lãng mạn",
+        "description": "Một thể loại khai thác mối quan hệ tình cảm giữa người với người, luôn hướng độc giả đến sự rung cảm chân thành nhất và cái kết thường cố tạo ra nỗi day dứt khôn nguôi."
+    },
+    {
+        "id": 4,
+        "name": "Trinh Thám",
+        "description": "Một thể loại xoay quanh việc điều tra một tội ác, thường là giết người của một điều tra viên hoặc thám tử dù là chuyên nghiệp, nghiệp dư hay đã nghỉ hưu."
+    },
+    {
+        "id": 5,
+        "name": "Giả tưởng",
+        "description": "Tiểu thuyết giả tưởng diễn ra trong một thế giới thường giống với thế giới thực ở hiện tại hoặc trong quá khứ nhưng bổ sung thêm các yếu tố giả tưởng như ma thuật, nhân vật không phải con người và sinh vật kỳ ảo."
+    },
+    {
+        "id": 6,
+        "name": "Hài hước",
+        "description": "Một thể loại sử dụng hài kịch để giải trí cho người đọc."
+    }
+    
+]

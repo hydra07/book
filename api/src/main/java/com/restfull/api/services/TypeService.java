@@ -1,18 +1,15 @@
 package com.restfull.api.services;
 
-import com.restfull.api.dtos.book.TypeDTO;
-
+import com.restfull.api.dtos.book.TypeRequestDTO;
 import com.restfull.api.entities.Type;
+import com.restfull.api.entities.Book;
 import com.restfull.api.repositories.TypeRepository;
 import com.restfull.api.utils.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 public class TypeService {
@@ -20,7 +17,9 @@ public class TypeService {
     @Autowired
     private TypeRepository repository;
 
-    public List<Type> getAllTypes() { return repository.findAll(); }
+    public List<Type> getAllTypes(){
+        return repository.findAll();
+    }
 
     public Type getTypeById(Long id) {
         return repository.findById(id).orElseThrow(
@@ -30,12 +29,14 @@ public class TypeService {
     public Type getTypeByName(String name){
         return repository.findByName(name).orElseThrow(
                 () -> new NotFoundException("Type not found: " + name)
-        );
+                );
     }
 
-    public Type create(Type type) { return repository.save(type);}
+    public Type create(Type type){
+        return repository.save(type);
+    }
 
-    public Type createType(TypeDTO typeDTO){
+    public Type createType(TypeRequestDTO typeDTO) {
         Type type = new Type(typeDTO.getName(), typeDTO.isLicense(), typeDTO.getDescription());
         return repository.save(type);
     }
@@ -57,14 +58,15 @@ public class TypeService {
         return repository.findByBooksId(id);
     }
 
-//    public boolean addBookToType(Type type, Book book){
-//        if(type.getBooks().contains(book)){
-//            return false;
-//        }
-//        type.getBooks().add(book);
-//        repository.save(type);
-//        return true;
-//    }
+    //Đại code
+    public boolean addBookToType(Type type, Book book){
+        if(type.getBooksString().contains(book)){
+            return false;
+        }
+        type.addBook(book);
+        repository.save(type);
+        return true;
+    }
 
 //    public boolean removeBookFromType(Type type, Book book){
 //        if(!type.getBooks().contains(book)){
@@ -74,6 +76,7 @@ public class TypeService {
 //        repository.save(type);
 //        return true;
 //    }
+
 //    public Set<Type> getTypeByString(Set<String> types){
 //        System.out.println("get Type by string");
 //        Set<Type> result = types.stream().map(this::getTypeByName).collect(Collectors.toSet());

@@ -23,17 +23,20 @@ import lombok.Setter;
 // property = "id")
 public class Type {
     @Id
-     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator =
-     "gen_types_id")
-     @SequenceGenerator(name = "gen_types_id", sequenceName = "seq_types_id",
-     allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator =
+    "gen_types_id")
+    @SequenceGenerator(name = "gen_types_id", sequenceName = "seq_types_id",
+    allocationSize = 1)
 //    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(unique = true, columnDefinition = "NVARCHAR(250)")
     private String name;
 
-    private boolean license;
+    private boolean license; // license không nên là property của type, mình nên cho nó là một thể loại luôn
+                             // Thử đặt ví dụ: thể loại kinh dị có ID là 1 và license == true, vậy tất cả các
+                             // quyển sách có type
+                             // là kinh dị đều là sách bản quyền? Không có ổn.
 
     @Column(columnDefinition = "NVARCHAR(250)")
     private String description;
@@ -71,6 +74,11 @@ public class Type {
             this.books.add(book);
         }
     }
+
+    //Đại code
+    // public void addBook(Book book) {
+    //     this.books.add(book);
+    // }
 
     public void removeBook(Book book) {
         this.books.remove(book);
