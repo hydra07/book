@@ -1,10 +1,11 @@
+import { Button } from "@material-tailwind/react";
 import { useEffect, useRef, useState } from "react";
 
 const View = () => {
   const [size, setSize] = useState(100);
   const renditionRef = useRef(null);
   const changeSize = (newSize) => {
-    setSize(setSize);
+    setSize(newSize);
   };
   useEffect(() => {
     if (renditionRef.current) {
@@ -15,8 +16,8 @@ const View = () => {
 
   return <div className="">
     <div className="">
-        <button onClick={() => changeSize(Math.max(80, size - 10))}>-</button>
-        <span>Current  font size: {size}%</span>
+        <button className="" onClick={() => changeSize(Math.max(10, size - 10))}>-</button>
+        <span className="">Current  font size: {size}%</span>
         <button onClick={() => changeSize(Math.min(200, size + 10))}>+</button>
     </div>
   </div>;
