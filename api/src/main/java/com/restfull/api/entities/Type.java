@@ -33,10 +33,7 @@ public class Type {
     @Column(unique = true, columnDefinition = "NVARCHAR(250)")
     private String name;
 
-    private boolean license; // license không nên là property của type, mình nên cho nó là một thể loại luôn
-                             // Thử đặt ví dụ: thể loại kinh dị có ID là 1 và license == true, vậy tất cả các
-                             // quyển sách có type
-                             // là kinh dị đều là sách bản quyền? Không có ổn.
+    private boolean license; 
 
     @Column(columnDefinition = "NVARCHAR(250)")
     private String description;
@@ -68,17 +65,13 @@ public class Type {
         return this.books.stream().map(Book::getTitle).collect(Collectors.toSet());
     }
 
-    public void addBook(Book book) {
-        if (this.books.contains(book)) {
-        } else {
-            this.books.add(book);
-        }
+    public Set<Long> getBooksIDStrings() {
+        return this.books.stream().map(Book::getId).collect(Collectors.toSet());
     }
-
-    //Đại code
-    // public void addBook(Book book) {
-    //     this.books.add(book);
-    // }
+    
+    public void addBook(Book book) {
+        this.books.add(book);
+    }
 
     public void removeBook(Book book) {
         this.books.remove(book);

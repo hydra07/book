@@ -1,5 +1,6 @@
 package com.restfull.api.services;
 
+import com.restfull.api.dtos.book.BookRequestDTO;
 import com.restfull.api.dtos.book.TypeRequestDTO;
 import com.restfull.api.entities.Type;
 import com.restfull.api.entities.Book;
@@ -13,6 +14,9 @@ import java.util.Set;
 
 @Service
 public class TypeService {
+
+    @Autowired
+    private BookService bookService;
 
     @Autowired
     private TypeRepository repository;
@@ -41,6 +45,25 @@ public class TypeService {
         return repository.save(type);
     }
 
+    public Type createNewType(TypeRequestDTO typeDTO) {
+        Type type = null;
+        try {
+            // Check if a Type with the same name already exists
+            Type existingType = getTypeByName(typeDTO.getName());
+            if (existingType != null) {
+                throw new Exception("A type with the same name already exists.");
+            }
+            // Create a new Type entity
+            type = new Type(typeDTO.getName(), typeDTO.isLicense(), typeDTO.getDescription());  
+            // Save the new Type entity to the repository
+            return repository.save(type);
+    
+        } catch (Exception e) {
+            String errorMessage = "An error occurred while creating the new type: " + e.getMessage();
+            throw new RuntimeException(errorMessage);
+        }
+    }
+
     public Type update(Type type){
         Type _type = getTypeById(type.getId());
         _type.setName(type.getName());
@@ -58,14 +81,26 @@ public class TypeService {
         return repository.findByBooksId(id);
     }
 
-    //Đại code
-    public boolean addBookToType(Type type, Book book){
-        if(type.getBooksString().contains(book)){
-            return false;
+    public Type addBookToType(TypeRequestDTO typeDTO, BookRequestDTO bookDTO) {
+        Type type = null;
+        Book book = null;
+        try {
+            // Get type from repository
+            type = getTypeById(typeDTO.getId());
+            // Check if the book is already in this type
+            if (type.getBooksIDStrings().contains(bookDTO.getId())) {
+                throw new NotFoundException("The specified book is already in the list!");
+            }
+            // Get book from service
+            book = bookService.findById(bookDTO.getId());
+            // Add the book to the type
+            type.addBook(book);
+            // Save the type to the repository
+            return repository.save(type);
+        } catch (Exception e) {
+            String errorMessage = "An error occurred while adding the book to the type: " + e.getMessage();
+            throw new RuntimeException(errorMessage);
         }
-        type.addBook(book);
-        repository.save(type);
-        return true;
     }
 
 //    public boolean removeBookFromType(Type type, Book book){

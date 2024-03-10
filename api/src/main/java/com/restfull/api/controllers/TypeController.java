@@ -1,6 +1,7 @@
 package com.restfull.api.controllers;
 
 import com.restfull.api.dtos.book.TypeResponseDTO;
+import com.restfull.api.dtos.book.BookRequestDTO;
 import com.restfull.api.dtos.book.TypeRequestDTO;
 import com.restfull.api.entities.Type;
 import com.restfull.api.services.TypeService;
@@ -33,18 +34,23 @@ public class TypeController {
 
     @PostMapping("/add")
     public ResponseEntity<?> add(@RequestBody TypeRequestDTO type) {
-        System.out.println(type.toString());
-        return ResponseEntity.ok(new TypeResponseDTO((typeService.createType(type))));
+        try {
+            System.out.println(type.toString());
+            typeService.createNewType(type);
+            return ResponseEntity.ok( type.getName()+" successfully added!");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
-    //Đại code
-    // @PostMapping("/addBookToType")
-    // public ResponseEntity<?> addBookToType(@RequestBody TypeRequestDTO type, BookRequestDTO book) {
-    //     System.out.println(type.toString());
-
-        
-    //     return ResponseEntity.ok(new TypeResponseDTO((typeService.addBookToType(type, book))));     //error ngay khúc ni tại bên service trả 
-    // }                                                                                               //về boolean mà t không biết phải làm như nào
-    
+    @PostMapping("/addBookToType")
+    public ResponseEntity<?> addBookToType(@RequestBody TypeRequestDTO type, @RequestBody BookRequestDTO book) {
+        try {
+            typeService.addBookToType(type, book);
+           return ResponseEntity.ok("Successfully added!");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 
 }
