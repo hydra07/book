@@ -43,14 +43,14 @@ public class TypeController {
         }
     }
 
-    @PostMapping("/addBookToType")
-    public ResponseEntity<?> addBookToType(@RequestBody TypeRequestDTO type, @RequestBody BookRequestDTO book) {
-        try {
-            typeService.addBookToType(type, book);
-           return ResponseEntity.ok("Successfully added!");
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
+//    @PostMapping("/addBookToType")
+//    public ResponseEntity<?> addBookToType(@RequestBody TypeRequestDTO type, @RequestBody BookRequestDTO book) {
+//        try {
+//            typeService.addBookToType(type, book);
+//           return ResponseEntity.ok("Successfully added!");
+//        } catch (Exception e) {
+//            return ResponseEntity.badRequest().body(e.getMessage());
+//        }
+//    }
 
 }

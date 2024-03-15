@@ -16,9 +16,6 @@ import java.util.Set;
 public class TypeService {
 
     @Autowired
-    private BookService bookService;
-
-    @Autowired
     private TypeRepository repository;
 
     public List<Type> getAllTypes(){
@@ -81,27 +78,27 @@ public class TypeService {
         return repository.findByBooksId(id);
     }
 
-    public Type addBookToType(TypeRequestDTO typeDTO, BookRequestDTO bookDTO) {
-        Type type = null;
-        Book book = null;
-        try {
-            // Get type from repository
-            type = getTypeById(typeDTO.getId());
-            // Check if the book is already in this type
-            if (type.getBooksIDStrings().contains(bookDTO.getId())) {
-                throw new NotFoundException("The specified book is already in the list!");
-            }
-            // Get book from service
-            book = bookService.findById(bookDTO.getId());
-            // Add the book to the type
-            type.addBook(book);
-            // Save the type to the repository
-            return repository.save(type);
-        } catch (Exception e) {
-            String errorMessage = "An error occurred while adding the book to the type: " + e.getMessage();
-            throw new RuntimeException(errorMessage);
-        }
-    }
+//    public Type addBookToType(TypeRequestDTO typeDTO, BookRequestDTO bookDTO) {
+//        Type type = null;
+//        Book book = null;
+//        try {
+//            // Get type from repository
+//            type = getTypeById(typeDTO.getId());
+//            // Check if the book is already in this type
+//            if (type.getBooksIDStrings().contains(bookDTO.getId())) {
+//                throw new NotFoundException("The specified book is already in the list!");
+//            }
+//            // Get book from service
+//            book = bookService.findById(bookDTO.getId());
+//            // Add the book to the type
+//            type.addBook(book);
+//            // Save the type to the repository
+//            return repository.save(type);
+//        } catch (Exception e) {
+//            String errorMessage = "An error occurred while adding the book to the type: " + e.getMessage();
+//            throw new RuntimeException(errorMessage);
+//        }
+//    }
 
 //    public boolean removeBookFromType(Type type, Book book){
 //        if(!type.getBooks().contains(book)){
