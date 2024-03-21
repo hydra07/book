@@ -31,7 +31,9 @@ public class EbookController {
         try {
             User user = jwtService.getUser(jwtService.validateRequestHeader(token));
             BookReader bookReader = bookReaderService.readBook(user.getId(), id);
-            bookReader.setBookmarks(dto.getBookmarks().stream().map(Bookmark::new).collect(Collectors.toList()));
+            if (dto.getBookmarks() != null){
+                bookReader.setBookmarks(dto.getBookmarks().stream().map(Bookmark::new).collect(Collectors.toList()));
+            }
             bookReader.setLastCurrentCfi(dto.getLastCurrentCfi());
             bookReaderService.updateBookReader(bookReader);
             ReaderResponseDTO res = new ReaderResponseDTO(bookReader);
