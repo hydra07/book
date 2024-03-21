@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 
 @Setter
 @Getter
-class BookShort {
+class BookSort {
     private Long id;
     private String title;
     private String Author;
@@ -23,7 +23,7 @@ class BookShort {
     private String status;
     private String imageUrl;
 
-    public BookShort(Book book){
+    public BookSort(Book book){
         this.id = book.getId();
         this.title = book.getTitle();
         this.Author = book.getAuthor().getName();
@@ -43,7 +43,7 @@ public class TypeResponseDTO {
     private Long id;
     private String name;
     private String description;
-    private Set<BookShort> books = new HashSet<>();
+    private Set<BookSort> books = new HashSet<>();
 
     public TypeResponseDTO(Type type){
         this.id = type.getId();
@@ -51,7 +51,7 @@ public class TypeResponseDTO {
         this.description = type.getDescription();
         this.books = type.getBooks()
                 .stream()
-                .map(BookShort::new)
+                .map(BookSort::new)
                 .collect(Collectors.toSet());
     }
 }
