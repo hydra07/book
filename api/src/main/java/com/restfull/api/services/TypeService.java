@@ -63,10 +63,12 @@ public class TypeService {
         return repository.findByBooksId(id);
     }
 
+
     public Set<Book> getBookByType(TypeRequestDTO typeDTO) {
         Type type = getTypeById(typeDTO.getId());
         return type.getBooks();
     }
+
 
 //    public boolean removeBookFromType(Type type, Book book){
 //        if(!type.getBooks().contains(book)){
