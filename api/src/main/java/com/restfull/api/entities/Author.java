@@ -1,11 +1,9 @@
 package com.restfull.api.entities;
 
-
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -14,11 +12,9 @@ import java.util.Set;
 @Setter
 public class Author {
     @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator =
-            "gen_authors_id")
-    @SequenceGenerator(name = "gen_authors_id", sequenceName = "seq_authors_id",
-            allocationSize = 1)
+    // @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "gen_authors_id")
+    @SequenceGenerator(name = "gen_authors_id", sequenceName = "seq_authors_id", allocationSize = 1)
     private Long id;
 
     @Column(nullable = false, length = 250, columnDefinition = "NVARCHAR(250)")

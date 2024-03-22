@@ -75,12 +75,30 @@ public class Book {
         return this.types.stream().map(Type::getName).collect(Collectors.toSet());
     }
 
+    public Set<Long> getTypesIDString() {
+        return this.types.stream().map(Type::getId).collect(Collectors.toSet());
+    }
+
     public void setTypes(Set<Type> types) {
         if (types == null || types.isEmpty()) {
             this.types.clear();
         } else {
             this.types = types;
         }
+    }
+    // Dang bi loi
+    // public void removeTypeFromList(Type type){
+    //     Set<Type> currentTypes = getTypes();
+    //     Set<Type> removeList = new HashSet<Type>();
+    //     removeList.add(type);
+    //     currentTypes.removeAll(removeList);
+    //     setTypes(currentTypes);
+    // }
+
+    public void addNewTypeToList(Type newType){
+        Set<Type> currentTypes = getTypes();
+        currentTypes.add(newType);
+        setTypes(currentTypes);
     }
 
     // ----------------FollowedUsers----------------

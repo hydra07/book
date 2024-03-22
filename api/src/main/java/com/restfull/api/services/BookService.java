@@ -1,8 +1,9 @@
 package com.restfull.api.services;
 
-
 import com.restfull.api.dtos.book.BookRequestDTO;
+import com.restfull.api.dtos.book.TypeRequestDTO;
 import com.restfull.api.entities.Book;
+import com.restfull.api.entities.Type;
 import com.restfull.api.entities.User;
 import com.restfull.api.enums.Status;
 import com.restfull.api.repositories.BookRepository;
@@ -22,9 +23,6 @@ public class BookService {
 
     @Autowired
     private TypeService typeService;
-
-    @Autowired
-    private UserService userService;
 
     @Autowired
     private AuthorService authorService;
@@ -55,7 +53,6 @@ public class BookService {
         _book.setStatus(Status.valueOf(bookDto.getStatus()));
         _book.setImageUrl(bookDto.getImageUrl());
         return repository.save(_book);
-
     }
 
     public Book update(Book book) {
@@ -80,7 +77,6 @@ public class BookService {
         Book book = findById(id);
         book.incrementViews();
         repository.updateViews(id, book.getViews());
-
 //        update(book);
     }
 
@@ -97,6 +93,52 @@ public class BookService {
     public String isUserFollowedBook(User user, Book book) {
         return " " + user.getFollowedBooks().contains(book) + book.getFollowedBook().contains(user) + " ";
     }
+
+    
+    public Book addTypeToBook(BookRequestDTO bookDTO, TypeRequestDTO typeDTO) {
+        try {
+            // Get book from repository
+            Book book = findById(bookDTO.getId());
+            // Check if the book is already in this type
+            if (book.getTypesIDString().contains(typeDTO.getId())) {
+                throw new NotFoundException("The specified type is already in the list!");
+            }
+            // Get type from service
+            Type type = typeService.getTypeById(typeDTO.getId());
+            // Add the type list to the book
+            book.addNewTypeToList(type);
+            // Save the book to the repository
+            return repository.save(book);
+        } catch (Exception e) {
+            String errorMessage = "An error occurred while adding the book to the type: " + e.getMessage();
+            throw new RuntimeException(errorMessage);
+        }
+    }
+
+    // Dang bi loi
+    // public Book removeTypeFromBook (BookRequestDTO bookDTO, TypeRequestDTO typeDTO){
+    //     try {
+    //         // Get book from repository
+    //         Book book = findById(bookDTO.getId());
+    //         // Get type from service
+    //         Type type = typeService.getTypeById(typeDTO.getId());
+    //         // Check if the book is already in this type
+    //         if (!book.getTypesIDString().contains(type.getId())) {
+    //             throw new Exception("This book don't have that specified type!");
+    //         }
+    //         // Remove type from book
+    //         System.out.println(book.getTypes());
+    //         book.removeTypeFromList(type);
+    //         System.out.println(book.getTypes());
+    //         // book.setTypes(); 
+
+    //         // Save the book to the repository
+    //         return repository.save(book);
+    //     } catch (Exception e) {
+    //         String errorMessage = "An error occurred while remove the type from the book: " + e.getMessage();
+    //         throw new RuntimeException(errorMessage);
+    //     }
+    // }
 
 //    @Transactional
 //    public void createBook(BookDTO bookDTO){

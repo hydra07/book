@@ -1,7 +1,7 @@
 package com.restfull.api.controllers;
 
 import com.restfull.api.dtos.book.TypeResponseDTO;
-import com.restfull.api.dtos.book.BookRequestDTO;
+import com.restfull.api.dtos.book.BookResponseDTO;
 import com.restfull.api.dtos.book.TypeRequestDTO;
 import com.restfull.api.entities.Type;
 import com.restfull.api.services.TypeService;
@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
@@ -43,11 +44,14 @@ public class TypeController {
         }
     }
 
-    @PostMapping("/addBookToType")
-    public ResponseEntity<?> addBookToType(@RequestBody TypeRequestDTO type, @RequestBody BookRequestDTO book) {
+    @PostMapping("/getBookByType")
+    public ResponseEntity<?> getBookByType(@RequestBody TypeRequestDTO type) {
         try {
-            typeService.addBookToType(type, book);
-           return ResponseEntity.ok("Successfully added!");
+            List<BookResponseDTO> bookDTOs  = typeService.getBookByType(type).stream().map(BookResponseDTO::new).collect(Collectors.toList());
+            if(bookDTOs.isEmpty()){
+                throw new Exception("No books found for the given type! Try another type!");
+            }
+            return ResponseEntity.ok(bookDTOs);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

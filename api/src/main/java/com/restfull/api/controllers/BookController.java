@@ -1,5 +1,6 @@
 package com.restfull.api.controllers;
 
+import com.restfull.api.dtos.book.BookAndTypeRequestDTO;
 import com.restfull.api.dtos.book.BookRequestDTO;
 import com.restfull.api.dtos.book.BookResponseDTO;
 import com.restfull.api.services.BookService;
@@ -38,5 +39,25 @@ public class BookController {
         return ResponseEntity.ok(new BookResponseDTO(bookService.findById(id)));
     }
 
+    @PostMapping("/addTypeToBook")
+    public ResponseEntity<?> addTypeToBook(@RequestBody BookAndTypeRequestDTO request) {
+        try {
+            bookService.addTypeToBook(request.getBook(), request.getType());
+           return ResponseEntity.ok("Successfully added!");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    // Dang bi loi
+    // @PostMapping("/removeTypeFromBook")
+    // public ResponseEntity<?> removeTypeFromBook(@RequestBody BookAndTypeRequestDTO request) {
+    //     try {
+    //         bookService.removeTypeFromBook(request.getBook(), request.getType());
+    //        return ResponseEntity.ok("Successfully removed!");
+    //     } catch (Exception e) {
+    //         return ResponseEntity.badRequest().body(e.getMessage());
+    //     }
+    // }
 
 }
