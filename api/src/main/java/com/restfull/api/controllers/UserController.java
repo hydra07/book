@@ -57,7 +57,6 @@ public class UserController {
             user.setName(dto.getName());
             user.setAvatar(dto.getImage());
             user.setGender(dto.isGender());
-            System.out.println(dto.isGender() + " " + user.isGender());
             return ResponseEntity.ok(new UserResponseDTO(service.update(user)));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
