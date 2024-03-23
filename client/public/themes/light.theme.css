@@ -1,0 +1,16 @@
+body {
+  background-color: #fff;
+  color: #000;
+}
+
+a {
+  color: #000;
+  font-style: italic;
+}
+a:hover {
+  color: gray;
+  font-style: italic;
+}
+li {
+  list-style-type: none;
+}
