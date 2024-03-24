@@ -3,6 +3,7 @@ package com.restfull.api.controllers;
 import com.restfull.api.dtos.book.BookAndTypeRequestDTO;
 import com.restfull.api.dtos.book.BookRequestDTO;
 import com.restfull.api.dtos.book.BookResponseDTO;
+import com.restfull.api.dtos.book.TypeRequestDTO;
 import com.restfull.api.services.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -39,10 +40,10 @@ public class BookController {
         return ResponseEntity.ok(new BookResponseDTO(bookService.findById(id)));
     }
 
-    @PostMapping("/addTypeToBook")
-    public ResponseEntity<?> addTypeToBook(@RequestBody BookAndTypeRequestDTO request) {
+    @PostMapping("/{bookId}/addTypeToBook")
+    public ResponseEntity<?> addTypeToBook(@PathVariable("bookId") long bookId, @RequestBody TypeRequestDTO typeDTO) {
         try {
-            bookService.addTypeToBook(request.getBook(), request.getType());
+            bookService.addTypeToBook(bookId, typeDTO);
            return ResponseEntity.ok("Successfully added!");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());

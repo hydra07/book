@@ -95,10 +95,10 @@ public class BookService {
     }
 
     
-    public Book addTypeToBook(BookRequestDTO bookDTO, TypeRequestDTO typeDTO) {
+    public Book addTypeToBook(Long bookID, TypeRequestDTO typeDTO) {
         try {
             // Get book from repository
-            Book book = findById(bookDTO.getId());
+            Book book = findById(bookID);
             // Check if the book is already in this type
             if (book.getTypesIDString().contains(typeDTO.getId())) {
                 throw new NotFoundException("The specified type is already in the list!");
