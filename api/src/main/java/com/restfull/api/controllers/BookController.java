@@ -1,6 +1,5 @@
 package com.restfull.api.controllers;
 
-import com.restfull.api.dtos.book.BookAndTypeRequestDTO;
 import com.restfull.api.dtos.book.BookRequestDTO;
 import com.restfull.api.dtos.book.BookResponseDTO;
 import com.restfull.api.dtos.book.TypeRequestDTO;
