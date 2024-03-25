@@ -566,6 +566,24 @@
 						"url": "http://localhost:8080/type/getList"
 					},
 					"response": []
+				},
+				{
+					"name": "Add Type",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": "http://localhost:8080/type/add"
+					},
+					"response": []
+				},
+				{
+					"name": "Add Book To Type",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": "http://localhost:8080/type/addBookToType"
+					},
+					"response": []
 				}
 			]
 		},

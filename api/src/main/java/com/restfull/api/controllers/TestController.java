@@ -3,6 +3,7 @@ package com.restfull.api.controllers;
 import com.restfull.api.dtos.HeaderRequestDTO;
 import com.restfull.api.dtos.book.BookDTO;
 import com.restfull.api.dtos.book.TypeDTO;
+import com.restfull.api.dtos.book.TypeRequestDTO;
 import com.restfull.api.dtos.user.UserResponseDTO;
 import com.restfull.api.entities.Book;
 import com.restfull.api.entities.Type;
@@ -128,7 +129,7 @@ public class TestController {
 //    }
 
     @PostMapping("/token/addType")
-    public ResponseEntity<?> addType(@RequestBody TypeDTO typeDTO) {
+    public ResponseEntity<?> addType(@RequestBody TypeRequestDTO typeDTO) {
         try {
             typeService.createType(typeDTO);
             return ResponseEntity.ok("Type added!");

@@ -1,7 +1,5 @@
 package com.restfull.api.dtos.book;
 
-
-import com.restfull.api.entities.Book;
 import com.restfull.api.entities.Type;
 import lombok.AllArgsConstructor;
 import lombok.Data;

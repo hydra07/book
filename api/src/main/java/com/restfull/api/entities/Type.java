@@ -23,17 +23,17 @@ import lombok.Setter;
 // property = "id")
 public class Type {
     @Id
-     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator =
-     "gen_types_id")
-     @SequenceGenerator(name = "gen_types_id", sequenceName = "seq_types_id",
-     allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator =
+    "gen_types_id")
+    @SequenceGenerator(name = "gen_types_id", sequenceName = "seq_types_id",
+    allocationSize = 1)
 //    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(unique = true, columnDefinition = "NVARCHAR(250)")
     private String name;
 
-    private boolean license;
+    private boolean license; 
 
     @Column(columnDefinition = "NVARCHAR(250)")
     private String description;
@@ -65,11 +65,12 @@ public class Type {
         return this.books.stream().map(Book::getTitle).collect(Collectors.toSet());
     }
 
+    public Set<Long> getBooksIDStrings() {
+        return this.books.stream().map(Book::getId).collect(Collectors.toSet());
+    }
+    
     public void addBook(Book book) {
-        if (this.books.contains(book)) {
-        } else {
-            this.books.add(book);
-        }
+        this.books.add(book);
     }
 
     public void removeBook(Book book) {

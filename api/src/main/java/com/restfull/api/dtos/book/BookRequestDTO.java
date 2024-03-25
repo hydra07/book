@@ -5,7 +5,6 @@ import lombok.Setter;
 
 import java.util.*;
 
-
 @Getter
 @Setter
 public class BookRequestDTO {
@@ -20,4 +19,5 @@ public class BookRequestDTO {
     private String url;
     private String status;
     private String imageUrl;
+    
 }
