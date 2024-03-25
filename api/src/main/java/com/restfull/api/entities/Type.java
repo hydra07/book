@@ -23,8 +23,7 @@ import lombok.Setter;
 // property = "id")
 public class Type {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator =
-    "gen_types_id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "gen_types_id")
     @SequenceGenerator(name = "gen_types_id", sequenceName = "seq_types_id",
     allocationSize = 1)
 //    @GeneratedValue(strategy = GenerationType.IDENTITY)
