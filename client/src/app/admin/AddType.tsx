@@ -1,14 +1,15 @@
 "use client ";
 import Type from "@/types/type";
+import { Button, Input } from "@material-tailwind/react";
 import { useState } from "react";
 
 export default () => {
-  const initialTypesState: Type={
+  const initialTypesState: Type = {
     name: "",
     description: "",
     id: 1,
     books: [],
-  }
+  };
   const [types, setTypes] = useState<Type>(initialTypesState);
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -34,34 +35,42 @@ export default () => {
       <h1 className="text-2xl mb-4">Thêm Loại Sách</h1>
       <form
         onSubmit={handleSubmit}
-        className="bg-white text-white bg-opacity-10 p-6 rounded-lg shadow-md w-full"
+        className="bg-white text-white bg-opacity-10 p-6 rounded-lg shadow-md w-1/4"
       >
-        <div className="mb-4">
-          <label className="block mb-2">Type:</label>
-          <input
+        <div className="mb-4 ">
+          {/* <input
             className="border rounded-md p-2 w-full text-black"
             type="text"
             name="name"
             value={types.name}
             onChange={handleChange}
+          /> */}
+          <Input
+            color="white"
+            crossOrigin={Input}
+            variant="outlined"
+            label="Name types"
+            value={types.name}
+            onChange={handleChange}
           />
         </div>
         <div className="mb-4">
-          <label className="block mb-2">Mô tả:</label>
-          <input
-            className="border rounded-md p-2 w-full text-black"
-            type="text"
-            name="description"
+          <Input
+            color="white"
+            crossOrigin={Input}
+            variant="outlined"
+            label="Mô tả"
             value={types.description}
             onChange={handleChange}
           />
         </div>
-        <button
+        <Button
+          placeholder={true}
           className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
           type="submit"
         >
           Add
-        </button>
+        </Button>
       </form>
     </div>
   );

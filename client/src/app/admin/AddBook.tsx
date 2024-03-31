@@ -1,10 +1,12 @@
 "use client";
+import axios from "@/lib/axios";
 import Book from "@/server/models/book.model";
+import { Button, Input } from "@material-tailwind/react";
 import { useState } from "react";
 export default () => {
   // const res= await.post(`/book/add/${parram.id}`);
   const [book, setBook] = useState<Book>({
-    status: "unavailable",
+    status: "",
     url: "",
     imageUrl: "",
     reviews: 0,
@@ -18,10 +20,15 @@ export default () => {
     id: "",
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    console.log("Thêm sách:", book);
+try {
+  const res= await axios.post(`/book/add/`);
+  console.log("Thêm sách:", res.data);
+  
+} catch (error) {
+  console.error('Lỗi:', error);
+}
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -34,133 +41,158 @@ export default () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-black text-white">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-900">
       <h1 className="text-2xl mb-4">Thêm Sách</h1>
       <form
         onSubmit={handleSubmit}
-        className="bg-white bg-opacity-10 p-6 rounded-lg shadow-md w-full"
+        className="bg-gray-900 bg-opacity-10 p-6 rounded-lg shadow-md w-full"
       >
-        
-          <div className="w-full ">
-            <label className="block mb-2 ">Title:</label>
-            <input
-              className="border rounded-md p-2 w-full text-black"
-              type="text"
-              name="title"
-              value={book.title}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="w-full  ">
-            <label className="block mb-2 ">Author:</label>
-            <input
-              className="border rounded-md p-2 w-full text-black"
-              type="text"
-              name="author"
-              value={book.author}
-              onChange={handleChange}
-            />
-          </div>
-        
+        <div className="w-full mb-4 flex flex-wrap ">
+          <Input
+            className="h-14 mb-4"
+            size="lg"
+            color="white"
+            name="title"
+            type="text"
+            label="Title"
+            required
+            autoComplete="off"
+            value={book.title}
+            onChange={(event) => handleChange(event)}
+            crossOrigin={null}
+          />
+        </div>
+        <div className="w-full mb-4 flex flex-wrap ">
+          <Input
+            crossOrigin={null}
+            color="white"
+            type="text"
+            name="author"
+            value={book.author}
+            onChange={handleChange}
+            label="Author"
+            required
+          />
+        </div>
 
         <div className="mb-4 flex flex-wrap">
           <div className="w-full md:w-1/2 md:pr-2">
-            <label className="block mb-2 ">Types:</label>
-            <input
+            {/* <input
               className="border rounded-md p-2 w-full text-black"
               type="text"
               name="types"
               value={book.types}
               onChange={handleChange}
+            /> */}
+            <Input
+              crossOrigin={null}
+              color="white"
+              value={book.types}
+              onChange={handleChange}
+              label="Type"
+              name="types"
+              required
             />
           </div>
           <div className="w-full md:w-1/2 md:pl-2">
-            <label className="block mb-2 ">Status:</label>
-            <input
-              className="border rounded-md p-2 w-full text-black"
-              type="text"
-              name="status"
+            <Input
+              crossOrigin={null}
+              color="white"
               value={book.status}
               onChange={handleChange}
+              label="Status"
+              name="status"
+              required
             />
           </div>
         </div>
 
         <div className="mb-4 flex flex-wrap">
           <div className="w-full md:w-1/2 md:pr-2">
-            <label className="block mb-2 ">URL:</label>
-            <input
-              className="border rounded-md p-2 w-full text-black"
-              type="text"
-              name="url"
+            <Input
+              crossOrigin={null}
+              color="white"
               value={book.url}
               onChange={handleChange}
+              label="Url"
+              name="url"
+              required
             />
           </div>
           <div className="w-full md:w-1/2 md:pl-2">
-            <label className="block mb-2 ">Image URL:</label>
-            <input
-              className="border rounded-md p-2 w-full text-black"
-              type="text"
-              name="imageUrl"
+            <Input
+              crossOrigin={null}
+              color="white"
               value={book.imageUrl}
               onChange={handleChange}
+              label="Image"
+              type="file"
+              accept=".jpg,.jpeg,.png,image/*"
+              name="image"
+             
             />
           </div>
         </div>
 
         <div className="mb-4 flex flex-wrap">
           <div className="w-full md:w-1/2 md:pr-2">
-            <label className="block mb-2 ">Reviews:</label>
-            <input
-              className="border rounded-md p-2 w-full text-black"
-              type="number"
-              name="reviews"
+            <Input
+              crossOrigin={null}
+              color="white"
               value={book.reviews}
               onChange={handleChange}
+              label="Review"
+              name="reviews"
+              required
             />
           </div>
           <div className="w-full md:w-1/2 md:pl-2">
-            <label className="block mb-2 ">Price:</label>
-            <input
-              className="border rounded-md p-2 w-full text-black"
-              type="number"
-              name="price"
+            <Input
+              crossOrigin={null}
+              color="white"
               value={book.price}
               onChange={handleChange}
+              label="Price"
+              type="number"
+              required
+              name="price"
             />
           </div>
         </div>
 
         <div className="mb-4 flex flex-wrap">
           <div className="w-full md:w-1/2 md:pr-2">
-            <label className="block mb-2 ">Last Updated At:</label>
-            <input
-              className="border rounded-md p-2 w-full text-black"
-              type="text"
-              name="lastUpdateAt"
-              value={book.lastUpdateAt}
+            <Input
+              crossOrigin={null}
+              color="white"
+              value={book.createdAt}
               onChange={handleChange}
+              label="CreateDate"
+              type="date"
+              name="createdAt"
             />
           </div>
           <div className="w-full md:w-1/2 md:pl-2">
-            <label className="block mb-2 ">Created At:</label>
-            <input
-              className="border rounded-md p-2 w-full text-black"
-              type="text"
-              name="createdAt"
-              value={book.createdAt}
+            <Input
+              crossOrigin={null}
+              color="white"
+              value={book.lastUpdateAt}
               onChange={handleChange}
+              label="LastDate"
+              type="date"
+              name="lastUpdateAt"
             />
           </div>
         </div>
 
-        <button
+        <Button
+        onSubmit={handleSubmit}
+          placeholder={true}
           className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
           type="submit"
         >
           Thêm Sách
-        </button>
+        </Button>
       </form>
     </div>
   );
