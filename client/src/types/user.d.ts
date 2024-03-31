@@ -6,6 +6,7 @@ type User = {
   phone: string | null;
   image: string;
   gender: boolean;
+  accessToken: string;
   // role: any;
 };
 

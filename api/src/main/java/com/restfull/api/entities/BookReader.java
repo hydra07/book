@@ -27,6 +27,19 @@ public class BookReader {
 
     private Date lastAccess;
 
+
+
+    //Page
+    @Column(columnDefinition = "NVARCHAR(1000)")
+    private String chapterName;
+    @Column(nullable = true)
+    private Integer currentPage = 0;
+    @Column(nullable = true)
+    private Integer totalPage = 0;
+    private String startCfi;
+    private String endCfi;
+    private String base;
+
     private String lastCurrentCfi;
 
     private int accessCount = 0;

@@ -34,6 +34,7 @@ public class SecurityConfig {
             "/auth/**",
             "/book/**",
             "/type/**",
+            "/author/**",
     };
 
     @Autowired
