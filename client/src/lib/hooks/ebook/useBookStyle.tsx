@@ -1,5 +1,8 @@
 import { RootState } from '@/lib/store';
-import { updateCurrentTheme } from '@/lib/store/ebook/ebookSlice';
+import {
+  updateBookOption,
+  updateCurrentTheme,
+} from '@/lib/store/ebook/ebookSlice';
 import {
   BookOption,
   BookStyle,
@@ -16,12 +19,13 @@ type Props = {
 type useBookStyle = {
   theme: string;
   // setTheme: (theme: string) => void;
+  isDarkMode: boolean;
   bookStyle: BookStyle;
-  setBookStyle: (style: BookStyle) => void;
+  // setBookStyle: (style: BookStyle) => void;
   bookOption: BookOption;
-  setBookOption: (option: BookOption) => void;
+  // setBookOption: (option: BookOption) => void;
   viewerLayout: ViewerLayout;
-  setViewerLayout: (layout: ViewerLayout) => void;
+  // setViewerLayout: (layout: ViewerLayout) => void;
   styleItem: () => JSX.Element;
 };
 /**
@@ -31,8 +35,19 @@ type useBookStyle = {
  */
 export default function useBookStyle({ viewerRef }: Props): useBookStyle {
   const dispatch = useDispatch();
-  const currentTheme = useSelector((state: RootState) => state.ebook.theme);
-  const [theme, setTheme] = useState<string>('/themes/dark.theme.css');
+  const theme = useSelector<RootState, string>(
+    (state: RootState) => state.ebook.theme,
+  );
+  const bookOption = useSelector<RootState, BookOption>(
+    (state: RootState) => state.ebook.bookOption,
+  );
+  const bookStyle = useSelector<RootState, BookStyle>(
+    (state: RootState) => state.ebook.bookStyle,
+  );
+  const viewerLayout = useSelector<RootState, ViewerLayout>(
+    (state: RootState) => state.ebook.viewerLayout,
+  );
+  // const [theme, setTheme] = useState<string>('/themes/dark.theme.css');
   const [isDarkMode, setIsDarkMode] = useState<boolean>(true);
   const [isScrollHorizontal, setIsScrollHorizontal] = useState<boolean>(true);
   const [viewType, setViewType] = useState<ViewType>({
@@ -40,46 +55,11 @@ export default function useBookStyle({ viewerRef }: Props): useBookStyle {
     spread: true,
   });
 
-  const [bookStyle, setBookStyle] = useState<BookStyle>({
-    fontFamily: 'Origin',
-    fontSize: 22,
-    lineHeight: 1.4,
-    marginHorizontal: 13,
-    marginVertical: 7,
-  });
-  const [bookOption, setBookOption] = useState<BookOption>({
-    flow: 'paginated',
-    resizeOnOrientationChange: true,
-    spread: 'auto',
-  });
-  const [viewerLayout, setViewerLayout] = useState<ViewerLayout>({
-    MIN_VIEWER_WIDTH: 600,
-    MIN_VIEWER_HEIGHT: 300,
-    VIEWER_HEADER_HEIGHT: 40,
-    VIEWER_FOOTER_HEIGHT: 40,
-    VIEWER_SIDEMENU_WIDTH: 0,
-  });
-
-  // const onThemeChange = useCallback(() => {
-  //   setTheme((prev) =>
-  //     prev === '/themes/dark.theme.css'
-  //       ? '/themes/light.theme.css'
-  //       : '/themes/dark.theme.css',
-  //   );
-  //   dispatch(updateCurrentTheme(theme));
-  //   console.log('theme', currentTheme);
-  // }, [viewerRef]);
-  // const onBookOptionChange = useCallback(() => {
-  //   setBookOption((prev) => {
-  //     return { ...prev, flow: 'scrolled-doc' };
-  //   });
-  //   console.log(bookOption);
-  // }, [bookOption, viewerRef]);
   const onThemeChange = useCallback(
     (type: 'dark' | 'light') => {
-      setTheme(`/themes/${type}.theme.css`);
+      // setTheme(`/themes/${type}.theme.css`);
+      dispatch(updateCurrentTheme(`/themes/${type}.theme.css`));
       setIsDarkMode(type === 'dark');
-      dispatch(updateCurrentTheme(theme));
     },
     [theme, dispatch, viewerRef],
   );
@@ -89,11 +69,13 @@ export default function useBookStyle({ viewerRef }: Props): useBookStyle {
       if (type === 'Horizontal') {
         setIsScrollHorizontal(true);
         setViewType({ ...viewType, active: true });
-        setBookOption({ ...bookOption, flow: 'paginated' });
+        // setBookOption({ ...bookOption, flow: 'paginated' });
+        dispatch(updateBookOption({ ...bookOption, flow: 'paginated' }));
       } else {
         setIsScrollHorizontal(false);
         setViewType({ ...viewType, active: false });
-        setBookOption({ ...bookOption, flow: 'scrolled-doc' });
+        // setBookOption({ ...bookOption, flow: 'scrolled-doc' });
+        dispatch(updateBookOption({ ...bookOption, flow: 'scrolled-doc' }));
       }
     },
     [bookOption, viewType, isScrollHorizontal, viewerRef],
@@ -103,20 +85,22 @@ export default function useBookStyle({ viewerRef }: Props): useBookStyle {
     (isSpread: boolean) => {
       if (isSpread) {
         setViewType({ ...viewType, spread: true });
-        setBookOption({ ...bookOption, spread: 'auto' });
+        // setBookOption({ ...bookOption, spread: 'auto' });
+        dispatch(updateBookOption({ ...bookOption, spread: 'auto' }));
       } else {
         setViewType({ ...viewType, spread: false });
-        setBookOption({ ...bookOption, spread: 'none' });
+        // setBookOption({ ...bookOption, spread: 'none' });
+        dispatch(updateBookOption({ ...bookOption, spread: 'none' }));
       }
     },
     [bookOption, viewType, viewerRef],
   );
   const styleItem = useCallback(() => {
     return (
-      <div className="text-black p-3">
-        Style Setting
-        <div className="flex flex-row space-x-4">
-          <span>Sáng</span>
+      <div className="text-gray-300 p-5 bg-gray-900 rounded shadow-lg">
+        <h2 className="font-bold text-2xl mb-4 text-white">Style Setting</h2>
+        <div className="flex items-center space-x-4 mb-4">
+          <span className="font-semibold">Sáng</span>
           <Switch
             color="purple"
             className=""
@@ -126,10 +110,10 @@ export default function useBookStyle({ viewerRef }: Props): useBookStyle {
               onThemeChange(isDarkMode ? 'light' : 'dark');
             }}
           />
-          <span>Tối</span>
+          <span className="font-semibold">Tối</span>
         </div>
-        <div className="flex flex-row space-x-4">
-          <span>Dọc</span>
+        <div className="flex items-center space-x-4 mb-4">
+          <span className="font-semibold">Dọc</span>
           <Switch
             color="purple"
             className=""
@@ -139,10 +123,10 @@ export default function useBookStyle({ viewerRef }: Props): useBookStyle {
               onDirection(isScrollHorizontal ? 'Vertical' : 'Horizontal');
             }}
           />
-          <span>Ngang</span>
+          <span className="font-semibold">Ngang</span>
         </div>
-        <div className="flex flex-row space-x-4">
-          <span>Không chia trang</span>
+        <div className="flex items-center space-x-4">
+          <span className="font-semibold">Không chia trang</span>
           <Switch
             color="purple"
             className=""
@@ -153,7 +137,7 @@ export default function useBookStyle({ viewerRef }: Props): useBookStyle {
               onViewType(!viewType.spread);
             }}
           />
-          <span>Chia Trang</span>
+          <span className="font-semibold">Chia Trang</span>
         </div>
       </div>
     );
@@ -163,12 +147,13 @@ export default function useBookStyle({ viewerRef }: Props): useBookStyle {
     theme,
     // setTheme,
     // onThemeChange,
+    isDarkMode,
     bookStyle,
-    setBookStyle,
+    // setBookStyle,
     bookOption,
-    setBookOption,
+    // setBookOption,
     viewerLayout,
-    setViewerLayout,
+    // setViewerLayout,
     styleItem,
   };
 }

@@ -83,6 +83,39 @@ public class Book {
         }
     }
 
+    public Set<Long> getTypesIDString() {
+        return this.types.stream().map(Type::getId).collect(Collectors.toSet());
+    }
+
+    // public void removeTypeFromList(Type typeToRemove) {
+    //     this.types.remove(typeToRemove);
+    // }
+    
+    // public void removeTypeById(Long typeIdToRemove) {
+    //     Type typeToRemove = this.types.stream()
+    //                                   .filter(type -> type.getId().equals(typeIdToRemove))
+    //                                   .findFirst()
+    //                                   .orElse(null);
+    //     if (typeToRemove != null) {
+    //         this.types.remove(typeToRemove);
+    //     }
+    // }
+
+    // Dang bi loi
+    // public void removeTypeFromList(Type type){
+    //     Set<Type> currentTypes = getTypes();
+    //     Set<Type> removeList = new HashSet<Type>();
+    //     removeList.add(type);
+    //     currentTypes.removeAll(removeList);
+    //     setTypes(currentTypes);
+    // }
+
+    public void addNewTypeToList(Type newType){
+        Set<Type> currentTypes = getTypes();
+        currentTypes.add(newType);
+        setTypes(currentTypes);
+    }
+
     // ----------------FollowedUsers----------------
     public Set<String> getFollowedUsersString() {
         return this.followedBook.stream().map(User::getEmail).collect(Collectors.toSet());

@@ -28,6 +28,17 @@ class BookmarkResponseDTO {
     }
 }
 
+@Getter
+@Setter
+class CurrentPage {
+    private String chapterName;
+    private Integer currentPage;
+    private Integer totalPage;
+    private String startCfi;
+    private String endCfi;
+    private String base;
+}
+
 
 @Getter
 @Setter
@@ -38,6 +49,7 @@ public class ReaderResponseDTO {
     private String lastCurrentCfi;
     private Date lastAccess;
     private int accessCount;
+    private CurrentPage currentPage;
     private List<BookmarkResponseDTO> bookmarks;
 
 
@@ -56,5 +68,14 @@ public class ReaderResponseDTO {
         this.lastCurrentCfi = bookReader.getLastCurrentCfi();
         this.lastAccess = bookReader.getLastAccess();
         this.bookmarks = bookReader.getBookmarks().stream().map(BookmarkResponseDTO::new).toList();
+        // CurrentPage
+        CurrentPage currentPage = new CurrentPage();
+        currentPage.setChapterName(bookReader.getChapterName());
+        currentPage.setCurrentPage(bookReader.getCurrentPage());
+        currentPage.setTotalPage(bookReader.getTotalPage());
+        currentPage.setStartCfi(bookReader.getStartCfi());
+        currentPage.setEndCfi(bookReader.getEndCfi());
+        currentPage.setBase(bookReader.getBase());
+        this.currentPage = currentPage;
     }
 }

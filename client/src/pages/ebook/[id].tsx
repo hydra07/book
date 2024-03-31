@@ -1,4 +1,5 @@
 import EbookViewer from '@/app/(components)/EbookViewer';
+import SessionWrapper from '@/app/(components)/SessionWrapper';
 import '@/app/globals.css';
 import axios from '@/lib/axios';
 import store from '@/lib/store';
@@ -22,20 +23,22 @@ export const getStaticPaths = (async () => {
 
 export const getStaticProps = (async (context) => {
   const res = await axios.post(`/book/find/${context.params?.id}`);
-  console.log(context.params?.id);
+  // console.log(context.params?.id);
   const book = (await res.data) as Book;
   return { props: { book } };
 }) satisfies GetStaticProps;
 
 export default ({ book }: { book: Book }) => {
-  console.log(book);
+  // console.log(book);
   if (!book) {
     return <div>Book not found!</div>;
   } else {
     return (
-      <Provider store={store}>
-        <EbookViewer book={book} />
-      </Provider>
+      <SessionWrapper>
+        <Provider store={store}>
+          <EbookViewer book={book} />
+        </Provider>
+      </SessionWrapper>
     );
   }
 };

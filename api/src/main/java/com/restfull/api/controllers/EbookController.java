@@ -26,15 +26,35 @@ public class EbookController {
     @Autowired
     private BookReaderService bookReaderService;
 
+
+    @GetMapping("/fetch/{id}")
+    public ResponseEntity<?> fetchBook(@RequestHeader("Authorization") String token, @PathVariable Long id) {
+        try {
+            User user = jwtService.getUser(jwtService.validateRequestHeader(token));
+            BookReader bookReader = bookReaderService.readBook(user.getId(), id);
+            ReaderResponseDTO res = new ReaderResponseDTO(bookReader);
+            return ResponseEntity.ok(res);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     @PostMapping("/read/{id}")
     public ResponseEntity<?> readBook(@RequestHeader("Authorization") String token, @PathVariable Long id, @RequestBody ReaderRequestDTO dto) {
         try {
             User user = jwtService.getUser(jwtService.validateRequestHeader(token));
             BookReader bookReader = bookReaderService.readBook(user.getId(), id);
+            System.out.println(dto.toString());
             if (dto.getBookmarks() != null){
                 bookReader.setBookmarks(dto.getBookmarks().stream().map(Bookmark::new).collect(Collectors.toList()));
             }
-            bookReader.setLastCurrentCfi(dto.getLastCurrentCfi());
+//            bookReader.setLastCurrentCfi(dto.getLastCurrentCfi());
+            bookReader.setChapterName(dto.getChapterName());
+            bookReader.setCurrentPage(dto.getCurrentPage());
+            bookReader.setTotalPage(dto.getTotalPage());
+            bookReader.setStartCfi(dto.getStartCfi());
+            bookReader.setEndCfi(dto.getEndCfi());
+            bookReader.setBase(dto.getBase());
             bookReaderService.updateBookReader(bookReader);
             ReaderResponseDTO res = new ReaderResponseDTO(bookReader);
             return ResponseEntity.ok(res);
