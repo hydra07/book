@@ -65,4 +65,13 @@ public class TypeController {
         }
     }
 
+    @PostMapping("/new")
+    public ResponseEntity<?> newType(@RequestBody TypeRequestDTO dto) {
+        try {
+            Type type = typeService.createType(dto);
+            return ResponseEntity.ok(new TypeResponseDTO(type));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 }

@@ -90,7 +90,7 @@ public class Book {
     // public void removeTypeFromList(Type typeToRemove) {
     //     this.types.remove(typeToRemove);
     // }
-    
+
     // public void removeTypeById(Long typeIdToRemove) {
     //     Type typeToRemove = this.types.stream()
     //                                   .filter(type -> type.getId().equals(typeIdToRemove))
@@ -110,7 +110,7 @@ public class Book {
     //     setTypes(currentTypes);
     // }
 
-    public void addNewTypeToList(Type newType){
+    public void addNewTypeToList(Type newType) {
         Set<Type> currentTypes = getTypes();
         currentTypes.add(newType);
         setTypes(currentTypes);
