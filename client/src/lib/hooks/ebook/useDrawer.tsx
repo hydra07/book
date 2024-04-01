@@ -6,17 +6,20 @@ export default function useDrawer() {
     useState<boolean>(false);
   const [isSecondRightDrawerOpen, setSecondRightDrawerOpen] =
     useState<boolean>(false);
+  const [isThirdRightDrawerOpen, setThirdRightDrawerOpen] =
+    useState<boolean>(false);
 
   const toggleLeftDrawer = () => {
     setIsLeftDrawer((prev) => !prev);
   };
-  // const toggleRightDrawer = () => {
-  //   setIsRightDrawer((prev) => !prev);
-  // };
+
   const toggleFirstRightDrawer = () => {
     setFirstRightDrawerOpen(!isFirstRightDrawerOpen);
     if (isSecondRightDrawerOpen) {
       setSecondRightDrawerOpen(false);
+    }
+    if (isThirdRightDrawerOpen) {
+      setThirdRightDrawerOpen(false);
     }
   };
 
@@ -25,13 +28,32 @@ export default function useDrawer() {
     if (isFirstRightDrawerOpen) {
       setFirstRightDrawerOpen(false);
     }
+    if (isThirdRightDrawerOpen) {
+      setThirdRightDrawerOpen(false);
+    }
   };
+
+  const toggleThirdRightDrawer = () => {
+    setThirdRightDrawerOpen(!isThirdRightDrawerOpen);
+    if (isFirstRightDrawerOpen) {
+      setFirstRightDrawerOpen(false);
+    }
+    if (isSecondRightDrawerOpen) {
+      setSecondRightDrawerOpen(false);
+    }
+  };
+
   return {
     isLeftDrawer,
     isFirstRightDrawerOpen,
     isSecondRightDrawerOpen,
+    isThirdRightDrawerOpen,
+    setFirstRightDrawerOpen,
+    setSecondRightDrawerOpen,
+    setThirdRightDrawerOpen,
     toggleLeftDrawer,
     toggleFirstRightDrawer,
     toggleSecondRightDrawer,
+    toggleThirdRightDrawer,
   };
 }

@@ -1,30 +1,39 @@
-import { AppDispatch, RootState } from '@/lib/store';
+import { AppDispatch } from '@/lib/store';
 import {
+  movePageAction,
   updateBook,
   updateCurrentPage,
   updateToc,
 } from '@/lib/store/ebook/ebookSlice';
+import Book from '@/types/book';
 import { BookType, Page, Toc, ViewerRef } from '@/types/ebook';
 import { RefObject, useCallback } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import useUser from '../useUser';
+
 type Props = {
+  isLoading: boolean;
   viewerRef: RefObject<ViewerRef> | any;
+  book: Book;
 };
 type useBookStyle = {
-  currentLocation: any;
+  // currentLocation: any;
   onPageMove: (type: 'prev' | 'next') => void;
   onPageChange: (page: Page) => void;
   onBookChangeInfor: (book: BookType) => void;
   onTocChange: (toc: Toc[]) => void;
   onLocationChange: (loc: string) => void;
+  // initialLocation: () => void;
   // onAddBookmark: () => void;
   // onRemoveBookmark: () => void;
 };
-export default function useBookController({ viewerRef }: Props): useBookStyle {
-  const dispatch: AppDispatch = useDispatch();
-  const currentLocation = useSelector(
-    (state: RootState) => state.ebook.currentLocation,
-  );
+export default function useBookController({
+  viewerRef,
+  book,
+  isLoading,
+}: Props): useBookStyle {
+  const dispatch = useDispatch<AppDispatch>();
+  const { user, status } = useUser();
   // const bookmarks = useSelector((state: RootState) => state.ebook.bookmarks);
 
   // Dùng để di chuyển giữa các trang
@@ -40,13 +49,16 @@ export default function useBookController({ viewerRef }: Props): useBookStyle {
 
   // Dùng để cập nhật sau khi chuyển trang
   const onPageChange = useCallback(
-    async (page: Page) => {
+    (page: Page) => {
+      if ('epubcfi(/6/2!/14/1:0)' === page.startCfi) return;
       dispatch(updateCurrentPage(page));
-      // const token = `eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhYmN4eXpraG9uZ0BnbWFpbC5jb20iLCJleHAiOjE3MTEwODEwMTN9.0DjJf1T_yrKiyP8MCJBJeidJpX0QA_0oDiV7sB0CZjiUED56V_3BeS5-9J31g6SL4my6JHGPZ-nN9wPukUys9A`;
-      // await dispatch(movePageAction(token));
+      const token = user?.accessToken;
+      if (!token) return;
+      dispatch(movePageAction({ token, id: book.id }));
     },
-    [viewerRef, onPageMove],
+    [viewerRef, onPageMove, user, isLoading],
   );
+
   const onBookChangeInfor = useCallback(
     (book: BookType) => {
       dispatch(updateBook(book));
@@ -75,13 +87,11 @@ export default function useBookController({ viewerRef }: Props): useBookStyle {
   );
 
   return {
-    currentLocation,
+    // currentLocation,
     onPageMove,
     onPageChange,
     onBookChangeInfor,
     onTocChange,
     onLocationChange,
-    // onAddBookmark,
-    // onRemoveBookmark,
   };
 }

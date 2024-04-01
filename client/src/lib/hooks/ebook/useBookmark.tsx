@@ -1,6 +1,6 @@
 import { RootState } from '@/lib/store';
 import { updateBookmark } from '@/lib/store/ebook/ebookSlice';
-import { BookmarkItem } from '@/types/ebook';
+import { BookmarkItem, Bookmarks } from '@/types/ebook';
 import { isCfiInRange, timeFormatter } from '@/utils/epub.utils';
 import { useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -30,7 +30,9 @@ export default function useBookmark({
   onTonggle,
 }: Props): useBookmark {
   const dispatch = useDispatch();
-  const bookmarks = useSelector((state: RootState) => state.ebook.bookmarks);
+  const bookmarks = useSelector<RootState, Bookmarks>(
+    (state: RootState) => state.ebook.bookmarks,
+  );
   const currentLocation = useSelector(
     (state: RootState) => state.ebook.currentLocation,
   );
@@ -41,9 +43,12 @@ export default function useBookmark({
         key: Date.now(),
         name: 'Bookmark',
         cfi,
-        time: timeFormatter(new Date()),
+        date: timeFormatter(new Date()),
+        // date: new Date().toISOString(),
       };
       console.log('added bookmark', bookmark);
+      // bookmarks.push(bookmark);
+      // dispatch(updateBookmark(bookmarks));
       dispatch(updateBookmark([...bookmarks, bookmark]));
     },
     [bookmarks, dispatch],
@@ -72,13 +77,14 @@ export default function useBookmark({
     if (currentLocation.startCfi === '') return;
     addBookmark(currentLocation.startCfi);
   }, [currentLocation, bookmarks, addBookmark]);
+
   const onRemoveBookmark = useCallback(() => {
     removeBookmark(currentLocation.startCfi);
   }, [currentLocation, bookmarks, removeBookmark]);
 
   const isBookmarkAdded = useMemo(
     () =>
-      bookmarks.find((bookmark) =>
+      bookmarks?.find((bookmark) =>
         isCfiInRange(
           bookmark.cfi,
           currentLocation.startCfi,
@@ -90,26 +96,26 @@ export default function useBookmark({
 
   const bookmarkItem = useCallback(() => {
     return (
-      <div className="flex flex-col space-y-4">
-        <div className="text-black font-bold">
+      <div className="flex flex-col space-y-4 text-gray-300 bg-gray-900 p-5 rounded-lg">
+        <div className="font-bold text-white">
           <span>Bookmarks</span>
         </div>
         {bookmarks &&
           bookmarks.map((item) => (
             <div
-              className="w-full p-5 flex flex-row justify-between first-line:p-3 text-left bg-blue-gray-800 rounded-md shadow-white"
+              className="w-full p-4 flex flex-row justify-between items-center text-left bg-gray-800 rounded-md shadow-md"
               key={item.key}
             >
-              <button className="" onClick={() => goToBookmark(item)}>
-                <div className="text-white">
-                  <div>{item.name}</div>
-                  <div>{item.time}</div>
+              <button className="flex-grow" onClick={() => goToBookmark(item)}>
+                <div>
+                  <div className="text-gray-200">{item.name}</div>
+                  <div className="text-gray-400">{item.time}</div>
                 </div>
               </button>
               <button onClick={() => removeBookmark(item.cfi)}>
                 <img
                   src="/svg/close.svg"
-                  // style={{ color: 'black' }}
+                  className="text-gray-500"
                   height={22}
                   width={22}
                 />
@@ -122,7 +128,7 @@ export default function useBookmark({
 
   const bookmarkButton = useCallback(() => {
     return (
-      <div className="flex flex-row space-x-5 justify-end items-center pr-3 bg-red-700 ">
+      <div className="flex flex-row space-x-5 justify-end items-center pr-3">
         {!isBookmarkAdded ? (
           <button
             className="h-max items-center justify-between"
@@ -133,6 +139,7 @@ export default function useBookmark({
               alt="menu"
               width={22}
               height={22}
+              className="text-gray-300"
             />
           </button>
         ) : (
@@ -145,6 +152,7 @@ export default function useBookmark({
               alt="menu"
               width={22}
               height={22}
+              className="text-gray-300"
             />
           </button>
         )}
