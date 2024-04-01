@@ -20,7 +20,7 @@ public class GoogleRequestDTO {
     private String avatar;
     private String phone;
 
-    public GoogleRequestDTO(String name, String email, String avatarUrl, String phone){
+    public GoogleRequestDTO(String name, String email, String avatarUrl, String phone) {
         super();
         this.name = name;
         this.email = email;

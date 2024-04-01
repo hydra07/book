@@ -1,0 +1,600 @@
+{
+	"info": {
+		"_postman_id": "d94fc388-9a73-4e97-9278-72ed24128e91",
+		"name": "Spring",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "29640180"
+	},
+	"item": [
+		{
+			"name": "ADMIN",
+			"item": [
+				{
+					"name": "auth admin",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"anna@mail.com\",\r\n    \"password\":\"333\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/auth/authenticate"
+					},
+					"response": []
+				},
+				{
+					"name": "get all user",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "USER",
+			"item": [
+				{
+					"name": "authenticate",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"abc12@mail.com\",\r\n    \"password\": \"222\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/auth/authenticate"
+					},
+					"response": []
+				},
+				{
+					"name": "register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"ok check\",\r\n    \"email\": \"abc12@mail.com\",\r\n    \"password\": \"111\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/auth/register"
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Google",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Huy Khanh\", \r\n    \"email\": \"abcxyzkhong@gmail.com\",\r\n    \"phone\": null, \r\n    \"avatar\": \"https://lh3.googleusercontent.com/a/ACg8ocI4bZTZrwji5QDybOlNqoAbMkDjImZ76arY2WhSSoCVqbM=s96-c\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/auth/google"
+					},
+					"response": []
+				},
+				{
+					"name": "Get User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhYmN4eXpraG9uZ0BnbWFpbC5jb20iLCJleHAiOjE3MDY5NDYwOTB9.NSX-6u5DL-1VH4gzXwPkijww-7stiY5n8OZeYJjeJ1b5rIeP0csO3TnVuZ5eFVRFFIlhjO-EPPAZfKSGEOeQ8w"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/user/getUser"
+					},
+					"response": []
+				},
+				{
+					"name": "Follow Book",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhYmN4eXpraG9uZ0BnbWFpbC5jb20iLCJleHAiOjE3MDY4NjY0NjR9.lX8SSze6eukfvZpT9JfxV04fmY6oW2oauUOXFwblKaRUzJHvPX75ZZzXypc3iCbVk_MpaHJfzqRgERHSnP8Kpg"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"url": "http://localhost:8080/user/followBook/4"
+					},
+					"response": []
+				},
+				{
+					"name": "Unfollow Book",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhYmN4eXpraG9uZ0BnbWFpbC5jb20iLCJleHAiOjE3MDY4NjY0NjR9.lX8SSze6eukfvZpT9JfxV04fmY6oW2oauUOXFwblKaRUzJHvPX75ZZzXypc3iCbVk_MpaHJfzqRgERHSnP8Kpg"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"url": "http://localhost:8080/user/unfollowBook/4"
+					},
+					"response": []
+				},
+				{
+					"name": "Profile",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhYmMxMkBtYWlsLmNvbSIsImV4cCI6MTcwODEwNTI2MH0.HK3pb7eSolviydqE0mgVkLDLpEDKRYhf2vMFV3NFL8ciohiDGVxQT4-a4uoFgbY9aupJrQCsRIr2fpJXuNR8nQ"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\":2,\r\n    \"name\":\"da doi ten lan 3\",\r\n    \"email\": \"abc12@mail.com\",\r\n    \"password\":null,\r\n    \"image\": null,\r\n    \"phone\": \"0941320551\",\r\n    \"gender\":1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/user/profile"
+					},
+					"response": []
+				},
+				{
+					"name": "Reset Password",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhYmMxMkBtYWlsLmNvbSIsImV4cCI6MTcwNjk0NzM5MX0.pvFwy1Gcl-tAkNPccV-1Kzh0pQrb5kVoC92PLk9IiKgB7A_nUEXVxFqqRmktCuOtwN8QQBAlTGJYwP8F4cDRyQ"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\":2,\r\n    \"email\": \"abc12@mail.com\",\r\n    \"password\":\"111\",\r\n    \"newPassword\":\"222\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/user/resetPassword"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Follower",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhYmMxMkBtYWlsLmNvbSIsImV4cCI6MTcwNjk0NzM5MX0.pvFwy1Gcl-tAkNPccV-1Kzh0pQrb5kVoC92PLk9IiKgB7A_nUEXVxFqqRmktCuOtwN8QQBAlTGJYwP8F4cDRyQ"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/user/getFollower"
+					},
+					"response": []
+				},
+				{
+					"name": "GetFollowing",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhYmN4eXpraG9uZ0BnbWFpbC5jb20iLCJleHAiOjE3MDY5NTA3MDR9.qAzhJVymtm1jswDzXhLgxHBCY7ipSkxupwQYLFHff0CXocZY2e7s_MCb16qU9MidRelPYnqpFR9Z7Gwkl2rgNw"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/user/getFollowing"
+					},
+					"response": []
+				},
+				{
+					"name": "Is Follow User",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Follow User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhYmN4eXpraG9uZ0BnbWFpbC5jb20iLCJleHAiOjE3MDY5NTA3MDR9.qAzhJVymtm1jswDzXhLgxHBCY7ipSkxupwQYLFHff0CXocZY2e7s_MCb16qU9MidRelPYnqpFR9Z7Gwkl2rgNw"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"url": "http://localhost:8080/user/follow/5"
+					},
+					"response": []
+				},
+				{
+					"name": "Unfollow User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhYmN4eXpraG9uZ0BnbWFpbC5jb20iLCJleHAiOjE3MDY5NTA3MDR9.qAzhJVymtm1jswDzXhLgxHBCY7ipSkxupwQYLFHff0CXocZY2e7s_MCb16qU9MidRelPYnqpFR9Z7Gwkl2rgNw"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"url": "http://localhost:8080/user/unfollow/5"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "TEST",
+			"item": [
+				{
+					"name": "Book",
+					"item": [
+						{
+							"name": "Add Book",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"title\": \"Cẩm nang xử lý cực phẩm\",\r\n  \"description\": \"Tô Phức Đồng sống lại, chuyện cô làm đầu tiên chính là treo hết thảy nhà chồng cực phẩm lên tẩn cho một trận, tay không đánh cả chồng cũ.\",\r\n  \"images\": [\"https://307a0e78.vws.vegacdn.vn/view/v2/image/img.book/0/0/1/47140.jpg?v=1&w=480&h=700\"],\r\n  \"types\": [\"Type1\",\"Type2\",\"Type3\"],\r\n  \"status\": \"ONGOING\",\r\n  \"price\": 29.99,\r\n  \"rate\": [1, 2, 3, 4, 2],\r\n  \"createdAt\": \"2022-01-01T12:00:00\",\r\n  \"lastUpdateAt\": \"2022-01-02T15:30:00\",\r\n  \"url\": \"http://example.com\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://localhost:8080/test/token/addBook"
+							},
+							"response": []
+						},
+						{
+							"name": "Get all book",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var template = `",
+											"<style type=\"text/css\">",
+											"    .tftable {font-size:14px;color:#333333;width:100%;border-width: 1px;border-color: #87ceeb;border-collapse: collapse;}",
+											"    .tftable th {font-size:18px;background-color:#87ceeb;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;text-align:left;}",
+											"    .tftable tr {background-color:#ffffff;}",
+											"    .tftable td {font-size:14px;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;}",
+											"    .tftable tr:hover {background-color:#e0ffff;}",
+											"</style>",
+											"",
+											"<table class=\"tftable\" border=\"1\">",
+											"    <tr>",
+											"        <th>ID</th>",
+											"        <th>Title</th>",
+											"        <th>Description</th>",
+											"        <th>Status</th>",
+											"        <th>Price</th>",
+											"        <th>Created At</th>",
+											"        <th>Last Update At</th>",
+											"    </tr>",
+											"    ",
+											"    {{#each response}}",
+											"        <tr id=row_{{@key}}>",
+											"            <td>{{id}}</td>",
+											"            <td>{{title}}</td>",
+											"            <td>{{description}}</td>",
+											"            <td>{{status}}</td>",
+											"            <td>{{price}}</td>",
+											"            <td>{{createdAt}}</td>",
+											"            <td>{{lastUpdateAt}}</td>",
+											"        </tr>",
+											"    {{/each}}",
+											"</table>",
+											"`;",
+											"",
+											"function constructVisualizerPayload() {",
+											"    return {response: pm.response.json()}",
+											"}",
+											"",
+											"pm.visualizer.set(template, constructVisualizerPayload());"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "http://localhost:8080/test/token/getBook"
+							},
+							"response": []
+						},
+						{
+							"name": "Add type",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": "http://localhost:8080/test/token/addType"
+							},
+							"response": []
+						},
+						{
+							"name": "Get all Type",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "http://localhost:8080/test/token/addBook"
+							},
+							"response": []
+						},
+						{
+							"name": "User Follow book",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhYmMxMkBtYWlsLmNvbSIsImV4cCI6MTcwNjE0NjA1OX0.VZJqoeekpNZynlysFCIOBj9FkEsTFMSeorPFhICK5ElG7Be0xYL7m_hV1YZd-tVVJPZuP_z1T-RmAUq3VZlI4A"
+									}
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n        \"id\": 2,\r\n        \"title\": \"demobooooooooooooooooooooooooo\",\r\n        \"description\": \"Bookdemo Description\",\r\n        \"images\": [\r\n            \"image1.jpg\",\r\n            \"image2.jpg\",\r\n            \"image3.jpg\"\r\n        ],\r\n        \"types\": [\r\n            \"Type2\",\r\n            \"Type3\",\r\n            \"Type1\"\r\n        ],\r\n        \"status\": \"ONGOING\",\r\n        \"price\": 29.99,\r\n        \"followedUsers\": [],\r\n        \"rate\": [\r\n            1,\r\n            2,\r\n            3,\r\n            4\r\n        ],\r\n        \"createdAt\": \"2022-01-01T12:00:00.000+00:00\",\r\n        \"lastUpdateAt\": \"2022-01-02T15:30:00.000+00:00\",\r\n        \"url\": \"http://example.com\"\r\n    }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://localhost:8080/test/token/followBook"
+							},
+							"response": []
+						},
+						{
+							"name": "User UnFollow Book",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhYmN4eXpraG9uZ0BnbWFpbC5jb20iLCJleHAiOjE3MDYxMDg5NDR9.YDXCJ07KM84kA_hZoCEQlk-KbkPoeNLRkqNOHcZv_DjgUh8qQCBFsGn5LYnSdL6ITvnafKDx35S65vKl-_Wt5w"
+									}
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n        \"id\": 2,\r\n        \"title\": \"demobooooooooooooooooooooooooo\",\r\n        \"description\": \"Bookdemo Description\",\r\n        \"images\": [\r\n            \"image1.jpg\",\r\n            \"image2.jpg\",\r\n            \"image3.jpg\"\r\n        ],\r\n        \"types\": [\r\n            \"Type2\",\r\n            \"Type3\",\r\n            \"Type1\"\r\n        ],\r\n        \"status\": \"ONGOING\",\r\n        \"price\": 29.99,\r\n        \"followedUsers\": [],\r\n        \"rate\": [\r\n            1,\r\n            2,\r\n            3,\r\n            4\r\n        ],\r\n        \"createdAt\": \"2022-01-01T12:00:00.000+00:00\",\r\n        \"lastUpdateAt\": \"2022-01-02T15:30:00.000+00:00\",\r\n        \"url\": \"http://example.com\"\r\n    }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://localhost:8080/test/token/unFollowBook"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "claims",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbm5hQG1haWwuY29tIiwiZXhwIjoxNzA1MDI2Mjg5fQ.CEfdK1M6XmByoyj9bFUcMwxKPAwlW2OGtHGnsIIuLJe1r256IN59r9vatXc5r_dJyRbVGLZLqrj6G5yQ5RfzIg"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n \"token\": \"eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbm5hQG1haWwuY29tIiwiZXhwIjoxNzA1MDI2NDE2fQ.FGIFH_dfT4iLgBKkwiwAeFOcLvY_CsrNdT4YxvXxkf1d9tzyjcJ6lCCqPd_QRK-XwCQBz4MO5u5tuz7RT_2GKw\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/test/token/claims"
+					},
+					"response": []
+				},
+				{
+					"name": "User",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": ""
+					},
+					"response": []
+				},
+				{
+					"name": "EditProfile",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 24,\r\n    \"name\": \"Anna\",\r\n    \"email\": \"anna@mail.com\",\r\n    \"password\": null,\r\n    \"avatar\": \"asdasdasdas\",\r\n    \"phone\": \"0987654321\",\r\n    \"gender\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/test/token/profile"
+					},
+					"response": []
+				},
+				{
+					"name": "Add follower",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Un follower",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Get follower",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Book",
+			"item": [
+				{
+					"name": "Get All Book",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/book/getAll"
+					},
+					"response": []
+				},
+				{
+					"name": "Add Book",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": 1,\r\n  \"title\": \"Cuốn Sách Đầu Tiên\",\r\n  \"authorId\": 3,\r\n  \"description\": \"Một cuốn sách hay với nhiều chủ đề thú vị.\",\r\n  \"typesId\": [1, 2],\r\n  \"price\": 4000.99,\r\n  \"createdAt\": \"2022-02-01T12:30:45\",\r\n  \"lastUpdateAt\": \"2022-02-02T15:45:30\",\r\n  \"url\": \"https://example.com/cuon-sach-dau-tien\",\r\n  \"status\": \"ONGOING\",\r\n  \"imageUrl\": \"https://example.com/cuon-sach-dau-tien\"\r\n}   ",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/book/add"
+					},
+					"response": []
+				},
+				{
+					"name": "Find Book By Id",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": "http://localhost:8080/book/find/12"
+					},
+					"response": []
+				},
+				{
+					"name": "Increase View",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": "http://localhost:8080/book/views/11"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Type",
+			"item": [
+				{
+					"name": "Get All Type",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/type/getAll"
+					},
+					"response": []
+				},
+				{
+					"name": "Get List Type",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/type/getList"
+					},
+					"response": []
+				},
+				{
+					"name": "Add Type",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": "http://localhost:8080/type/add"
+					},
+					"response": []
+				},
+				{
+					"name": "Add Book To Type",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": "http://localhost:8080/type/addBookToType"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "New Request",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": ""
+			},
+			"response": []
+		}
+	]
+}

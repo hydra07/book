@@ -31,7 +31,9 @@ public class SecurityConfig {
 
     private static final String[] PUBLIC = new String[] {
             "/test/**",
-            "/auth/**"
+            "/auth/**",
+            "/book/**",
+            "/type/**",
     };
 
     @Autowired
@@ -64,6 +66,7 @@ public class SecurityConfig {
                 .requestMatchers("/admin/**").hasAnyAuthority("ADMIN")
                 .anyRequest().authenticated()
                 .and()
+
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authenticationProvider(authenticationProvider())

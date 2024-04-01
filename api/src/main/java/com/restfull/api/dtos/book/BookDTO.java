@@ -33,7 +33,7 @@ public class BookDTO {
         this.id = book.getId();
         this.title = book.getTitle();
         this.description = book.getDescription();
-        this.images = book.getImagesString();
+//        this.images = book.getImagesString();
         this.types = book.getTypesString();
         this.status = book.getStatus().toString();
         this.price = book.getPrice();

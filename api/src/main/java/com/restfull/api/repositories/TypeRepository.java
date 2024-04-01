@@ -1,6 +1,5 @@
 package com.restfull.api.repositories;
 
-import com.restfull.api.entities.Book;
 import com.restfull.api.entities.Type;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

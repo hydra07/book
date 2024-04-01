@@ -12,8 +12,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<StandardErrorDTO> exception(Exception ex, HttpServletRequest request) {
-        return ResponseEntity.badRequest().body(
-                new StandardErrorDTO(HttpStatus.BAD_REQUEST, ex, request));
+        return ResponseEntity.badRequest().body(new StandardErrorDTO(HttpStatus.BAD_REQUEST, ex, request));
     }
 
 }

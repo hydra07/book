@@ -1,18 +1,16 @@
 package com.restfull.api.services;
 
-import java.util.List;
-import java.util.Objects;
 
-import com.restfull.api.entities.Book;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import com.restfull.api.dtos.user.UserDTO;
 import com.restfull.api.entities.User;
 import com.restfull.api.enums.Role;
 import com.restfull.api.repositories.UserRepository;
 import com.restfull.api.utils.DuplicationException;
 import com.restfull.api.utils.NotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Objects;
 
 @Service
 public class UserService {
@@ -41,20 +39,51 @@ public class UserService {
         return repository.save(User);
     }
 
-    public UserDTO create(UserDTO dto) {
-        return new UserDTO(create(new User(dto)));
-    }
+//    public UserDTO create(UserDTO dto) {
+//        return new UserDTO(create(new User(dto)));
+//    }
 
     public User update(User user) {
         checkPhoneDuplication(user);
         User _user = findByEmail(user.getEmail());
-        System.out.println(_user.toString());
-        System.out.println(user.toString());
         _user.setName(user.getName());
         _user.setPhone(user.getPhone());
         _user.setAvatar(user.getAvatar());
+        _user.setGender(user.isGender());
         return repository.save(_user);
     }
+
+    public User updatePassword(User user) {
+        User _user = findByEmail(user.getEmail());
+        _user.setPassword(user.getPassword());
+        return repository.save(_user);
+    }
+
+//    /**
+//     * @param dto UserRequestDTO
+//     * no update password/email/
+//     * @return
+//     */
+//    @Transactional
+//    public User update(UserRequestDTO dto) {
+//        User user = findById(dto.getId());
+//        user.setName(dto.getName());
+//        user.setPhone(dto.getPhone());
+//        user.setAvatar(dto.getImage());
+//        checkPhoneDuplication(user);
+//        return repository.save(user);
+//    }
+
+//    public User resetPassword(User user) {
+//        User _user = findByEmail(user.getEmail());
+//        if (isPasswordMatches(user.getPassword(), _user.getPassword())) {
+//            _user.setPassword(encodePassword(user.getPassword()));
+//        } else {
+//            throw new NotFoundException("Password not match");
+//        }
+//        return repository.save(_user);
+//    }
+
     //     public User update(User User) {
 //         checkEmailDuplication(User);
 //         User p = findById(User.getId());
@@ -70,11 +99,18 @@ public class UserService {
     }
 
 
-//    public User addFollower(String email, User user){
+    //    public User addFollower(String email, User user){
 //        final User _user = findByEmail(email);
 //        _user.addFollower(user);
 //        System.out.println(_user.getFollowers());
 //        return repository.save(_user);
+//    }
+//    private boolean isPasswordMatches(String rawPassword, String encodedPassword) {
+//        return passwordEncoder.matches(rawPassword, encodedPassword);
+//    }
+//
+//    private String encodePassword(String password) {
+//        return passwordEncoder.encode(password);
 //    }
 
     private void checkEmailDuplication(User User) {
@@ -88,7 +124,7 @@ public class UserService {
         }
     }
 
-    private void checkPhoneDuplication(User user) {
+    public void checkPhoneDuplication(User user) {
         final String phone = user.getPhone();
         if (!phone.isEmpty()) {
             final String email = user.getEmail();
