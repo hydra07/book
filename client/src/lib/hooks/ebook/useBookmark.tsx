@@ -1,6 +1,6 @@
 import { RootState } from '@/lib/store';
 import { updateBookmark } from '@/lib/store/ebook/ebookSlice';
-import { BookmarkItem } from '@/types/ebook';
+import { BookmarkItem, Bookmarks } from '@/types/ebook';
 import { isCfiInRange, timeFormatter } from '@/utils/epub.utils';
 import { useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -30,7 +30,9 @@ export default function useBookmark({
   onTonggle,
 }: Props): useBookmark {
   const dispatch = useDispatch();
-  const bookmarks = useSelector((state: RootState) => state.ebook.bookmarks);
+  const bookmarks = useSelector<RootState, Bookmarks>(
+    (state: RootState) => state.ebook.bookmarks,
+  );
   const currentLocation = useSelector(
     (state: RootState) => state.ebook.currentLocation,
   );
@@ -41,9 +43,12 @@ export default function useBookmark({
         key: Date.now(),
         name: 'Bookmark',
         cfi,
-        time: timeFormatter(new Date()),
+        date: timeFormatter(new Date()),
+        // date: new Date().toISOString(),
       };
       console.log('added bookmark', bookmark);
+      // bookmarks.push(bookmark);
+      // dispatch(updateBookmark(bookmarks));
       dispatch(updateBookmark([...bookmarks, bookmark]));
     },
     [bookmarks, dispatch],
@@ -72,14 +77,14 @@ export default function useBookmark({
     if (currentLocation.startCfi === '') return;
     addBookmark(currentLocation.startCfi);
   }, [currentLocation, bookmarks, addBookmark]);
-  
+
   const onRemoveBookmark = useCallback(() => {
     removeBookmark(currentLocation.startCfi);
   }, [currentLocation, bookmarks, removeBookmark]);
 
   const isBookmarkAdded = useMemo(
     () =>
-      bookmarks.find((bookmark) =>
+      bookmarks?.find((bookmark) =>
         isCfiInRange(
           bookmark.cfi,
           currentLocation.startCfi,

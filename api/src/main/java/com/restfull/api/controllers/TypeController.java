@@ -30,30 +30,30 @@ public class TypeController {
         return ResponseEntity.ok(typeService.getAllTypes().stream().map(Type::getName).collect(Collectors.toList()));
     }
 
-    @PostMapping("/add")
-    public ResponseEntity<?> add(@RequestBody TypeRequestDTO type) {
-        try {
-            System.out.println(type.toString());
-            typeService.createNewType(type);
-            return ResponseEntity.ok( type.getName()+" successfully added!");
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
-
-
-    @PostMapping("/getBookByType")
-    public ResponseEntity<?> getBookByType(@RequestBody TypeRequestDTO type) {
-        try {
-            List<BookResponseDTO> bookDTOs  = typeService.getBookByType(type).stream().map(BookResponseDTO::new).collect(Collectors.toList());
-            if(bookDTOs.isEmpty()){
-                throw new Exception("No books found for the given type! Try another type!");
-            }
-            return ResponseEntity.ok(bookDTOs);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
+//    @PostMapping("/add")
+//    public ResponseEntity<?> add(@RequestBody TypeRequestDTO type) {
+//        try {
+//            System.out.println(type.toString());
+//            typeService.createNewType(type);
+//            return ResponseEntity.ok( type.getName()+" successfully added!");
+//        } catch (Exception e) {
+//            return ResponseEntity.badRequest().body(e.getMessage());
+//        }
+//    }
+//
+//
+//    @PostMapping("/getBookByType")
+//    public ResponseEntity<?> getBookByType(@RequestBody TypeRequestDTO type) {
+//        try {
+//            List<BookResponseDTO> bookDTOs  = typeService.getBookByType(type).stream().map(BookResponseDTO::new).collect(Collectors.toList());
+//            if(bookDTOs.isEmpty()){
+//                throw new Exception("No books found for the given type! Try another type!");
+//            }
+//            return ResponseEntity.ok(bookDTOs);
+//        } catch (Exception e) {
+//            return ResponseEntity.badRequest().body(e.getMessage());
+//        }
+//    }
 
     @GetMapping("/get/{id}")
     public ResponseEntity<?> getBook(@PathVariable Long id){

@@ -1,6 +1,7 @@
 import { AppDispatch, RootState } from '@/lib/store';
 import {
   initBookReader,
+  updateBookmark,
   updateCurrentPage,
 } from '@/lib/store/ebook/ebookSlice';
 import Book from '@/types/book';
@@ -44,14 +45,18 @@ export default function useInitBook({ viewerRef, book }: Props) {
     const int = async () => {
       const token = user?.accessToken;
       if (!token) return;
+      console.log(token);
       await dispatch(
         initBookReader({
           token,
           id: book.id,
-          callback: async (page) => {
+          callback: async (data) => {
             // setLocation(page.startCfi);
-            await dispatch(updateCurrentPage(page));
-            if (isFetching) setLocation(page.startCfi);
+            await dispatch(updateCurrentPage(data.currentPage));
+            await dispatch(updateBookmark(data.bookmarks));
+            if (isFetching) {
+              setLocation(data.currentPage.startCfi);
+            }
             // setIsInit(true);
           },
         }),
