@@ -73,7 +73,7 @@ export interface BookmarkItem {
   key: number;
   name: string;
   cfi: string;
-  time: string;
+  date: string;
 }
 export type Bookmarks = Array<BookmarkItem>;
 
