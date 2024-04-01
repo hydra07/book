@@ -2,6 +2,7 @@
 import axios from "@/lib/axios";
 import Book from "@/server/models/book.model";
 import { Button, Input } from "@material-tailwind/react";
+import { Axios, AxiosError } from "axios";
 import { useState } from "react";
 export default () => {
   // const res= await.post(`/book/add/${parram.id}`);
@@ -15,31 +16,40 @@ export default () => {
     createdAt: "",
     price: 0,
     types: [],
-    author: "",
+    author: 3,
     title: "",
-    id: "",
+    id: 4,
+    description: "",
   });
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-try {
-  const res= await axios.post(`/book/add/`);
-  console.log("Thêm sách:", res.data);
-  
-} catch (error) {
-  console.error('Lỗi:', error);
-}
+    try {
+      const res = await axios.post(`book/add`,book);
+      console.log("Thêm sách:", res.data);
+    } catch (error) {
+      const axiosError = error as AxiosError;
+      if (axiosError.response) {
+        // Backend trả về lỗi
+        console.error("Lỗi từ server:", axiosError.response.data);
+      } else if (axiosError.request) {
+        // Không nhận được phản hồi từ server
+        console.error(
+          "Không nhận được phản hồi từ server:",
+          axiosError.request
+        );
+      } else {
+        // Lỗi trong quá trình thiết lập yêu cầu
+        console.error("Lỗi khi thiết lập yêu cầu:", axiosError.message);
+      }
+    }
   };
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-
     setBook({
       ...book,
       [name]: value,
     });
   };
-
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-900">
       <h1 className="text-2xl mb-4">Thêm Sách</h1>
@@ -66,7 +76,7 @@ try {
           <Input
             crossOrigin={null}
             color="white"
-            type="text"
+            type="number"
             name="author"
             value={book.author}
             onChange={handleChange}
@@ -74,36 +84,49 @@ try {
             required
           />
         </div>
+        <div className="w-full mb-4 flex flex-wrap ">
+          <Input
+            crossOrigin={null}
+            color="white"
+            type="text"
+            name="description"
+            value={book.description}
+            onChange={handleChange}
+            label="Description"
+            required
+          />
+        </div>
 
         <div className="mb-4 flex flex-wrap">
-          <div className="w-full md:w-1/2 md:pr-2">
-            {/* <input
+          {/* <input
               className="border rounded-md p-2 w-full text-black"
               type="text"
               name="types"
               value={book.types}
               onChange={handleChange}
             /> */}
+          <div className="w-full md:w-1/2 md:pr-2">
             <Input
               crossOrigin={null}
               color="white"
-              value={book.types}
+              type="number"
+              value={book.id}
               onChange={handleChange}
-              label="Type"
-              name="types"
+              label="Id"
+              name="id"
               required
             />
           </div>
-          <div className="w-full md:w-1/2 md:pl-2">
-            <Input
-              crossOrigin={null}
-              color="white"
-              value={book.status}
-              onChange={handleChange}
-              label="Status"
-              name="status"
-              required
-            />
+          <div className="w-full md:w-1/2 md:pr-2">
+          <Input
+            crossOrigin={null}
+            color="white"
+            value={book.status}
+            onChange={handleChange}
+            label="Status"
+            name="status"
+            required
+          />
           </div>
         </div>
 
@@ -126,10 +149,9 @@ try {
               value={book.imageUrl}
               onChange={handleChange}
               label="Image"
-              type="file"
-              accept=".jpg,.jpeg,.png,image/*"
-              name="image"
-             
+              type="text"
+              name="imageUrl"
+              required
             />
           </div>
         </div>
@@ -186,7 +208,6 @@ try {
         </div>
 
         <Button
-        onSubmit={handleSubmit}
           placeholder={true}
           className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
           type="submit"

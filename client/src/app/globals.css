@@ -50,3 +50,19 @@ body {
   border-radius: 10px;
   background: #650183;
 }
+
+/* config scrollbar */
+::-webkit-scrollbar {
+  width: 0px;
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #ddd;
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #ccc;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}

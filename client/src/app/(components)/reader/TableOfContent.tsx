@@ -23,17 +23,17 @@ export default ({ isToggle, onToggle, onLocation }: Props, ref: any) => {
   return (
     <Fragment>
       <Drawer
-        className="bg-white overflow-y-auto fixed"
+        className="bg-gray-900 overflow-y-auto fixed"
         placement="left"
         open={isToggle}
         onClose={onToggle}
         placeholder={null}
       >
-        <div className="flex flex-col space-y-4">
-          <div className="flex items-center justify-between pt-3 px-3">
-            <h1 className="text-black text-xl">Table Of Content</h1>
+        <div className="flex flex-col space-y-4 p-4 text-gray-300">
+          <div className="flex items-center justify-between">
+            <h1 className="text-2xl font-bold text-white">Table Of Content</h1>
             <IconButton
-              className="pr-5 hover:bg-blue-gray-300"
+              className="hover:bg-gray-700 p-2 rounded-md"
               onClick={onToggle}
               placeholder={null}
             >
@@ -43,7 +43,7 @@ export default ({ isToggle, onToggle, onLocation }: Props, ref: any) => {
                 viewBox="0 0 24 24"
                 strokeWidth={2}
                 stroke="currentColor"
-                className="h-5 w-5"
+                className="h-6 w-6 text-gray-300"
               >
                 <path
                   strokeLinecap="round"
@@ -53,26 +53,26 @@ export default ({ isToggle, onToggle, onLocation }: Props, ref: any) => {
               </svg>
             </IconButton>
           </div>
-          <div className="w-full p-3 ">
-            <span className="text-black font-medium text-xl text-center">
+          <div className="w-full">
+            <span className="text-xl font-medium text-center block text-white">
               {book.title}
             </span>
             <div className="p-3">
               <img
                 src={`${book.coverURL}`}
                 alt="bookcover"
-                className="rounded-md shadow"
+                className="rounded-md shadow-lg w-full"
               />
             </div>
           </div>
-          <div className="w-full pt-3 px-4 flex-col space-y-2">
+          <div className="w-full flex-col space-y-2">
             {bookToc.map((toc: Toc, index: number) => (
               <button
-                className="w-full p-2 text-left hover:ml-3 hover:rounded-sm hover:border hover:shadow-md"
+                className="w-full p-2 text-left hover:bg-gray-700 rounded-md text-gray-300"
                 key={index}
                 onClick={() => onClickItem(toc.href)}
               >
-                <span className="text-black text-md">{toc.label}</span>
+                <span className="text-md">{toc.label}</span>
               </button>
             ))}
           </div>

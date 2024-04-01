@@ -20,6 +20,7 @@ export default function useUser() {
     if (_user != undefined) {
       setUser(_user);
     }
+    // console.log(_user);
   };
   useEffect(() => {
     setInfor();

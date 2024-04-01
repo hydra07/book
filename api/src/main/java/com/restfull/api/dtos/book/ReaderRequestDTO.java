@@ -18,11 +18,21 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+
 public class ReaderRequestDTO {
     private Long id;
     private Long userId;
     private Long bookId;
-    private String lastCurrentCfi;
+//    private String lastCurrentCfi;
+
+    //Page
+    private String chapterName;
+    private int currentPage;
+    private int totalPage;
+    private String startCfi;
+    private String endCfi;
+    private String base;
+
     private Date lastAccess;
     private int accessCount;
 

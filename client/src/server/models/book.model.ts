@@ -11,6 +11,6 @@ class Book {
     author: string | number | readonly string[] | undefined;
     title: string | number | readonly string[] | undefined;
     id: string | number | readonly string[] | undefined;
-
+    description : string | readonly string[] | undefined;
 }
 export default Book;

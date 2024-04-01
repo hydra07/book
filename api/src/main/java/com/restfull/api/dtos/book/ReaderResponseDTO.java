@@ -8,6 +8,7 @@ import com.restfull.api.entities.User;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -18,14 +19,27 @@ class BookmarkResponseDTO {
     private Long key;
     private String name;
     private String cfi;
-    private Date date;
+    private String date;
 
     public BookmarkResponseDTO(Bookmark bookmark){
         this.key = bookmark.getId();
         this.name = bookmark.getName();
         this.cfi = bookmark.getCfi();
-        this.date = bookmark.getDate();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        this.date = formatter.format(bookmark.getDate());
+//        this.date = bookmark.getDate();
     }
+}
+
+@Getter
+@Setter
+class CurrentPage {
+    private String chapterName;
+    private Integer currentPage;
+    private Integer totalPage;
+    private String startCfi;
+    private String endCfi;
+    private String base;
 }
 
 
@@ -38,6 +52,7 @@ public class ReaderResponseDTO {
     private String lastCurrentCfi;
     private Date lastAccess;
     private int accessCount;
+    private CurrentPage currentPage;
     private List<BookmarkResponseDTO> bookmarks;
 
 
@@ -56,5 +71,14 @@ public class ReaderResponseDTO {
         this.lastCurrentCfi = bookReader.getLastCurrentCfi();
         this.lastAccess = bookReader.getLastAccess();
         this.bookmarks = bookReader.getBookmarks().stream().map(BookmarkResponseDTO::new).toList();
+        // CurrentPage
+        CurrentPage currentPage = new CurrentPage();
+        currentPage.setChapterName(bookReader.getChapterName());
+        currentPage.setCurrentPage(bookReader.getCurrentPage());
+        currentPage.setTotalPage(bookReader.getTotalPage());
+        currentPage.setStartCfi(bookReader.getStartCfi());
+        currentPage.setEndCfi(bookReader.getEndCfi());
+        currentPage.setBase(bookReader.getBase());
+        this.currentPage = currentPage;
     }
 }

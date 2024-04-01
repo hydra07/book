@@ -1,5 +1,6 @@
 package com.restfull.api.services;
 
+import com.restfull.api.dtos.book.AuthorRequestDTO;
 import com.restfull.api.entities.Author;
 import com.restfull.api.repositories.AuthorRepository;
 import com.restfull.api.utils.NotFoundException;
@@ -24,6 +25,11 @@ public class AuthorService {
     }
 
     public Author create(Author author) {
+        return repository.save(author);
+    }
+
+    public Author createAuthor(AuthorRequestDTO dto){
+        Author author = new Author(dto.getName(), dto.getDescription());
         return repository.save(author);
     }
 

@@ -17,7 +17,7 @@ export default function RightDrawer({ children, isToggle, onToggle }: Props) {
   return (
     <Fragment>
       <Drawer
-        className="bg-white overflow-y-auto fixed"
+        className="bg-gray-900 text-white overflow-y-auto fixed"
         placement="right"
         open={isToggle}
         onClose={onToggle}

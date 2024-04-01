@@ -1,12 +1,8 @@
 import { Input } from '@material-tailwind/react';
-// import Google from 'next-auth/providers/google';
 import { signIn } from 'next-auth/react';
 import { ChangeEvent, FormEvent, useState } from 'react';
 import { ShowDiaLog } from '../header/AuthButton';
 import Google from './Google';
-// import { useDispatch } from 'react-redux';
-// import { register } from '../../store/auth';
-// import Google from './Google';
 // eslint-disable-next-line react/display-name,import/no-anonymous-default-export
 export default ({ setShowSignInDialog, setShowSignUpDialog }: ShowDiaLog) => {
   const [form, setForm] = useState({
@@ -42,7 +38,6 @@ export default ({ setShowSignInDialog, setShowSignUpDialog }: ShowDiaLog) => {
         password: form.password,
         callbackUrl: '/',
       });
-      // await console.log(dispatch(register(formData)));
     }
   };
 

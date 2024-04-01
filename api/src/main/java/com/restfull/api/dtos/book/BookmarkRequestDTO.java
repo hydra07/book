@@ -8,6 +8,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 @Getter
@@ -22,13 +25,16 @@ public class BookmarkRequestDTO {
 //    @JsonProperty("cfi")
     private String cfi;
 //    @JsonProperty("date")
-    private Date date;
+    private String date;
 
     public BookmarkRequestDTO(Bookmark bookmark){
         this.key = bookmark.getId();
         this.name = bookmark.getName();
         this.cfi = bookmark.getCfi();
-        this.date = bookmark.getDate();
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+//        LocalDateTime dateTime = LocalDateTime.parse(thí;, formatter);
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        this.date = formatter.format(bookmark.getDate());
     }
 
 }
