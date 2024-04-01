@@ -1,218 +1,149 @@
-"use client";
-import axios from "@/lib/axios";
-import Book from "@/server/models/book.model";
-import { Button, Input } from "@material-tailwind/react";
-import { Axios, AxiosError } from "axios";
-import { useState } from "react";
-export default () => {
+// 'use client';
+import { Button, Input, Textarea } from '@material-tailwind/react';
+import { ChangeEvent, useCallback, useState } from 'react';
+
+interface BookRequest {
+  id: number | null;
+  title: string;
+  authorId: number;
+  description: string;
+  typesId: Array<number>;
+  createdAt: string;
+  lastUpdateAt: string;
+  price: number | 0;
+  url: string;
+  imageUrl: string;
+  status: string;
+}
+
+export default ({ authors, types }: any) => {
   // const res= await.post(`/book/add/${parram.id}`);
-  const [book, setBook] = useState<Book>({
-    status: "",
-    url: "",
-    imageUrl: "",
-    reviews: 0,
-    rating: 0,
-    lastUpdateAt: "",
-    createdAt: "",
+  const [form, setForm] = useState<BookRequest>({
+    id: null,
+    title: '',
+    authorId: authors[0].id,
+    description: '',
+    typesId: [],
+    createdAt: '',
+    lastUpdateAt: '',
     price: 0,
-    types: [],
-    author: 3,
-    title: "",
-    id: 4,
-    description: "",
+    url: '',
+    imageUrl: '',
+    status: '',
   });
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      const res = await axios.post(`book/add`,book);
-      console.log("Thêm sách:", res.data);
-    } catch (error) {
-      const axiosError = error as AxiosError;
-      if (axiosError.response) {
-        // Backend trả về lỗi
-        console.error("Lỗi từ server:", axiosError.response.data);
-      } else if (axiosError.request) {
-        // Không nhận được phản hồi từ server
-        console.error(
-          "Không nhận được phản hồi từ server:",
-          axiosError.request
-        );
-      } else {
-        // Lỗi trong quá trình thiết lập yêu cầu
-        console.error("Lỗi khi thiết lập yêu cầu:", axiosError.message);
-      }
-    }
-  };
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setBook({
-      ...book,
-      [name]: value,
+  const author = () => {
+    return authors.map((author: any) => {
+      return (
+        <option key={author.name} value={author.id}>
+          {author.name}
+        </option>
+      );
     });
   };
+  const type = () => {
+    return types.map((type: any, index: number) => {
+      return (
+        <div key={index} className="">
+          <input
+            type="checkbox"
+            id={`type-${index}`}
+            name="type"
+            value={type}
+            onChange={handleTypeChange}
+          />
+          <label htmlFor={`type-${index}`}>{type.name}</label>
+        </div>
+      );
+    });
+  };
+  const handleTypeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { checked, value } = e.target;
+    setForm((prevForm) => {
+      if (checked) {
+        // If the checkbox is checked, add the type ID to the array
+        return { ...prevForm, typesId: [...prevForm.typesId, Number (value)] };
+      } else {
+        // If the checkbox is unchecked, remove the type ID from the array
+        return {
+          ...prevForm,
+          typesId: prevForm.typesId.filter((id) => id !== Number(value)),
+        };
+      }
+    });
+  };
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log(form);
+  };
+  const handleChange = useCallback(
+    (
+      event: ChangeEvent<
+        HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+      >,
+    ) => {
+      setForm((prev) => ({
+        ...prev,
+        [event.target.id]: event.target.value,
+      }));
+    },
+    [form],
+  );
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-900">
       <h1 className="text-2xl mb-4">Thêm Sách</h1>
-      <form
-        onSubmit={handleSubmit}
-        className="bg-gray-900 bg-opacity-10 p-6 rounded-lg shadow-md w-full"
-      >
-        <div className="w-full mb-4 flex flex-wrap ">
+      <form onSubmit={handleSubmit}>
+        <div className="flex flex-col space-y-3">
           <Input
-            className="h-14 mb-4"
-            size="lg"
+            variant="static"
             color="white"
-            name="title"
+            id="title"
             type="text"
-            label="Title"
+            label="Tên sách"
             required
-            autoComplete="off"
-            value={book.title}
-            onChange={(event) => handleChange(event)}
-            crossOrigin={null}
-          />
-        </div>
-        <div className="w-full mb-4 flex flex-wrap ">
-          <Input
-            crossOrigin={null}
-            color="white"
-            type="number"
-            name="author"
-            value={book.author}
+            value={form.title}
             onChange={handleChange}
-            label="Author"
-            required
-          />
-        </div>
-        <div className="w-full mb-4 flex flex-wrap ">
-          <Input
             crossOrigin={null}
-            color="white"
-            type="text"
-            name="description"
-            value={book.description}
-            onChange={handleChange}
-            label="Description"
+          />
+          <div className="relative h-10 w-72 min-w-[200px]">
+            <select
+              className="peer h-full w-full rounded-[7px] border border-blue-gray-200 border-t-transparent bg-transparent px-3 py-2.5 font-sans text-sm font-normal text-white outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 empty:!bg-gray-900 focus:border-2 focus:border-gray-900 focus:border-t-transparent focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50"
+              id="authorId"
+              required
+              value={form.authorId}
+              onChange={handleChange}
+            >
+              {author()}
+            </select>
+            <label className="before:content[' '] after:content[' '] pointer-events-none absolute left-0 -top-1.5 flex h-full w-full select-none text-[11px] font-normal leading-tight text-blue-gray-400 transition-all before:pointer-events-none before:mt-[6.5px] before:mr-1 before:box-border before:block before:h-1.5 before:w-2.5 before:rounded-tl-md before:border-t before:border-l before:border-blue-gray-200 before:transition-all after:pointer-events-none after:mt-[6.5px] after:ml-1 after:box-border after:block after:h-1.5 after:w-2.5 after:flex-grow after:rounded-tr-md after:border-t after:border-r after:border-blue-gray-200 after:transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:leading-[3.75] peer-placeholder-shown:text-blue-gray-500 peer-placeholder-shown:before:border-transparent peer-placeholder-shown:after:border-transparent peer-focus:text-[11px] peer-focus:leading-tight peer-focus:text-gray-900 peer-focus:before:border-t-2 peer-focus:before:border-l-2 peer-focus:before:border-gray-900 peer-focus:after:border-t-2 peer-focus:after:border-r-2 peer-focus:after:border-gray-900 peer-disabled:text-transparent peer-disabled:before:border-transparent peer-disabled:after:border-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500">
+              Chọn tác giả
+            </label>
+          </div>
+          <Textarea
+            // color="white"
+            variant="standard"
+            // color="white"
+            id="description"
+            label="Mô tả"
             required
+            value={form.description}
+            onChange={handleChange}
           />
         </div>
-
-        <div className="mb-4 flex flex-wrap">
-          {/* <input
-              className="border rounded-md p-2 w-full text-black"
-              type="text"
-              name="types"
-              value={book.types}
-              onChange={handleChange}
-            /> */}
-          <div className="w-full md:w-1/2 md:pr-2">
-            <Input
-              crossOrigin={null}
-              color="white"
-              type="number"
-              value={book.id}
-              onChange={handleChange}
-              label="Id"
-              name="id"
-              required
-            />
-          </div>
-          <div className="w-full md:w-1/2 md:pr-2">
-          <Input
-            crossOrigin={null}
-            color="white"
-            value={book.status}
-            onChange={handleChange}
-            label="Status"
-            name="status"
-            required
-          />
-          </div>
-        </div>
-
-        <div className="mb-4 flex flex-wrap">
-          <div className="w-full md:w-1/2 md:pr-2">
-            <Input
-              crossOrigin={null}
-              color="white"
-              value={book.url}
-              onChange={handleChange}
-              label="Url"
-              name="url"
-              required
-            />
-          </div>
-          <div className="w-full md:w-1/2 md:pl-2">
-            <Input
-              crossOrigin={null}
-              color="white"
-              value={book.imageUrl}
-              onChange={handleChange}
-              label="Image"
-              type="text"
-              name="imageUrl"
-              required
-            />
-          </div>
-        </div>
-
-        <div className="mb-4 flex flex-wrap">
-          <div className="w-full md:w-1/2 md:pr-2">
-            <Input
-              crossOrigin={null}
-              color="white"
-              value={book.reviews}
-              onChange={handleChange}
-              label="Review"
-              name="reviews"
-              required
-            />
-          </div>
-          <div className="w-full md:w-1/2 md:pl-2">
-            <Input
-              crossOrigin={null}
-              color="white"
-              value={book.price}
-              onChange={handleChange}
-              label="Price"
-              type="number"
-              required
-              name="price"
-            />
-          </div>
-        </div>
-
-        <div className="mb-4 flex flex-wrap">
-          <div className="w-full md:w-1/2 md:pr-2">
-            <Input
-              crossOrigin={null}
-              color="white"
-              value={book.createdAt}
-              onChange={handleChange}
-              label="CreateDate"
-              type="date"
-              name="createdAt"
-            />
-          </div>
-          <div className="w-full md:w-1/2 md:pl-2">
-            <Input
-              crossOrigin={null}
-              color="white"
-              value={book.lastUpdateAt}
-              onChange={handleChange}
-              label="LastDate"
-              type="date"
-              name="lastUpdateAt"
-            />
-          </div>
-        </div>
-
-        <Button
-          placeholder={true}
-          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-          type="submit"
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(3, 1fr)',
+            gap: '10px',
+          }}
         >
-          Thêm Sách
+          {type()}
+        </div>
+        <Button
+          className="text-white content-center bg-green-600 w-1/2"
+          type={'submit'}
+          placeholder={null}
+        >
+          Save
         </Button>
       </form>
     </div>
