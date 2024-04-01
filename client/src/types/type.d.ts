@@ -1,7 +1,7 @@
 import Book from "@/types/book";
 
 type Type = {
-    id:number;
+    id:any;
     name:string;
     description: string;
     books: Book[];
