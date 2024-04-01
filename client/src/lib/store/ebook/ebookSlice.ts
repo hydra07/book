@@ -104,6 +104,8 @@ const ebookSlice = createSlice({
     },
     updateBookmark(state, action) {
       state.bookmarks = action.payload;
+      console.log(JSON.stringify(state.bookmarks));
+      console.table(state.bookmarks);
     },
     updateBookOption(state, action) {
       state.bookOption = action.payload;
@@ -129,6 +131,8 @@ const ebookSlice = createSlice({
       )
       .addCase(movePageAction.fulfilled, (state, action) => {
         state.currentLocation = action.payload.currentPage;
+        // console.log('<->', action.payload.bookmarks);
+        state.bookmarks = action.payload.bookmarks;
       });
   },
 });
@@ -147,11 +151,21 @@ export const movePageAction = createAsyncThunk(
         startCfi: state.ebook.currentLocation.startCfi,
         endCfi: state.ebook.currentLocation.endCfi,
         base: state.ebook.currentLocation.base,
+        bookmarks: state.ebook.bookmarks,
+        // bookmarks: [
+        //   {
+        //     cfi: 'epubcfi(/6/12!/14/116/1:341)',
+        //     date: '2024-03-28 15:30:10',
+        //     key: 1711614610605,
+        //     name: 'Bookmark',
+        //   },
+        // ],
       };
 
-      console.log(state.ebook.currentLocation);
+      console.log('state', state.ebook.bookmarks);
       const response = await axios.post(`/ebook/read/${id}`, data);
       console.log('movePageAction');
+      console.log(response.data);
       return response.data;
     } catch (error: any) {
       return rejectWithValue(error.response.data);
@@ -169,7 +183,7 @@ export const initBookReader = createAsyncThunk(
       const response = await axios.get(`/ebook/fetch/${id}`);
       console.log('init data', response.data.currentPage.startCfi);
       console.log(response.data);
-      callback && callback(response.data.currentPage);
+      callback && callback(response.data);
       return response.data;
     } catch (error: any) {
       return rejectWithValue(error.response.data);
@@ -192,7 +206,7 @@ export default ebookSlice.reducer;
 interface Props {
   token: string;
   id: number;
-  callback?: (currenPage: Page) => void;
+  callback?: (data: ReaderResponse) => void;
 }
 interface CurrentPage {
   chapterName: string | null;
@@ -204,4 +218,5 @@ interface CurrentPage {
 }
 interface ReaderResponse {
   currentPage: Page;
+  bookmarks: Bookmarks;
 }
