@@ -12,6 +12,7 @@ import {
 } from "@material-tailwind/react";
 import dynamic from "next/dynamic";
 import React, { useEffect, useState } from "react";
+import AddAuthor from "./AddAuthor";
 
 const AddBook = dynamic(() => import("./AddBook"), { ssr: false });
 const AddType = dynamic(() => import("./AddType"), { ssr: false });
@@ -33,37 +34,7 @@ export default () => {
   //test
   return (
     <div className=" ">
-      {/* <Card
-        className="h-[calc(100vh)] w-full max-w-[18rem] p-4 rounded-none  bg-gray-900  "
-        placeholder={true}
-      >
-        <div className="mb-2 p-4">
-          <Typography variant="h5" color="blue-gray" placeholder={true}>
-            Sidebar
-          </Typography>
-        </div>
-        <List placeholder={true}>
-          <ListItem placeholder={true}>
-            <Button placeholder={true} onClick={() => handleAction("page")}>
-              Home
-            </Button>
-          </ListItem>
-          <ListItem placeholder={true}>
-            <Button placeholder={true} onClick={() => handleAction("book")}>
-              Add Book
-            </Button>
-          </ListItem>
-          {/* <ListItem placeholder={true}>
-            <button onClick={() => handleAction("type")}>Add Type</button>
-          </ListItem> */}
-      {/* <ListItem placeholder={true}>
-            <Button placeholder={true} onClick={() => handleAction("author")}>
-              Add Author
-            </Button>
-          </ListItem>
-        </List>
-      </Card>
-      <div className="ml-5 flex-grow">{showData && <AddBook />}</div> */}
+    
       <div className="flex">
         <div className="h-[calc(100vh)] w-full max-w-[18rem] p-4 rounded-none  bg-gray-900 ">
           <div className="mb-2 p-4">
@@ -109,6 +80,7 @@ export default () => {
           </div>
         </div>
         <div className="ml-5 flex-grow">{showData && <AddBook />}</div>
+        <div className="ml-5 flex-grow">{showauthor && <AddAuthor />}</div>
       </div>
     </div>
   );

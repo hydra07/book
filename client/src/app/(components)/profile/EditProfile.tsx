@@ -34,7 +34,7 @@ export default ({
   const { data: session } = useSession();
 
   const handleChange = useCallback(
-    (event: ChangeEvent<HTMLInputElement>) => {
+    (event: ChangeEvent<HTMLInputElement>) => { 
       setForm((prev) => ({
         ...prev,
         [event.target.id]: event.target.value,
