@@ -8,6 +8,7 @@ import com.restfull.api.entities.User;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -18,13 +19,15 @@ class BookmarkResponseDTO {
     private Long key;
     private String name;
     private String cfi;
-    private Date date;
+    private String date;
 
     public BookmarkResponseDTO(Bookmark bookmark){
         this.key = bookmark.getId();
         this.name = bookmark.getName();
         this.cfi = bookmark.getCfi();
-        this.date = bookmark.getDate();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        this.date = formatter.format(bookmark.getDate());
+//        this.date = bookmark.getDate();
     }
 }
 

@@ -13,30 +13,19 @@
 //         </div>)
 // }
 
+
 'use client'
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import axios from '../../../lib/axios';
 import Book from '@/types/book';
 import BookCard from '@/app/(components)/type/BookCard';
 
-
-const TypePage: React.FC<{ params: { id: number } }> = ({ params }) => {
-  const [books, setBooks] = useState<Book[]>([]);
-
-  useEffect(() => {
-    const fetchType = async () => {
-      try {
-        const res = await axios.get(`type/getBookByType`);
-        setBooks(res.data);
-        console.log(res);
-      } catch (error) {
-        console.error('Error fetching books:', error);
-      }
-    };
-
-    fetchType();
-  }, [params.id]);
-
+export default async ({ params }: { params: { id: number } }) => {
+  
+  try {
+    const res = await axios.get(`type/get/${params.id}`);
+    const books: Book[] = await res.data.books;
+    
   return (
     <div className="container mx-auto px-4 py-8 mt-20">
       <h2 className="text-2xl font-bold mb-4 pl-4">Type {params.id}</h2>
@@ -45,6 +34,8 @@ const TypePage: React.FC<{ params: { id: number } }> = ({ params }) => {
       ))}
     </div>
   );
-};
 
-export default TypePage;
+  } catch (error) {
+    console.error('Error fetching books:', error);
+  }
+};

@@ -8,11 +8,7 @@ import com.restfull.api.entities.Type;
 import com.restfull.api.services.TypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -54,6 +50,16 @@ public class TypeController {
                 throw new Exception("No books found for the given type! Try another type!");
             }
             return ResponseEntity.ok(bookDTOs);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/get/{id}")
+    public ResponseEntity<?> getBook(@PathVariable Long id){
+        try {
+            Type type = typeService.getTypeById(id);
+            return ResponseEntity.ok(new TypeResponseDTO(type));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
