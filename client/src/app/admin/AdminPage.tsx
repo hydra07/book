@@ -29,6 +29,7 @@ export default ({ authors, types }: any) => {
   }, []);
   //
   //test
+  console.log(authors);
   return (
     // <div className="pt-20 bg-gray-900 text-white min-h-screen">
     <div className="pt-20 bg-gray-900 text-white min-h-screen w-full">
@@ -97,7 +98,7 @@ export default ({ authors, types }: any) => {
             {showauthor && <AddAuthor />}
           </TabPanel>
           <TabPanel value="type" className="py-0">
-            {showauthor && <AddType />}
+            {showtype && <AddType />}
           </TabPanel>
         </TabsBody>
       </Tabs>

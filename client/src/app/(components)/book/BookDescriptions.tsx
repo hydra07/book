@@ -8,6 +8,9 @@ import Link from "next/link";
 // eslint-disable-next-line react/display-name,import/no-anonymous-default-export
 export default ({ book }: { book: Book }) => {
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
+  const handleClick = () =>{
+    window.location.href= `/ebook/${book.id}` ;
+  }
   return (
     <div className="">
       <div className="text-white">
@@ -35,7 +38,7 @@ export default ({ book }: { book: Book }) => {
         </div>
       </span>
       {/* <ButtonRead book={book} /> */}
-      <Button placeholder={null}> Read </Button>
+      <Button placeholder={null} onClick={handleClick} > Read </Button>
       <div className="pt-8 flex space-x-1 ">
         <p className="text-white  text-md">
           {isExpanded
