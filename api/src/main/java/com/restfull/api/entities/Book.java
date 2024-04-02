@@ -22,10 +22,11 @@ import java.util.stream.Collectors;
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Book {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator =
-            "gen_books_id")
-    @SequenceGenerator(name = "gen_books_id", sequenceName = "seq_books_id",
-            allocationSize = 1)
+//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator =
+////            "gen_books_id")
+////    @SequenceGenerator(name = "gen_books_id", sequenceName = "seq_books_id",
+////            allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false, length = 250, columnDefinition = "NVARCHAR(250)")
