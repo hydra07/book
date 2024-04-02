@@ -1,4 +1,6 @@
 import axios from '@/lib/axios';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import AdminPage from './AdminPage';
 
 const fetchType = async () => {
@@ -26,6 +28,7 @@ export default async () => {
   return (
     <>
       <AdminPage authors={authors} types={types} />
+      <ToastContainer />
     </>
   );
 };

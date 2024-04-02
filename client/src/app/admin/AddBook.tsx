@@ -10,6 +10,7 @@ import {
   uploadBytesResumable,
 } from 'firebase/storage';
 import { ChangeEvent, useCallback, useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 
 interface BookRequest {
   id: number | null;
@@ -40,9 +41,19 @@ export default ({ authors, types }: any) => {
     imageUrl: '',
     status: 'ONGOING',
   });
-  const [progress, setProgress] = useState<number>(0);
+  // const [progress, setProgress] = useState<number>(0);
   const [image, setImage] = useState<File | null>(null);
   const [epub, setEpub] = useState<File | null>(null);
+
+  const [imagePercent, setImagePercent] = useState<number>(0);
+  const [epubPercent, setEpubPercent] = useState<number>(0);
+
+  const [imageError, setImageError] = useState<boolean>(false);
+  const [epubError, setEpubError] = useState<boolean>(false);
+
+  const [imageCompleted, setImageCompleted] = useState<boolean>(false);
+  const [epubCompleted, setEpubCompleted] = useState<boolean>(false);
+
   const author = () => {
     return authors.map((author: any) => {
       return (
@@ -82,7 +93,9 @@ export default ({ authors, types }: any) => {
       (snapshot) => {
         const progress =
           (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        setProgress(Math.round(progress));
+        type === 'url' && setEpubPercent(Math.round(progress));
+        type === 'imageUrl' && setImagePercent(Math.round(progress));
+        // setProgress(Math.round(progress));
       },
       (error) => {
         console.error(error);
@@ -139,17 +152,46 @@ export default ({ authors, types }: any) => {
       handleFileUpload(image, 'imageUrl');
     }
   }, [image]);
+
+  //set process image
+  useEffect(() => {
+    if (imagePercent === 100) {
+      // setImageError(false);
+      setImageCompleted(true);
+    }
+  }, [image, imagePercent]);
+  //set status update image
+  useEffect(() => {
+    if (imageError) {
+      // setImageCompleted(false);
+      toast.error('Upload ảnh thất bại!!! ');
+    } else if (imageCompleted) toast.success('Upload ảnh thành công!!! ');
+  }, [image, imageError, imageCompleted]);
+
   useEffect(() => {
     if (epub) {
       handleFileUpload(epub, 'url');
     }
   }, [epub]);
+  //set process epub
+  useEffect(() => {
+    if (epubPercent === 100) {
+      // setEpubError(false);
+      setEpubCompleted(true);
+    }
+  }, [epub, epubPercent]);
+  //set status update epub
+  useEffect(() => {
+    if (epubError) {
+      // setEpubCompleted(false);
+      toast.error('Upload file thất bại!!! ');
+    } else if (epubCompleted) toast.success('Upload file thành công!!! ');
+  }, [epub, epubError, epubCompleted]);
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white">
       <h1 className="text-2xl mb-4 text-white">Thêm Sách</h1>
       <form onSubmit={handleSubmit} className="flex flex-col space-y-3">
         <Input
-          variant="static"
           color="white"
           id="title"
           type="text"
