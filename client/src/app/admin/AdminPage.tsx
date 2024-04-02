@@ -8,26 +8,28 @@ import {
 } from '@material-tailwind/react';
 import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
+import AddAuthor from './AddAuthor';
 
-const AddBook = dynamic(() => import('./AddBook'), { ssr: false });
-const AddType = dynamic(() => import('./AddType'), { ssr: false });
+const AddBook = dynamic(() => import("./AddBook"), { ssr: false });
+const AddType = dynamic(() => import("./AddType"), { ssr: false });
 
 export default ({ authors, types }: any) => {
   const [showData, setShowData] = useState<boolean>(false);
   const [showtype, setShowType] = useState<boolean>(false);
   const [showauthor, setShowAuthor] = useState<boolean>(false);
   const [showpage, setshowPage] = useState<boolean>(false);
-  const handleAction = (action: 'book' | 'type' | 'author' | 'page'): void => {
-    setShowData(action === 'book');
-    setShowType(action === 'type');
-    setShowAuthor(action === 'author');
-    setshowPage(action === 'page');
+  const handleAction = (action: "book" | "type" | "author" | "page"): void => {
+    setShowData(action === "book");
+    setShowType(action === "type");
+    setShowAuthor(action === "author");
+    setshowPage(action === "page");
   };
   useEffect(() => {
     setshowPage(true);
   }, []);
   //
   //test
+  console.log(authors);
   return (
     // <div className="pt-20 bg-gray-900 text-white min-h-screen">
     <div className="pt-20 bg-gray-900 text-white min-h-screen w-full">
@@ -63,7 +65,14 @@ export default ({ authors, types }: any) => {
           >
             Add Author
           </Tab>
-
+          <Tab
+            placeholder={true}
+            value="type"
+            className="text-white justify-center w-4/5"
+            onClick={() => handleAction('type')}
+          >
+            Add Type
+          </Tab>
           {/* {data.map(({ label, value, icon }) => (
           <Tab key={value} value={value} className="place-items-start">
             <div className="flex items-center gap-2">
@@ -86,7 +95,10 @@ export default ({ authors, types }: any) => {
             {showData && <AddBook authors={authors} types={types} />}
           </TabPanel>
           <TabPanel value="author" className="py-0">
-            {showauthor && <AddType />}
+            {showauthor && <AddAuthor />}
+          </TabPanel>
+          <TabPanel value="type" className="py-0">
+            {showtype && <AddType />}
           </TabPanel>
         </TabsBody>
       </Tabs>
