@@ -1,16 +1,17 @@
 package com.restfull.api.entities;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 import com.fasterxml.jackson.annotation.JsonBackReference;
-
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 // @Data
@@ -21,20 +22,21 @@ import lombok.Setter;
 @Table(name = "types")
 // @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
 // property = "id")
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Type {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "gen_types_id")
-    @SequenceGenerator(name = "gen_types_id", sequenceName = "seq_types_id",
-    allocationSize = 1)
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "gen_types_id")
+//    @SequenceGenerator(name = "gen_types_id", sequenceName = "seq_types_id",
+//            allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(unique = true, columnDefinition = "NVARCHAR(250)")
     private String name;
 
-    private boolean license; 
+    private boolean license;
 
-    @Column(columnDefinition = "NVARCHAR(250)")
+    @Column(columnDefinition = "NVARCHAR(2000)")
     private String description;
 
     // --------------------------------------
@@ -67,7 +69,7 @@ public class Type {
     public Set<Long> getBooksIDStrings() {
         return this.books.stream().map(Book::getId).collect(Collectors.toSet());
     }
-    
+
     public void addBook(Book book) {
         this.books.add(book);
     }

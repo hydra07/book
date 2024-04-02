@@ -8,9 +8,13 @@ import { BookFlow, BookStyle } from '@/types/ebook';
  */
 export const timeFormatter = (time: Date): string => {
   const yyyy = time.getFullYear();
-  const mm = time.getMonth() + 1;
-  const dd = time.getDate();
-  const msg = `${yyyy}-${mm}-${dd}`;
+  // const mm = time.getMonth() + 1;
+  const mm = ('0' + (time.getMonth() + 1)).slice(-2);
+  const dd = ('0' + time.getDate()).slice(-2);
+  const hh = ('0' + time.getHours()).slice(-2);
+  const min = ('0' + time.getMinutes()).slice(-2);
+  const sec = ('0' + time.getSeconds()).slice(-2);
+  const msg = `${yyyy}-${mm}-${dd} ${hh}:${min}:${sec}`;
 
   return msg;
 };

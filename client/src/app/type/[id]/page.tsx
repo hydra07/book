@@ -34,8 +34,8 @@ export default async ({ params }: { params: { id: number } }) => {
       ))}
     </div>
   );
-
   } catch (error) {
     console.error('Error fetching books:', error);
   }
 };
+
