@@ -41,6 +41,10 @@ public class BookService {
         return repository.findById(id).orElseThrow(() -> new NotFoundException("Book not found: " + id));
     }
 
+    public List<Book> searchByName(String keyword, String keyword1) {
+        return repository.searchByName(keyword, keyword1);
+    }
+
     public Book create(Book book) {
         return repository.save(book);
     }
@@ -51,7 +55,8 @@ public class BookService {
         _book.setTitle(bookDto.getTitle());
         _book.setAuthor(authorService.findById(bookDto.getAuthorId()));
         _book.setDescription(bookDto.getDescription());
-        _book.setTypes(bookDto.getTypesId().stream().map(id -> typeService.getTypeById(id)).collect(Collectors.toSet()));
+        _book.setTypes(
+                bookDto.getTypesId().stream().map(id -> typeService.getTypeById(id)).collect(Collectors.toSet()));
         _book.setPrice(bookDto.getPrice());
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -87,7 +92,7 @@ public class BookService {
         Book book = findById(id);
         book.incrementViews();
         repository.updateViews(id, book.getViews());
-//        update(book);
+        // update(book);
     }
 
     public void addFollowedUser(Book book, User user) {
@@ -125,31 +130,32 @@ public class BookService {
     }
 
     // public Book removeTypeFromBook (Long bookID, TypeRequestDTO typeDTO){
-    //     try {
-    //         // Get book from repository
-    //         Book book = findById(bookID);
-    //         // Get type from service
-    //         Type type = typeService.getTypeById(typeDTO.getId());
-    //         // Check if the book is already in this type
-    //         if (!book.getTypesIDString().contains(type.getId())) {
-    //             throw new Exception("This book don't have that specified type!");
-    //         }
-    //         // Remove type from book
-    //         book.removeTypeFromList(type);
-    //         // Save the book to the repository
-    //         return repository.save(book);
-    //     } catch (Exception e) {
-    //         String errorMessage = "An error occurred while remove the type from the book: " + e.getMessage();
-    //         throw new RuntimeException(errorMessage);
-    //     }
+    // try {
+    // // Get book from repository
+    // Book book = findById(bookID);
+    // // Get type from service
+    // Type type = typeService.getTypeById(typeDTO.getId());
+    // // Check if the book is already in this type
+    // if (!book.getTypesIDString().contains(type.getId())) {
+    // throw new Exception("This book don't have that specified type!");
+    // }
+    // // Remove type from book
+    // book.removeTypeFromList(type);
+    // // Save the book to the repository
+    // return repository.save(book);
+    // } catch (Exception e) {
+    // String errorMessage = "An error occurred while remove the type from the book:
+    // " + e.getMessage();
+    // throw new RuntimeException(errorMessage);
+    // }
     // }
 
-//    @Transactional
-//    public void createBook(BookDTO bookDTO){
-//        Book book = new Book(bookDTO);
-//        repository.save(book);
-//        book = setTypeByString(bookDTO.getTypes(), book);
-//        book = setImageByString(bookDTO.getImages(), book);
-//        update(book);
-//    }
+    // @Transactional
+    // public void createBook(BookDTO bookDTO){
+    // Book book = new Book(bookDTO);
+    // repository.save(book);
+    // book = setTypeByString(bookDTO.getTypes(), book);
+    // book = setImageByString(bookDTO.getImages(), book);
+    // update(book);
+    // }
 }
