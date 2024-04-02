@@ -12,6 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -50,8 +53,12 @@ public class BookService {
         _book.setDescription(bookDto.getDescription());
         _book.setTypes(bookDto.getTypesId().stream().map(id -> typeService.getTypeById(id)).collect(Collectors.toSet()));
         _book.setPrice(bookDto.getPrice());
-        _book.setCreatedAt(bookDto.getCreatedAt());
-        _book.setLastUpdateAt(bookDto.getLastUpdateAt());
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime _createAt = LocalDateTime.parse(bookDto.getCreatedAt(), formatter);
+        LocalDateTime _lastUpdateAt = LocalDateTime.parse(bookDto.getLastUpdateAt(), formatter);
+        _book.setCreatedAt(Date.from(_createAt.atZone(java.time.ZoneId.systemDefault()).toInstant()));
+        _book.setLastUpdateAt(Date.from(_lastUpdateAt.atZone(java.time.ZoneId.systemDefault()).toInstant()));
         _book.setUrl(bookDto.getUrl());
         _book.setStatus(Status.valueOf(bookDto.getStatus()));
         _book.setImageUrl(bookDto.getImageUrl());
