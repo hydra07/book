@@ -8,11 +8,14 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
 public interface BookRepository extends JpaRepository<Book, Long> {
-    Optional<Book> findByTitle(String title);
+    @Query("SELECT b FROM Book b WHERE LOWER(b.title) LIKE LOWER(CONCAT('%', :keyword, '%')) OR LOWER(b.title) LIKE LOWER(CONCAT('%', :keyword1, '%'))")
+    List<Book> searchByName(@Param("keyword") String keyword, @Param("keyword1") String keyword1);
+
     Optional<Book> findById(long id);
 
     @Transactional
