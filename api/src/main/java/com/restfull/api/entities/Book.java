@@ -23,9 +23,9 @@ import java.util.stream.Collectors;
 public class Book {
     @Id
 //    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator =
-////            "gen_books_id")
-////    @SequenceGenerator(name = "gen_books_id", sequenceName = "seq_books_id",
-////            allocationSize = 1)
+//            "gen_books_id")
+//    @SequenceGenerator(name = "gen_books_id", sequenceName = "seq_books_id",
+//            allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -36,7 +36,7 @@ public class Book {
     @JoinColumn(name = "author_id")
     private Author author;
 
-    @Column(nullable = true, columnDefinition = "NVARCHAR(1000)")
+    @Column(nullable = true, columnDefinition = "NVARCHAR(2000)")
     private String description;
 
     @Column(nullable = true, columnDefinition = "NVARCHAR(1000)")

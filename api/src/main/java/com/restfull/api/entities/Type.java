@@ -36,7 +36,7 @@ public class Type {
 
     private boolean license;
 
-    @Column(columnDefinition = "NVARCHAR(250)")
+    @Column(columnDefinition = "NVARCHAR(2000)")
     private String description;
 
     // --------------------------------------
