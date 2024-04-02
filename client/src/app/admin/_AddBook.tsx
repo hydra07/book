@@ -1,10 +1,17 @@
 // 'use client';
-
 import axios from '@/lib/axios';
-import useUploadFile from '@/lib/hooks/useUploadFile';
+import app from '@/lib/firebase';
 import { timeFormatter } from '@/utils/epub.utils';
 import { Button, Input, Textarea } from '@material-tailwind/react';
+import {
+  getDownloadURL,
+  getStorage,
+  ref,
+  uploadBytesResumable,
+} from 'firebase/storage';
 import { ChangeEvent, useCallback, useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
+
 interface BookRequest {
   id: number | null;
   title: string;
@@ -23,25 +30,29 @@ export default ({ authors, types }: any) => {
   // const res= await.post(`/book/add/${parram.id}`);
   const [form, setForm] = useState<BookRequest>({
     id: null,
-    title: "",
+    title: '',
     authorId: authors[0].id,
-    description: "",
+    description: '',
     typesId: [],
-
     createdAt: timeFormatter(new Date()),
     lastUpdateAt: timeFormatter(new Date()),
     price: 0,
     url: '',
     imageUrl: '',
     status: 'ONGOING',
-
   });
   // const [progress, setProgress] = useState<number>(0);
   const [image, setImage] = useState<File | null>(null);
   const [epub, setEpub] = useState<File | null>(null);
 
-  const { fileUrl: imageUrl } = useUploadFile({ file: image, name: 'image' });
-  const { fileUrl: epubUrl } = useUploadFile({ file: epub, name: 'epub' });
+  const [imagePercent, setImagePercent] = useState<number>(0);
+  const [epubPercent, setEpubPercent] = useState<number>(0);
+
+  const [imageError, setImageError] = useState<boolean>(false);
+  const [epubError, setEpubError] = useState<boolean>(false);
+
+  const [imageCompleted, setImageCompleted] = useState<boolean>(false);
+  const [epubCompleted, setEpubCompleted] = useState<boolean>(false);
 
   const author = () => {
     return authors.map((author: any) => {
@@ -72,13 +83,36 @@ export default ({ authors, types }: any) => {
       );
     });
   };
-
+  const handleFileUpload = async (file: File, type: 'url' | 'imageUrl') => {
+    const storage = getStorage(app);
+    const fileName = new Date().getTime() + '-' + file.name;
+    const storageRef = ref(storage, fileName);
+    const uploadTask = uploadBytesResumable(storageRef, file);
+    uploadTask.on(
+      'state_changed',
+      (snapshot) => {
+        const progress =
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        type === 'url' && setEpubPercent(Math.round(progress));
+        type === 'imageUrl' && setImagePercent(Math.round(progress));
+        // setProgress(Math.round(progress));
+      },
+      (error) => {
+        console.error(error);
+      },
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+          type === 'url' && setForm({ ...form, url: downloadURL });
+          type === 'imageUrl' && setForm({ ...form, imageUrl: downloadURL });
+          console.log('File available at', downloadURL);
+        });
+      },
+    );
+  };
   const handleTypeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { checked, value } = e.target;
     setForm((prevForm) => {
       if (checked) {
-
-
         return { ...prevForm, typesId: [...prevForm.typesId, Number(value)] };
       } else {
         return {
@@ -101,7 +135,7 @@ export default ({ authors, types }: any) => {
     (
       event: ChangeEvent<
         HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-      >
+      >,
     ) => {
       setForm((prev) => ({
         ...prev,
@@ -111,17 +145,48 @@ export default ({ authors, types }: any) => {
     },
 
     [form],
-
   );
 
   useEffect(() => {
-    setForm((prev) => ({
-      ...prev,
-      imageUrl: imageUrl,
-      url: epubUrl,
-    }));
-  }, [epubUrl, imageUrl]);
+    if (image) {
+      handleFileUpload(image, 'imageUrl');
+    }
+  }, [image]);
 
+  //set process image
+  useEffect(() => {
+    if (imagePercent === 100) {
+      // setImageError(false);
+      setImageCompleted(true);
+    }
+  }, [image, imagePercent]);
+  //set status update image
+  useEffect(() => {
+    if (imageError) {
+      // setImageCompleted(false);
+      toast.error('Upload ảnh thất bại!!! ');
+    } else if (imageCompleted) toast.success('Upload ảnh thành công!!! ');
+  }, [image, imageError, imageCompleted]);
+
+  useEffect(() => {
+    if (epub) {
+      handleFileUpload(epub, 'url');
+    }
+  }, [epub]);
+  //set process epub
+  useEffect(() => {
+    if (epubPercent === 100) {
+      // setEpubError(false);
+      setEpubCompleted(true);
+    }
+  }, [epub, epubPercent]);
+  //set status update epub
+  useEffect(() => {
+    if (epubError) {
+      // setEpubCompleted(false);
+      toast.error('Upload file thất bại!!! ');
+    } else if (epubCompleted) toast.success('Upload file thành công!!! ');
+  }, [epub, epubError, epubCompleted]);
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white">
       <h1 className="text-2xl mb-4 text-white">Thêm Sách</h1>
@@ -222,7 +287,7 @@ export default ({ authors, types }: any) => {
         />
         <Button
           className="text-white content-center bg-green-600 w-1/2"
-          type={"submit"}
+          type={'submit'}
           placeholder={null}
         >
           Save
