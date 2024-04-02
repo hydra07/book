@@ -1,18 +1,11 @@
 // "use client";
 import { editProfile } from '@/lib/api/profile';
-import app from '@/lib/firebase';
+import useUploadFile from '@/lib/hooks/useUploadFile';
 import User from '@/types/user';
 import { Button, ButtonGroup, Input, Radio } from '@material-tailwind/react';
-import {
-  getDownloadURL,
-  getStorage,
-  ref,
-  uploadBytesResumable,
-} from 'firebase/storage';
 import { useSession } from 'next-auth/react';
 import { ChangeEvent, useCallback, useEffect, useRef, useState } from 'react';
 
-// eslint-disable-next-line react/display-name
 export default ({
   isEditUser,
   setIsEditUser,
@@ -28,9 +21,11 @@ export default ({
   const [form, setForm] = useState<User>(user);
   const [currentUser, setCurrentUser] = useState<User>();
   const [image, setImage] = useState<File | null>(null);
-  const [imagePercent, setImagePercent] = useState<number>(0);
-  const [imageError, setImageError] = useState<boolean>(false);
-  const [updateComplete, setUpdateComplete] = useState<boolean>(false);
+  const { fileUrl: imageUrl, filePercent: imagePercent } = useUploadFile({
+    file: image,
+    name: 'avatar',
+  });
+
   const { data: session } = useSession();
 
   const handleChange = useCallback(
@@ -52,51 +47,13 @@ export default ({
     [form, session],
   );
 
-  const handleFileUpload = async (image: File) => {
-    const storage = getStorage(app);
-    const fileName = new Date().getTime() + '-' + image.name;
-    const storageRef = ref(storage, fileName);
-    const uploadTask = uploadBytesResumable(storageRef, image);
-    uploadTask.on(
-      'state_changed',
-      (snapshot) => {
-        const progress =
-          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        setImagePercent(Math.round(progress));
-      },
-      (error) => {
-        console.error(error);
-      },
-      () => {
-        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-          setUser({ ...form, image: downloadURL });
-          setForm({ ...form, image: downloadURL });
-          console.log('File available at', downloadURL);
-        });
-      },
-    );
-  };
+  useEffect(() => {
+    setForm((prev) => ({
+      ...prev,
+      image: imageUrl,
+    }));
+  }, [imageUrl]);
 
-  useEffect(() => {
-    if (image) {
-      handleFileUpload(image);
-    }
-  }, [image]);
-  useEffect(() => {
-    // đo tiến độ upload ảnh
-    if (imagePercent === 100) {
-      setUpdateComplete(true);
-    }
-  }, [imagePercent]);
-  useEffect(() => {
-    if (imageError) {
-      //   toast.error(`Image upload failed`);
-      alert('Image upload failed');
-    } else if (updateComplete) {
-      //   toast.success(`Image upload success`);
-      alert('Image upload success');
-    }
-  }, [imageError, updateComplete]);
   return (
     <form
       className="backdrop-blur-3xl bg-white/5 p-4 rounded shadow w-3/5 h-5/6 flex flex-col relative"

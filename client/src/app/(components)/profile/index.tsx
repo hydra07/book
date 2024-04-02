@@ -1,11 +1,11 @@
-// eslint-disable-next-line react/display-name
 'use client';
 import EditProfile from '@/app/(components)/profile/EditProfile';
 import ShowProfile from '@/app/(components)/profile/ShowProfile';
 import User from '@/types/user';
 import { useEffect, useState } from 'react';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-// eslint-disable-next-line react/display-name
 export default ({ user }: { user: User }) => {
   const [isEditUser, setIsEditUser] = useState<boolean>(false);
   const [currentUser, setCurrentUser] = useState<User>(user);
@@ -32,6 +32,7 @@ export default ({ user }: { user: User }) => {
           />
         )}
       </div>
+      <ToastContainer />
     </div>
   );
 };
