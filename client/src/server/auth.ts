@@ -73,7 +73,12 @@ export const authOptions: NextAuthOptions = {
     async signIn({ account, user }) {
       // console.log('account ', user);
       if (account?.provider === 'google') {
-        const res = await axios.post(`/auth/google`, user);
+        const data = {
+          name: user.name,
+          email: user.email,
+          avatar: user.image,
+        };
+        const res = await axios.post(`/auth/google`, data);
         if (res.data) {
           // console.log('res.data ', JSON.stringify(res.data));
           (user as any).token = res.data.token;

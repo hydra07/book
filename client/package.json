@@ -24,6 +24,7 @@
     "react-file-reader-input": "^2.0.0",
     "react-id-swiper": "^4.0.0",
     "react-redux": "^9.1.0",
+    "react-toastify": "^10.0.5",
     "swiper": "^11.0.5",
     "unidecode": "^0.1.8"
   },
