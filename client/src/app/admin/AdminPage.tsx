@@ -9,6 +9,7 @@ import {
 import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
 import AddAuthor from './AddAuthor';
+import RenderBook from './RenderBook';
 
 const AddBook = dynamic(() => import("./AddBook"), { ssr: false });
 const AddType = dynamic(() => import("./AddType"), { ssr: false });
@@ -18,11 +19,13 @@ export default ({ authors, types }: any) => {
   const [showtype, setShowType] = useState<boolean>(false);
   const [showauthor, setShowAuthor] = useState<boolean>(false);
   const [showpage, setshowPage] = useState<boolean>(false);
-  const handleAction = (action: "book" | "type" | "author" | "page"): void => {
+  const [showlist, setshowList] = useState<boolean>(false);
+  const handleAction = (action: "book" | "type" | "author" | "page" |"render"): void => {
     setShowData(action === "book");
     setShowType(action === "type");
     setShowAuthor(action === "author");
     setshowPage(action === "page");
+    setshowList(action === "render");
   };
   useEffect(() => {
     setshowPage(true);
@@ -73,6 +76,14 @@ export default ({ authors, types }: any) => {
           >
             Add Type
           </Tab>
+          <Tab
+            placeholder={true}
+            value="render"
+            className="text-white justify-center w-4/5"
+            onClick={() => handleAction('render')}
+          >
+            List Book
+          </Tab>
           {/* {data.map(({ label, value, icon }) => (
           <Tab key={value} value={value} className="place-items-start">
             <div className="flex items-center gap-2">
@@ -99,6 +110,9 @@ export default ({ authors, types }: any) => {
           </TabPanel>
           <TabPanel value="type" className="py-0">
             {showtype && <AddType />}
+          </TabPanel>
+          <TabPanel value="render" className="py-0">
+            {showlist && <RenderBook />}
           </TabPanel>
         </TabsBody>
       </Tabs>

@@ -3,6 +3,7 @@
 import axios from "@/lib/axios";
 import { Button, Input } from "@material-tailwind/react";
 import { ChangeEvent, useCallback, useState } from "react";
+import { toast } from "react-toastify";
 interface TypeInfo {
   name: string;
   id: number | null;
@@ -30,6 +31,11 @@ export default () => {
   );
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    const nameError = /^[a-zA-Z0-9\s]+$/;
+    if (!nameError.test(type.name)) {
+      toast.error("rảnh rỗi thêm sinh nông nỗi đây");
+      return;
+    }
     try {
       const res = await axios.post(`/type/new`, type);
       console.log(res.data);
