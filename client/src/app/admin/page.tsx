@@ -1,6 +1,7 @@
 import axios from '@/lib/axios';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import MiddlewareAdmin from '../(components)/MiddlewareAdmin';
 import AdminPage from './AdminPage';
 
 const fetchType = async () => {
@@ -15,7 +16,7 @@ const fetchType = async () => {
 const fetchAuthor = async () => {
   try {
     const res = await axios.get(`/author/getAll`);
-    console.log(res.data);
+    // console.log(res.data);
     return await res.data;
   } catch (error) {
     return null;
@@ -27,7 +28,9 @@ export default async () => {
   const types = await fetchType();
   return (
     <>
-      <AdminPage authors={authors} types={types} />
+      <MiddlewareAdmin>
+        <AdminPage authors={authors} types={types} />
+      </MiddlewareAdmin>
       <ToastContainer />
     </>
   );

@@ -4,6 +4,7 @@ import useUploadFile from '@/lib/hooks/useUploadFile';
 import { timeFormatter } from '@/utils/epub.utils';
 import { Button, Input, Textarea } from '@material-tailwind/react';
 import { ChangeEvent, useCallback, useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 interface BookRequest {
   id: number | null;
   title: string;
@@ -34,6 +35,7 @@ export default ({ authors, types }: any) => {
     status: 'ONGOING',
   });
   // const [progress, setProgress] = useState<number>(0);
+  // const [isAdder, setIsAdder] = useState<boolean>(false);
   const [image, setImage] = useState<File | null>(null);
   const [epub, setEpub] = useState<File | null>(null);
 
@@ -87,7 +89,16 @@ export default ({ authors, types }: any) => {
     e.preventDefault();
     try {
       const res = await axios.post(`/book/add`, form);
-      console.log(res.data);
+      if (form.url === '' || form.imageUrl === '') {
+        toast.error(
+          'Vui lòng chọn file ảnh và file epub, hoặc thử upload lại file',
+        );
+        return;
+      }
+      if (res.status === 200) {
+        // setIsAdder(true);
+        toast.success('Thêm sách thành công');
+      }
     } catch (error) {
       console.log(error);
     }
