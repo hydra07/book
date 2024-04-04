@@ -11,4 +11,10 @@ import java.util.List;
 public interface CommentRepository extends JpaRepository<Comment, Long> {
 //    List<Comment> findByBookId(Long id);
     List<Comment> findByBook(Book book);
+
+    List<Comment> findByParentIsNull();
+
+    List<Comment> findByBookIdAndParentIsNull(Long bookId);
+
+    List<Comment> findByBookIdOrderByLeftAsc(Long bookId);
 }

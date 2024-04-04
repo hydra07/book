@@ -130,6 +130,34 @@ public class BookService {
         Book book = findById(id);
         return commentService.findByBook(book);
     }
+    public Comment newComment(Book book,User user,CommentDTO dto){
+        Comment comment = new Comment();
+        comment.setContent(dto.getContent());
+        comment.setBook(book);
+        comment.setUser(user);
+        comment.setCreatedAt(new Date());
+        return commentService.createComment(comment);
+    }
+
+    public Comment replyComment(Long parentId, Book book, User user, CommentDTO dto){
+        Comment reply = new Comment();
+        reply.setBook(book);
+        reply.setUser(user);
+        reply.setContent(dto.getContent());
+        reply.setCreatedAt(new Date());
+        return commentService.replyComment(reply,parentId);
+    }
+
+    public List<Comment> getRootCommentByBookId(Long bookId){
+        return commentService.getRootCommentsByBookId(bookId);
+    }
+    public List<Comment> getCommentByBookId(Long bookId){
+        return commentService.getCommentsByBookId(bookId);
+    }
+
+    public List<Comment> getCommentTreeByBookId(Long bookId){
+        return commentService.getCommentTreeByBookId(bookId);
+    }
 }
 
 //    public Book addTypeToBook(Long bookID, TypeRequestDTO typeDTO) {
