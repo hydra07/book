@@ -7,7 +7,7 @@ import {
   Typography,
 } from '@material-tailwind/react';
 import { signOut } from 'next-auth/react';
-export default ({ user }: any) => {
+export default ({ user, isAdmin }: any) => {
   const handleLogout = () => {
     signOut({
       callbackUrl: '/',
@@ -50,6 +50,19 @@ export default ({ user }: any) => {
         >
           Tài khoản
         </MenuItem>
+        {isAdmin() && (
+          <MenuItem
+            color="lightBlue"
+            onClick={() => {
+              window.location.href = '/admin';
+            }}
+            placeholder={null}
+          >
+            Quản lý
+          </MenuItem>
+          
+          
+        )}
         <MenuItem
           color="lightBlue"
           onClick={handleLogout}

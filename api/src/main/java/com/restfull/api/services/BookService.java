@@ -1,9 +1,9 @@
 package com.restfull.api.services;
 
 import com.restfull.api.dtos.book.BookRequestDTO;
-import com.restfull.api.dtos.book.TypeRequestDTO;
+import com.restfull.api.dtos.book.CommentDTO;
 import com.restfull.api.entities.Book;
-import com.restfull.api.entities.Type;
+import com.restfull.api.entities.Comment;
 import com.restfull.api.entities.User;
 import com.restfull.api.enums.Status;
 import com.restfull.api.repositories.BookRepository;
@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
@@ -29,6 +30,9 @@ public class BookService {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private CommentService commentService;
 
     @Autowired
     private AuthorService authorService;
@@ -107,53 +111,72 @@ public class BookService {
         return " " + user.getFollowedBooks().contains(book) + book.getFollowedBook().contains(user) + " ";
     }
 
-    public Book addTypeToBook(Long bookID, TypeRequestDTO typeDTO) {
-        try {
-            // Get book from repository
-            Book book = findById(bookID);
-            // Check if the book is already in this type
-            if (book.getTypesIDString().contains(typeDTO.getId())) {
-                throw new NotFoundException("The specified type is already in the list!");
-            }
-            // Get type from service
-            Type type = typeService.getTypeById(typeDTO.getId());
-            // Add the type list to the book
-            book.addNewTypeToList(type);
-            // Save the book to the repository
-            return repository.save(book);
-        } catch (Exception e) {
-            String errorMessage = "An error occurred while adding the book to the type: " + e.getMessage();
-            throw new RuntimeException(errorMessage);
-        }
+    public Comment addComment(Book book, User user, CommentDTO dto) {
+        Comment comment = new Comment();
+        comment.setContent(dto.getContent());
+        comment.setBook(book);
+        comment.setUser(user);
+
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+//        LocalDateTime _createAt = LocalDateTime.parse(dto.getCreatedAt(), formatter);
+//        comment.setCreatedAt(Date.from(_createAt.atZone(java.time.ZoneId.systemDefault()).toInstant()));
+        comment.setCreatedAt(new Date());
+        return commentService.create(comment);
     }
 
-    // public Book removeTypeFromBook (Long bookID, TypeRequestDTO typeDTO){
-    // try {
-    // // Get book from repository
-    // Book book = findById(bookID);
-    // // Get type from service
-    // Type type = typeService.getTypeById(typeDTO.getId());
-    // // Check if the book is already in this type
-    // if (!book.getTypesIDString().contains(type.getId())) {
-    // throw new Exception("This book don't have that specified type!");
-    // }
-    // // Remove type from book
-    // book.removeTypeFromList(type);
-    // // Save the book to the repository
-    // return repository.save(book);
-    // } catch (Exception e) {
-    // String errorMessage = "An error occurred while remove the type from the book:
-    // " + e.getMessage();
-    // throw new RuntimeException(errorMessage);
-    // }
-    // }
-
-    // @Transactional
-    // public void createBook(BookDTO bookDTO){
-    // Book book = new Book(bookDTO);
-    // repository.save(book);
-    // book = setTypeByString(bookDTO.getTypes(), book);
-    // book = setImageByString(bookDTO.getImages(), book);
-    // update(book);
-    // }
+    public List<Comment> getComment(Long id) {
+        Book book = findById(id);
+        return commentService.findByBook(book);
+    }
 }
+
+//    public Book addTypeToBook(Long bookID, TypeRequestDTO typeDTO) {
+//        try {
+//            // Get book from repository
+//            Book book = findById(bookID);
+//            // Check if the book is already in this type
+//            if (book.getTypesIDString().contains(typeDTO.getId())) {
+//                throw new NotFoundException("The specified type is already in the list!");
+//            }
+//            // Get type from service
+//            Type type = typeService.getTypeById(typeDTO.getId());
+//            // Add the type list to the book
+//            book.addNewTypeToList(type);
+//            // Save the book to the repository
+//            return repository.save(book);
+//        } catch (Exception e) {
+//            String errorMessage = "An error occurred while adding the book to the type: " + e.getMessage();
+//            throw new RuntimeException(errorMessage);
+//        }
+//    }
+
+// public Book removeTypeFromBook (Long bookID, TypeRequestDTO typeDTO){
+// try {
+// // Get book from repository
+// Book book = findById(bookID);
+// // Get type from service
+// Type type = typeService.getTypeById(typeDTO.getId());
+// // Check if the book is already in this type
+// if (!book.getTypesIDString().contains(type.getId())) {
+// throw new Exception("This book don't have that specified type!");
+// }
+// // Remove type from book
+// book.removeTypeFromList(type);
+// // Save the book to the repository
+// return repository.save(book);
+// } catch (Exception e) {
+// String errorMessage = "An error occurred while remove the type from the book:
+// " + e.getMessage();
+// throw new RuntimeException(errorMessage);
+// }
+// }
+
+// @Transactional
+// public void createBook(BookDTO bookDTO){
+// Book book = new Book(bookDTO);
+// repository.save(book);
+// book = setTypeByString(bookDTO.getTypes(), book);
+// book = setImageByString(bookDTO.getImages(), book);
+// update(book);
+// }
+

@@ -114,8 +114,10 @@ export const authOptions: NextAuthOptions = {
         image: _user.image as string,
         phone: _user.phone as string,
         gender: _user.gender as boolean,
+        role: _user.role as Array<string>,
       };
-
+      console.log(session.user);
+      // console.log(session.user);
       // session.user.id = _user.id as number;
       // session.user.email = _user.email as string;
       // session.user.name = _user.name as string;
