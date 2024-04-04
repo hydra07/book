@@ -41,11 +41,11 @@ public class AuthController {
 
     @PostMapping("/google")
     public ResponseEntity<AuthResponseDTO> authenticateGoogle(@RequestBody GoogleRequestDTO dto) {
-        try {
-            emailService.sendWelcome(dto.getEmail(), dto.getName());
-        } catch (MessagingException | UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
-        }
+//        try {
+//            emailService.sendWelcome(dto.getEmail(), dto.getName());
+//        } catch (MessagingException | UnsupportedEncodingException e) {
+//            throw new RuntimeException(e);
+//        }
         return ResponseEntity.ok(authService.authenticateGoogle(dto));
     }
 

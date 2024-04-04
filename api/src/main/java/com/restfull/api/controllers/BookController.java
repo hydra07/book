@@ -13,6 +13,7 @@ import com.restfull.api.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -82,6 +83,40 @@ public class BookController {
 
 
 
+
+    @PostMapping("/addComment/{bookId}")
+    public ResponseEntity<?> addComment(@PathVariable Long bookId, @RequestHeader("Authorization") String token, @RequestBody CommentDTO dto) {
+        User user = jwtService.getUser(jwtService.validateRequestHeader(token));
+        Book book = bookService.findById(bookId);
+        Comment comment = bookService.newComment(book, user, dto);
+        return ResponseEntity.ok(new CommentDTO(comment));
+
+    }
+    @PostMapping("/repyComment/{bookId}")
+    public ResponseEntity<?> replyComment(@PathVariable Long bookId,@RequestHeader("Authorization") String token, @RequestBody CommentDTO dto){
+        User user = jwtService.getUser(jwtService.validateRequestHeader(token));
+        Book book = bookService.findById(bookId);
+        Comment comment = bookService.replyComment(dto.getParent().getId(),book, user,dto);
+        return ResponseEntity.ok(new CommentDTO(comment));
+    }
+
+    @GetMapping("getRootComment/{bookId}")
+    public ResponseEntity<?> getCommentById(@PathVariable Long bookId){
+//        Book book = bookService.findById(bookId);
+        List<Comment> comments = bookService.getRootCommentByBookId(bookId);
+        comments.stream().peek(comment -> System.out.println(comment.getId())).collect(Collectors.toList());
+        return ResponseEntity.ok(comments.stream().map(CommentDTO::new).toList());
+    }
+    @GetMapping("getAllCommentByBook/{bookId}")
+    public ResponseEntity<?> getAllCommentByBook(@PathVariable Long bookId){
+        List<Comment> comments = bookService.getCommentByBookId(bookId);
+        return ResponseEntity.ok(comments.stream().map(CommentDTO::new).toList());
+    }
+    @GetMapping("getTreeComment/{bookId}")
+    public ResponseEntity<?> getTreeComment(@PathVariable Long bookId){
+        List<Comment> comments = bookService.getCommentTreeByBookId(bookId);
+        return ResponseEntity.ok(comments.stream().map(CommentDTO::new).toList());
+    }
 //    @PostMapping("/addTypeToBook/{bookId}")
 //    public ResponseEntity<?> addTypeToBook(@PathVariable long bookId, @RequestBody TypeRequestDTO typeDTO) {
 //        try {

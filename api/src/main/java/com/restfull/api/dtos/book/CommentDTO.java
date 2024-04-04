@@ -52,6 +52,9 @@ public class CommentDTO {
     private CommentBook book;
     private CommentUser user;
 
+    private CommentDTO parent;
+    private Long left;
+    private Long right;
     private String createdAt;
 
     public CommentDTO(Comment comment){
@@ -61,5 +64,8 @@ public class CommentDTO {
         this.user = new CommentUser(comment.getUser().getId(), comment.getUser().getName(), comment.getUser().getAvatar());
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         this.createdAt = formatter.format(comment.getCreatedAt());
+        if (comment.getParent() != null)this.parent = new CommentDTO(comment.getParent());
+        this.left = comment.getLeft();
+        this.right = comment.getRight();
     }
 }
