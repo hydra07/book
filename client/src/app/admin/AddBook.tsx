@@ -1,4 +1,5 @@
 // 'use client';
+
 import axios from '@/lib/axios';
 import useUploadFile from '@/lib/hooks/useUploadFile';
 import { timeFormatter } from '@/utils/epub.utils';
@@ -23,16 +24,18 @@ export default ({ authors, types }: any) => {
   // const res= await.post(`/book/add/${parram.id}`);
   const [form, setForm] = useState<BookRequest>({
     id: null,
-    title: '',
+    title: "",
     authorId: authors[0].id,
-    description: '',
+    description: "",
     typesId: [],
+
     createdAt: timeFormatter(new Date()),
     lastUpdateAt: timeFormatter(new Date()),
     price: 0,
     url: '',
     imageUrl: '',
     status: 'ONGOING',
+
   });
   // const [progress, setProgress] = useState<number>(0);
   // const [isAdder, setIsAdder] = useState<boolean>(false);
@@ -76,6 +79,8 @@ export default ({ authors, types }: any) => {
     const { checked, value } = e.target;
     setForm((prevForm) => {
       if (checked) {
+
+
         return { ...prevForm, typesId: [...prevForm.typesId, Number(value)] };
       } else {
         return {
@@ -107,7 +112,7 @@ export default ({ authors, types }: any) => {
     (
       event: ChangeEvent<
         HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-      >,
+      >
     ) => {
       setForm((prev) => ({
         ...prev,
@@ -117,6 +122,7 @@ export default ({ authors, types }: any) => {
     },
 
     [form],
+
   );
 
   useEffect(() => {
@@ -227,7 +233,7 @@ export default ({ authors, types }: any) => {
         />
         <Button
           className="text-white content-center bg-green-600 w-1/2"
-          type={'submit'}
+          type={"submit"}
           placeholder={null}
         >
           Save
