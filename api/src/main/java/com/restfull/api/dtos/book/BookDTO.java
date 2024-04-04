@@ -36,7 +36,6 @@ public class BookDTO {
 //        this.images = book.getImagesString();
         this.types = book.getTypesString();
         this.status = book.getStatus().toString();
-        this.price = book.getPrice();
         this.followedUsers = book.getFollowedUsersString();
         this.rate = book.getRateString();
         this.createdAt = book.getCreatedAt();

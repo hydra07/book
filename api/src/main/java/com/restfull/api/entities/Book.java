@@ -52,8 +52,6 @@ public class Book {
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    private Double price = 0.0;
-
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "follow_book", joinColumns = @JoinColumn(name = "book_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
     private Set<User> followedBook = new HashSet<>();

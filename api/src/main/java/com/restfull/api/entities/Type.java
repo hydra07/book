@@ -34,8 +34,6 @@ public class Type {
     @Column(unique = true, columnDefinition = "NVARCHAR(250)")
     private String name;
 
-    private boolean license;
-
     @Column(columnDefinition = "NVARCHAR(2000)")
     private String description;
 
@@ -44,10 +42,9 @@ public class Type {
     @JsonBackReference
     private Set<Book> books = new HashSet<>();
 
-    public Type(String name, boolean license, String description) {
+    public Type(String name, String description) {
         super();
         this.name = name;
-        this.license = license;
         this.description = description;
     }
 
