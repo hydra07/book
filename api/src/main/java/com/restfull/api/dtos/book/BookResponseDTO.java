@@ -54,7 +54,6 @@ public class BookResponseDTO {
                             new BookType(type.getId(), type.getName())
                     ).collect(Collectors.toSet());
         this.views = book.getViews();
-        this.price = book.getPrice();
         this.createdAt = book.getCreatedAt();
         this.lastUpdateAt = book.getLastUpdateAt();
         this.rating = book.getAverageRate();

@@ -61,7 +61,6 @@ public class BookService {
         _book.setDescription(bookDto.getDescription());
         _book.setTypes(
                 bookDto.getTypesId().stream().map(id -> typeService.getTypeById(id)).collect(Collectors.toSet()));
-        _book.setPrice(bookDto.getPrice());
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         LocalDateTime _createAt = LocalDateTime.parse(bookDto.getCreatedAt(), formatter);
@@ -79,7 +78,6 @@ public class BookService {
         _book.setTitle(book.getTitle());
         _book.setDescription(book.getDescription());
         _book.setImageUrl(book.getImageUrl());
-        _book.setPrice(book.getPrice());
         _book.setCreatedAt(book.getCreatedAt());
         _book.setLastUpdateAt(book.getLastUpdateAt());
         _book.setFollowedBook(book.getFollowedBook());

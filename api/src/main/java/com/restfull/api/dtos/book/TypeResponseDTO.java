@@ -29,7 +29,6 @@ class BookShort {
         this.Author = book.getAuthor().getName();
         this.description = book.getDescription();
         this.views = book.getViews();
-        this.price = book.getPrice();
         this.rating = book.getAverageRate();
         this.status = book.getStatus().toString();
         this.imageUrl = book.getImageUrl();
