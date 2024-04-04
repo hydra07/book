@@ -9,6 +9,7 @@ import com.restfull.api.utils.NotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -33,17 +34,17 @@ public class CommentService {
         return repository.save(comment);
     }
 
-    public Comment createComment(Comment comment){
-
+    @Transactional
+    public Comment add(Comment comment){
         if (comment.getParent() == null){
             setLeftAndRightForNewRootComment(comment);
         } else {
             setLeftAndRightForNewChildComment(comment);
         }
-        System.out.println(comment.getRight()+ " "+comment.getLeft());
         return repository.save(comment);
     }
 
+    @Transactional
     public Comment replyComment(Comment reply,Long parentId){
         Comment parent = repository.findById(parentId)
                 .orElseThrow(() -> new NotFoundException("Comment Not found"));
@@ -60,58 +61,67 @@ public class CommentService {
     public List<Comment> getCommentsByBookId(Long bookId){
         return repository.findByBookIdOrderByLeftAsc(bookId);
     }
-//    public List<Comment> getCommentTreeByBookId(Long bookId) {
-//        List<Comment> comments = repository.findByBookIdOrderByLeftAsc(bookId);
-//        return buildCommentTree(comments);
-//    }
-//    public List<Comment> buildCommentTree(List<Comment> comments){
-//        List<Comment> rootComments = new ArrayList<>();
-//        Map<Long, Comment> commentMap = new HashMap<>();
-//
-//        for(Comment comment:comments){
-//            commentMap.put(comment.getId(),comment);
-//        }
-//
-//        for(Comment comment:comments){
-//            if (comment.getParent() == null){
-//                rootComments.add(comment);
-//            } else {
-//                Comment parent = commentMap.get(comment.getParent().getId());
-//                if (parent != null){
-////                    parent.getChildren().add(comment);
-//                    comment.setParent(parent);
-//                }
-//            }
-//        }
-//        return rootComments;
-//    }
+    //Get all Child comments of a comment
+    public List<Comment> getAllChildComments(Comment parent){
+        List<Comment> childComments = new ArrayList<>();
+        getChildCommentsRecursive(parent,childComments);
+        return childComments;
+    }
 
+    private Long getMinLeft(List<Comment> comments){
+        return comments.stream()
+                .mapToLong(Comment::getLeft)
+                .min()
+                .orElse(0);
+    }
 
-
-    private void setLeftAndRightForNewRootComment(Comment comment){
-        Long maxRgt = repository.findAll().stream()
+    private Long getMaxRight(List<Comment> comments){
+        return comments.stream()
                 .mapToLong(Comment::getRight)
                 .max()
                 .orElse(0);
-        comment.setLeft(maxRgt + 1);
-        comment.setRight(maxRgt + 2);
+    }
+
+
+    private void getChildCommentsRecursive(Comment parent, List<Comment> childComments){
+        List<Comment> directChildComments = repository.findByParent(parent);
+        for (Comment child: directChildComments){
+            childComments.add(child);
+            getChildCommentsRecursive(child,childComments);
+        }
+    }
+
+    private void setLeftAndRightForNewRootComment(Comment comment){
+        Long maxRight = getMaxRight(repository.findAll());
+        comment.setLeft(maxRight + 1);
+        comment.setRight(maxRight + 2);
     }
     private void setLeftAndRightForNewChildComment(Comment comment){
         Comment parent = comment.getParent();
-        Long maxRgtBeforeParent = repository.findAll().stream()
-                .filter((c) ->  c.getRight() < parent.getLeft())
-                .mapToLong(Comment::getRight)
-                .max()
-                .orElse(0);
-        repository.findAll().stream()
-                .filter(c -> c.getLeft() > maxRgtBeforeParent)
+        comment.setLeft(parent.getRight());
+        comment.setRight(parent.getRight() + 1);
+        repository.save(comment);
+//        parent.setRight(comment.getRight() + 1);
+//        repository.save(parent);
+        updateRight(parent);
+        repository.findAll().stream().filter(c -> c.getLeft() >= comment.getRight())
                 .forEach(c -> {
-                    c.setLeft(c.getLeft() + 2);
-                    c.setRight(c.getRight() + 2);
-                });
-        comment.setLeft(maxRgtBeforeParent + 1);
-        comment.setRight(maxRgtBeforeParent + 2);
+                            c.setLeft(c.getLeft() + 2);
+                            c.setRight(c.getRight() + 2);
+                            repository.save(c);
+                        }
+                );
     }
-
+    private void updateRight(Comment comment){
+        comment.setRight(comment.getRight() + 2);
+        repository.save(comment);
+        if (comment.getParent() != null) updateRight(comment.getParent());
+    }
+    private Comment findRootComment(Comment comment) {
+        if (comment.getParent() == null) {
+            return comment;
+        }
+        return findRootComment(comment.getParent());
+    }
 
 }

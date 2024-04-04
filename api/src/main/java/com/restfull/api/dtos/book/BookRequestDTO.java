@@ -13,7 +13,7 @@ public class BookRequestDTO {
     private Long authorId;
     private String description;
     private Set<Long> typesId = new HashSet<>();
-    private double price;
+//    private double price;
     private String createdAt;
     private String lastUpdateAt;
     private String url;

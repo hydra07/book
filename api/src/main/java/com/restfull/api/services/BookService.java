@@ -134,7 +134,7 @@ public class BookService {
         comment.setBook(book);
         comment.setUser(user);
         comment.setCreatedAt(new Date());
-        return commentService.createComment(comment);
+        return commentService.add(comment);
     }
 
     public Comment replyComment(Long parentId, Book book, User user, CommentDTO dto){
@@ -153,9 +153,9 @@ public class BookService {
         return commentService.getCommentsByBookId(bookId);
     }
 
-    public List<Comment> getCommentTreeByBookId(Long bookId){
-        return commentService.getCommentTreeByBookId(bookId);
-    }
+//    public List<Comment> getCommentTreeByBookId(Long bookId){
+//        return commentService.getCommentTreeByBookId(bookId);
+//    }
 }
 
 //    public Book addTypeToBook(Long bookID, TypeRequestDTO typeDTO) {
