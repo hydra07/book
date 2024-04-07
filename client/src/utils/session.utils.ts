@@ -18,5 +18,6 @@ export default async (): Promise<User | null> => {
     image: session?.user.image as string,
     phone: session?.user.phone as string,
     gender: session?.user.gender as boolean,
+    
   } as User;
 };

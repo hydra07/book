@@ -20,10 +20,20 @@ export default function useUser() {
     if (_user != undefined) {
       setUser(_user);
     }
-    // console.log(_user);
   };
   useEffect(() => {
     setInfor();
+    // console.log(user);
   }, [session?.user]);
-  return { user, status };
+
+  const isAdmin = () => {
+    if (!user || !user.role) return false;
+    // console.log(user.role);
+    if (user.role.includes('Administrator')) return true;
+    // if (user.role.includes('Administrator')) {
+    //   return true;
+    // }
+    return false;
+  };
+  return { user, status, isAdmin };
 }
