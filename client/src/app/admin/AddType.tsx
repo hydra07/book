@@ -39,6 +39,7 @@ export default () => {
     try {
       const res = await axios.post(`/type/new`, type);
       console.log(res.data);
+      toast.success("Thêm thành công  ");
       setType(type);
     } catch (error) {
       console.error("Error adding author:", error);

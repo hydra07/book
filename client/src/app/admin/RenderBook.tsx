@@ -1,3 +1,4 @@
+"use client"
 import axios from "@/lib/axios";
 import {
   Avatar,
@@ -13,8 +14,9 @@ import { SetStateAction, useEffect, useState } from "react";
 // import EditBook from "./EditBook";
 import { useRouter } from "next/router";
 import { timeFormatter } from "@/utils/epub.utils";
+import EditBook from "./EditBook";
 
-interface BookDTO {
+export interface BookDTO {
   id: number | null;
   title: string;
   authorId: number;
@@ -26,16 +28,41 @@ interface BookDTO {
   imageUrl: string;
   status: "ONGOING" | "COMPLETED" | "DISCONTINUED";
 }
+const fetchType = async () => {
+  try {
+    const res = await axios.get(`/type/getAll`);
+    return await res.data;
+  } catch (error) {
+    return null;
+  }
+};
 
-export default () => {
+const fetchAuthor = async () => {
+  try {
+    const res = await axios.get(`/author/getAll`);
+    console.log(res.data);
+    return await res.data;
+  } catch (error) {
+    return null;
+  }
+};
+
+export default   () => {
+  const [authors, setAuthors] = useState<any[]>([]);
+  const [types, setTypes] = useState<any[]>([]);
+
   const [books, setBooks] = useState<BookDTO[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedBook, setSelectedBook] = useState<BookDTO | null>(null);
-  
+
   const TABLE_HEAD = ["Title", "Status", "Create At", "Last Update At", ""];
 
   useEffect(() => {
     const fetchBooks = async () => {
+      const fetchedAuthors = await fetchAuthor();
+      const fetchedTypes = await fetchType();
+      setAuthors(fetchedAuthors);
+      setTypes(fetchedTypes);
       try {
         const response = await axios.get("/book/getAll");
         setBooks(response.data);
@@ -56,6 +83,7 @@ export default () => {
   };
   const ClosedModal = () => {
     setIsModalOpen(false);
+ 
   };
   return (
     <Card
@@ -82,7 +110,15 @@ export default () => {
         <tbody>
           {books.map(
             (
-              { title, status, imageUrl, createdAt, lastUpdateAt }: BookDTO,
+              {
+                title,
+                status,
+                imageUrl,
+                createdAt,
+                lastUpdateAt,
+                authorId,
+                typesId,
+              }: BookDTO,
               index
             ) => {
               const isLast = index === books.length - 1;
@@ -195,14 +231,16 @@ export default () => {
           )}
         </tbody>
       </table>
-      {/* {isModalOpen && (
+      {isModalOpen && (
         <EditBook
           book={selectedBook}
           closeModal={ClosedModal}
           books={books}
           setBooks={setBooks}
+          authors={authors}
+          types={types}
         />
-      )} */}
+      )}
     </Card>
   );
 };
