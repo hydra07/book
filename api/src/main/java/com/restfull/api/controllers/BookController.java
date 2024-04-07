@@ -1,5 +1,6 @@
 package com.restfull.api.controllers;
 
+import com.restfull.api.dtos.book.BookDTO;
 import com.restfull.api.dtos.book.BookRequestDTO;
 import com.restfull.api.dtos.book.BookResponseDTO;
 import com.restfull.api.dtos.book.CommentDTO;
@@ -23,9 +24,8 @@ import java.util.stream.Collectors;
 @RequestMapping("/book")
 public class BookController {
 
-
-//    @Autowired
-//    private UserService userService;
+    // @Autowired
+    // private UserService userService;
     @Autowired
     private JwtService jwtService;
     @Autowired
@@ -48,10 +48,10 @@ public class BookController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<?> search(@RequestParam(name = "keyword", defaultValue = "") String keyword) {
-        List<Book> books = bookService.searchByName(keyword.toLowerCase(),
-                keyword.toLowerCase().substring(0, keyword.length() - 1));
-        return ResponseEntity.ok(books);
+    public ResponseEntity<List<BookDTO>> searchBooks(
+            @RequestParam(name = "keyword", defaultValue = "") String keyword) {
+        List<BookDTO> foundBooks = bookService.searchByName(keyword);
+        return ResponseEntity.ok(foundBooks);
     }
 
     @PostMapping("/views/{id}")
@@ -67,67 +67,67 @@ public class BookController {
     }
 
     @PostMapping("/comment/{id}")
-    public ResponseEntity<?> comment(@PathVariable Long id, @RequestHeader("Authorization") String token, @RequestBody CommentDTO dto){
+    public ResponseEntity<?> comment(@PathVariable Long id, @RequestHeader("Authorization") String token,
+            @RequestBody CommentDTO dto) {
         try {
             User user = jwtService.getUser(jwtService.validateRequestHeader(token));
             Book book = bookService.findById(id);
-            System.out.println(user.getEmail()+ " : " + book.getTitle());
+            System.out.println(user.getEmail() + " : " + book.getTitle());
             Comment comment = bookService.addComment(book, user, dto);
             return ResponseEntity.ok(new CommentDTO(comment));
-        }
-        catch (Exception e) {
-//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch (Exception e) {
+            // return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
-
-
-
     @PostMapping("/addComment/{bookId}")
-    public ResponseEntity<?> addComment(@PathVariable Long bookId, @RequestHeader("Authorization") String token, @RequestBody CommentDTO dto) {
+    public ResponseEntity<?> addComment(@PathVariable Long bookId, @RequestHeader("Authorization") String token,
+            @RequestBody CommentDTO dto) {
         User user = jwtService.getUser(jwtService.validateRequestHeader(token));
         Book book = bookService.findById(bookId);
         Comment comment = bookService.newComment(book, user, dto);
         return ResponseEntity.ok(new CommentDTO(comment));
 
     }
+
     @PostMapping("/repyComment/{bookId}")
-    public ResponseEntity<?> replyComment(@PathVariable Long bookId,@RequestHeader("Authorization") String token, @RequestBody CommentDTO dto){
+    public ResponseEntity<?> replyComment(@PathVariable Long bookId, @RequestHeader("Authorization") String token,
+            @RequestBody CommentDTO dto) {
         User user = jwtService.getUser(jwtService.validateRequestHeader(token));
         Book book = bookService.findById(bookId);
-        Comment comment = bookService.replyComment(dto.getParent().getId(),book, user,dto);
+        Comment comment = bookService.replyComment(dto.getParent().getId(), book, user, dto);
         return ResponseEntity.ok(new CommentDTO(comment));
     }
 
     @GetMapping("getRootComment/{bookId}")
-    public ResponseEntity<?> getCommentById(@PathVariable Long bookId){
-//        Book book = bookService.findById(bookId);
+    public ResponseEntity<?> getCommentById(@PathVariable Long bookId) {
+        // Book book = bookService.findById(bookId);
         List<Comment> comments = bookService.getRootCommentByBookId(bookId);
         comments.stream().peek(comment -> System.out.println(comment.getId())).collect(Collectors.toList());
         return ResponseEntity.ok(comments.stream().map(CommentDTO::new).toList());
     }
+
     @GetMapping("getAllCommentByBook/{bookId}")
-    public ResponseEntity<?> getAllCommentByBook(@PathVariable Long bookId){
+    public ResponseEntity<?> getAllCommentByBook(@PathVariable Long bookId) {
         List<Comment> comments = bookService.getCommentByBookId(bookId);
         return ResponseEntity.ok(comments.stream().map(CommentDTO::new).toList());
     }
-//    @GetMapping("getTreeComment/{bookId}")
-//    public ResponseEntity<?> getTreeComment(@PathVariable Long bookId){
-//        List<Comment> comments = bookService.getCommentTreeByBookId(bookId);
-//        return ResponseEntity.ok(comments.stream().map(CommentDTO::new).toList());
-//    }
-//    @PostMapping("/addTypeToBook/{bookId}")
-//    public ResponseEntity<?> addTypeToBook(@PathVariable long bookId, @RequestBody TypeRequestDTO typeDTO) {
-//        try {
-//            bookService.addTypeToBook(bookId, typeDTO);
-//            return ResponseEntity.ok("Successfully added!");
-//        } catch (Exception e) {
-//            return ResponseEntity.badRequest().body(e.getMessage());
-//        }
-//    }
-
-
+    // @GetMapping("getTreeComment/{bookId}")
+    // public ResponseEntity<?> getTreeComment(@PathVariable Long bookId){
+    // List<Comment> comments = bookService.getCommentTreeByBookId(bookId);
+    // return ResponseEntity.ok(comments.stream().map(CommentDTO::new).toList());
+    // }
+    // @PostMapping("/addTypeToBook/{bookId}")
+    // public ResponseEntity<?> addTypeToBook(@PathVariable long bookId,
+    // @RequestBody TypeRequestDTO typeDTO) {
+    // try {
+    // bookService.addTypeToBook(bookId, typeDTO);
+    // return ResponseEntity.ok("Successfully added!");
+    // } catch (Exception e) {
+    // return ResponseEntity.badRequest().body(e.getMessage());
+    // }
+    // }
 
     // @PostMapping("/removeTypeFromBook/{bookId}")
     // public ResponseEntity<?> removeTypeFromBook(@RequestBody TypeRequestDTO

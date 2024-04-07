@@ -1,5 +1,6 @@
 package com.restfull.api.repositories;
 
+import com.restfull.api.dtos.book.BookDTO;
 import com.restfull.api.entities.Book;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -13,8 +14,9 @@ import java.util.Optional;
 
 @Repository
 public interface BookRepository extends JpaRepository<Book, Long> {
-    @Query("SELECT b FROM Book b WHERE LOWER(b.title) LIKE LOWER(CONCAT('%', :keyword, '%')) OR LOWER(b.title) LIKE LOWER(CONCAT('%', :keyword1, '%'))")
-    List<Book> searchByName(@Param("keyword") String keyword, @Param("keyword1") String keyword1);
+    @Query("SELECT b FROM Book b WHERE b.title LIKE %?1%")
+
+    List<BookDTO> searchByName(String keyword);
 
     Optional<Book> findById(long id);
 
