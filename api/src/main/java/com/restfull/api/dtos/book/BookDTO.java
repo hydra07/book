@@ -22,7 +22,6 @@ public class BookDTO {
     private List<String> images;
     private Set<String> types;
     private String status;
-    private Double price;
     private Set<String> followedUsers;
     private Set<Integer> rate;
     private Date createdAt;
@@ -35,8 +34,7 @@ public class BookDTO {
         this.description = book.getDescription();
 //        this.images = book.getImagesString();
         this.types = book.getTypesString();
-        this.status = book.getStatus().toString();
-        this.price = book.getPrice();
+        this.status = book.getStatus().toString();       
         this.followedUsers = book.getFollowedUsersString();
         this.rate = book.getRateString();
         this.createdAt = book.getCreatedAt();
