@@ -1,16 +1,15 @@
 'use client'
 import React, { useState, useEffect } from 'react';
-import axios from '../../lib/axios';
+import axios from '../../../lib/axios';
 import Book from '@/types/book';
-import BookCard from '../(components)/search/BookCard';
+import BookCard from '../../(components)/search/BookCard';
 
-const SearchPage: React.FC = () => {
+const SearchPage: React.FC<{ params: { keyword: string } }> = ({ params }) => {
   const [books, setBooks] = useState<Book[]>([]);
-
   useEffect(() => {
     const fetchBooks = async () => {  
       try {
-        const res = await axios.get(`/book/search`, { params: { keyword: '' } });
+        const res = await axios.get(`/book/search?keyword=${params.keyword}`);
         setBooks(res.data);
       } catch (error) {
         console.error('Error fetching books:', error);

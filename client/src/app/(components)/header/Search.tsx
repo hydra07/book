@@ -15,7 +15,7 @@ const Search = () => {
     event.preventDefault();
     console.log(searchValue);
     console.log('submit');
-    router.push(`/search?keyword=${searchValue}`);
+    router.push(`/search/${searchValue}`);
   };
   
   return (
