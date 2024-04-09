@@ -18,6 +18,7 @@ import { SetStateAction, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { timeFormatter } from "@/utils/epub.utils";
 import EditBook from "./EditBook";
+import SearchList from "./SearchList";
 
 export interface BookDTO {
   id: number | null;
@@ -88,21 +89,18 @@ export default () => {
     setIsModalOpen(false);
   };
   return (
-    <Card
-      placeholder={null}
-      className="h-full w-full bg-gray-600  overflow-scroll"
-    >
-      <CardHeader placeholder={null}>
-        {" "}
-        <div className="w-full md:w-72">
-          <Input
-            crossOrigin={null}
-            label="Search"
-            
-          />
+    <Card placeholder={null} className="h-full w-full bg-gray-700 ">
+      <CardHeader
+        floated={false}
+        shadow={false}
+        className="rounded-none bg-gray-700 flex "
+        placeholder={null}
+      >
+        <div className="ml-auto">
+          <SearchList />
         </div>
       </CardHeader>
-      <CardBody placeholder={null}>
+      <CardBody placeholder={null} className=" overflow-scroll">
         <table className=" bg-gray-600 w-full min-w-max table-auto text-left ">
           <thead>
             <tr>

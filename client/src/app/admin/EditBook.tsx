@@ -69,7 +69,7 @@ export default ({
   const type = () => {
     return types.map((type: any, index: number) => {
       return (
-        <div key={index} className="">
+        <div key={index} className=" text-white">
           <input
             type="checkbox"
             id={`type-${index}`}
@@ -220,7 +220,7 @@ export default ({
               </label>
             </div>
             <Textarea
-              className="text-white"
+              className="text-white "
               variant="standard"
               id="description"
               label="Mô tả"
@@ -228,7 +228,7 @@ export default ({
               value={form.description}
               onChange={handleChange}
             />
-            <div className="flex flex-col space-y-3">
+            <div className="flex flex-col space-y-3 text-white">
               <div>Chọn thể loại:</div>
               <div className="grid grid-cols-3 gap-2">{type()}</div>
             </div>
