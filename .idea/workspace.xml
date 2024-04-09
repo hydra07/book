@@ -5,19 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="477fab1f-1ad2-4431-9c54-95663c139b42" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/.idea/book.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/java/com/restfull/api/controllers/BookController.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/com/restfull/api/controllers/BookController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/java/com/restfull/api/repositories/BookRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/com/restfull/api/repositories/BookRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/java/com/restfull/api/services/BookService.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/com/restfull/api/services/BookService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -46,9 +38,9 @@
     "RequestMappingsPanelWidth1": "75",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "Spring Boot.ApiApplication.executor": "Run",
-    "git-widget-placeholder": "master",
+    "git-widget-placeholder": "hoang",
+    "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "D:/OJT/book",
     "node.js.detected.package.eslint": "true",
@@ -57,13 +49,14 @@
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "settings.editor.selected.configurable": "preferences.pluginManager",
+    "ts.external.directory.path": "C:\\Program Files\\JetBrains\\IntelliJ IDEA 2023.3.4\\plugins\\javascript-impl\\jsLanguageServicesImpl\\external",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
   <component name="RunManager">
     <configuration name="ApiApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
-      <module name="api" />
+      <module name="book" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.restfull.api.ApiApplication" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -88,6 +81,10 @@
       <updated>1712415815461</updated>
       <workItem from="1712415816509" duration="7172000" />
       <workItem from="1712426229183" duration="40000" />
+      <workItem from="1712544543131" duration="96000" />
+      <workItem from="1712544757095" duration="746000" />
+      <workItem from="1712545556702" duration="32000" />
+      <workItem from="1712546417705" duration="559000" />
     </task>
     <servers />
   </component>

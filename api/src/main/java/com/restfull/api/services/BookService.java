@@ -1,11 +1,8 @@
 package com.restfull.api.services;
 
-import com.restfull.api.dtos.book.BookDTO;
 import com.restfull.api.dtos.book.BookRequestDTO;
 import com.restfull.api.dtos.book.CommentDTO;
-import com.restfull.api.entities.Book;
-import com.restfull.api.entities.Comment;
-import com.restfull.api.entities.User;
+import com.restfull.api.entities.*;
 import com.restfull.api.enums.Status;
 import com.restfull.api.repositories.BookRepository;
 import com.restfull.api.utils.NotFoundException;
@@ -14,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
@@ -45,9 +41,20 @@ public class BookService {
     public Book findById(Long id) {
         return repository.findById(id).orElseThrow(() -> new NotFoundException("Book not found: " + id));
     }
+// In BookService.java
 
-    public List<BookDTO> searchByName(String keyword) {
+// ...
+
+
+    // ...
+    public List<Book> searchBooksByTitle(String keyword) {
         return repository.searchByName(keyword);
+    }
+    public List<Author> searchByAuthor(String keyword)   {
+        return repository.searchByAuthor(keyword);
+    }
+    public List<Type> searchByType(String keyword)   {
+        return repository.searchByType(keyword);
     }
 
     public Book create(Book book) {

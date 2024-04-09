@@ -1,20 +1,14 @@
 package com.restfull.api.controllers;
 
-import com.restfull.api.dtos.book.BookDTO;
 import com.restfull.api.dtos.book.BookRequestDTO;
 import com.restfull.api.dtos.book.BookResponseDTO;
 import com.restfull.api.dtos.book.CommentDTO;
-import com.restfull.api.dtos.book.TypeRequestDTO;
-import com.restfull.api.entities.Book;
-import com.restfull.api.entities.Comment;
-import com.restfull.api.entities.User;
+import com.restfull.api.dtos.book.SearchResponseDTO;
+import com.restfull.api.entities.*;
 import com.restfull.api.services.BookService;
 import com.restfull.api.services.JwtService;
-import com.restfull.api.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -48,10 +42,12 @@ public class BookController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<BookDTO>> searchBooks(
+    public ResponseEntity<SearchResponseDTO> searchBooks(
             @RequestParam(name = "keyword", defaultValue = "") String keyword) {
-        List<BookDTO> foundBooks = bookService.searchByName(keyword);
-        return ResponseEntity.ok(foundBooks);
+        List<Book> foundBooksByTitle = bookService.searchBooksByTitle(keyword);
+        List<Author> foundAuthorsByBook = bookService.searchByAuthor(keyword);
+        List<Type> foundTypesByBook = bookService.searchByType(keyword);
+        return ResponseEntity.ok(new SearchResponseDTO(foundBooksByTitle, foundAuthorsByBook, foundTypesByBook));
     }
 
     @PostMapping("/views/{id}")
