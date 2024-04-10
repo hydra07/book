@@ -7,6 +7,7 @@ import com.restfull.api.enums.Status;
 import com.restfull.api.repositories.BookRepository;
 import com.restfull.api.utils.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -81,17 +82,34 @@ public class BookService {
         return repository.save(_book);
     }
 
-    public Book update(Book book) {
-        Book _book = findById(book.getId());
-        _book.setTitle(book.getTitle());
-        _book.setDescription(book.getDescription());
-        _book.setImageUrl(book.getImageUrl());
-        _book.setCreatedAt(book.getCreatedAt());
-        _book.setLastUpdateAt(book.getLastUpdateAt());
-        _book.setFollowedBook(book.getFollowedBook());
-        _book.setTypes(book.getTypes());
+    public Book update(BookRequestDTO bookDto) {
+        Book _book = findById(bookDto.getId());
+        _book.setTitle(bookDto.getTitle());
+        _book.setAuthor(authorService.findById(bookDto.getAuthorId()));
+        _book.setDescription(bookDto.getDescription());
+        _book.setImageUrl(bookDto.getImageUrl());
+        _book.setStatus(Status.valueOf(bookDto.getStatus()));
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime _lastUpdateAt = LocalDateTime.parse(bookDto.getLastUpdateAt(), formatter);
+        _book.setLastUpdateAt(Date.from(_lastUpdateAt.atZone(java.time.ZoneId.systemDefault()).toInstant()));
+        _book.setUrl(bookDto.getUrl());
+
+//        _book.setFollowedBook(book.getFollowedBook());
+        _book.setTypes(
+                bookDto.getTypesId().stream().map(id -> typeService.getTypeById(id)).collect(Collectors.toSet()));
         return repository.save(_book);
     }
+//    public Book update(Book book) {
+//        return repository.findById(book.getId()).map(existingBook -> {
+//            existingBook.setTitle(book.getTitle());
+//            existingBook.setDescription(book.getDescription());
+//            existingBook.setImageUrl(book.getImageUrl());
+//            existingBook.setCreatedAt(book.getCreatedAt());
+//            existingBook.setLastUpdateAt(book.getLastUpdateAt());
+//            existingBook.setTypes(book.getTypes());
+//            return repository.save(existingBook);
+//        }).orElseThrow(() -> new NotFoundException("Book not found: " + book.getId()));
+//    }
 
     public void delete(Long id) {
         Book book = findById(id);
@@ -104,15 +122,29 @@ public class BookService {
         repository.updateViews(id, book.getViews());
         // update(book);
     }
-
+    public List<Book> findAllSortedByViews() {
+        return repository.findAll(Sort.by(Sort.Direction.DESC, "views"));
+    }
     public void addFollowedUser(Book book, User user) {
         book.getFollowedBook().add(user);
-        update(book);
+        BookRequestDTO bookDto = convertToBookRequestDTO(book);
+        update(bookDto);
     }
 
     public void removeFollowedUser(Book book, User user) {
         book.getFollowedBook().removeIf(_user -> _user.getId().equals(user.getId()));
-        update(book);
+        BookRequestDTO bookDto = convertToBookRequestDTO(book);
+        update(bookDto);
+    }
+
+    private BookRequestDTO convertToBookRequestDTO(Book book) {
+        BookRequestDTO bookDto = new BookRequestDTO();
+        bookDto.setId(book.getId());
+        bookDto.setTitle(book.getTitle());
+        bookDto.setDescription(book.getDescription());
+        bookDto.setImageUrl(book.getImageUrl());
+        // ... set other fields as necessary ...
+        return bookDto;
     }
 
     public String isUserFollowedBook(User user, Book book) {

@@ -5,10 +5,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="477fab1f-1ad2-4431-9c54-95663c139b42" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/book.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -42,7 +38,7 @@
     "git-widget-placeholder": "hoang",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/OJT/book",
+    "last_opened_file_path": "D:/book/api",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -85,6 +81,7 @@
       <workItem from="1712544757095" duration="746000" />
       <workItem from="1712545556702" duration="32000" />
       <workItem from="1712546417705" duration="559000" />
+      <workItem from="1712646978263" duration="344000" />
     </task>
     <servers />
   </component>

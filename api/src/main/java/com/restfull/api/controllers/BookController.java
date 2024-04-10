@@ -55,7 +55,17 @@ public class BookController {
         bookService.increaseViews(id);
         return ResponseEntity.ok(new BookResponseDTO(bookService.findById(id)));
     }
-
+    @GetMapping("/sorted-by-views")
+        public ResponseEntity<List<BookResponseDTO>> sortedByViews() {
+            List<Book> books = bookService.findAllSortedByViews();
+            List<BookResponseDTO> bookResponseDTOs = books.stream().map(BookResponseDTO::new).collect(Collectors.toList());
+            return ResponseEntity.ok(bookResponseDTOs);
+    }
+    @PutMapping("/update/{id}")
+    public ResponseEntity<?> updateBook(@PathVariable Long id, @RequestBody BookRequestDTO book) {
+        bookService.update(book);
+        return ResponseEntity.ok(new BookResponseDTO(bookService.findById(id)));
+    }
     @GetMapping("/comment/{id}")
     public ResponseEntity<?> comment(@PathVariable Long id) {
         List<Comment> comments = bookService.getComment(id);
