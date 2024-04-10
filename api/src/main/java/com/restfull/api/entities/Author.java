@@ -36,5 +36,8 @@ public class Author {
         this.name = name;
         this.description = description;
     }
-
+    public Author(String name) {
+        super();
+        this.name = name;
+    }
 }
