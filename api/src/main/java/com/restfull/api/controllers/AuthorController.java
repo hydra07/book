@@ -42,7 +42,9 @@ public class AuthorController {
     @PostMapping("/add")
     public ResponseEntity<?> add(@RequestBody AuthorRequestDTO dto) {
         try {
-            return ResponseEntity.ok(new AuthorResponseDTO(authorService.createAuthor(dto)));
+            authorService.createAuthor(dto);
+            return ResponseEntity.ok("Successfully added!");
+//            return ResponseEntity.ok(new AuthorResponseDTO(authorService.createAuthor(dto)));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

@@ -73,7 +73,12 @@ export const authOptions: NextAuthOptions = {
     async signIn({ account, user }) {
       // console.log('account ', user);
       if (account?.provider === 'google') {
-        const res = await axios.post(`/auth/google`, user);
+        const data = {
+          name: user.name,
+          email: user.email,
+          avatar: user.image,
+        };
+        const res = await axios.post(`/auth/google`, data);
         if (res.data) {
           // console.log('res.data ', JSON.stringify(res.data));
           (user as any).token = res.data.token;
@@ -109,8 +114,10 @@ export const authOptions: NextAuthOptions = {
         image: _user.image as string,
         phone: _user.phone as string,
         gender: _user.gender as boolean,
+        role: _user.role as Array<string>,
       };
-
+      console.log(session.user);
+      // console.log(session.user);
       // session.user.id = _user.id as number;
       // session.user.email = _user.email as string;
       // session.user.name = _user.name as string;

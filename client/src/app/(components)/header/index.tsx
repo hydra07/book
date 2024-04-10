@@ -7,7 +7,7 @@ import TypeButton from './TypeButton';
 import UserAvatar from './UserAvatar';
 export default () => {
   const [isAtTop, setIsAtTop] = useState(true);
-  const { user, status } = useUser();
+  const { user, status, isAdmin } = useUser();
   const handleScroll = () => {
     const scrollY = window.scrollY;
     if (scrollY > 0) {
@@ -52,7 +52,7 @@ export default () => {
           <div className="flex gap-6 h-fit items-center whitespace-nowrap">
             <Search />
             {user && JSON.stringify(user) !== '{}' ? (
-              <UserAvatar user={user} />
+              <UserAvatar user={user} isAdmin={isAdmin}/>
             ) : (
               <AuthButton />
             )}

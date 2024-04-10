@@ -20,7 +20,6 @@ public class TypeDTO {
     public TypeDTO(Type type){
         this.id = type.getId();
         this.name = type.getName();
-        this.license = type.isLicense();
         this.description = type.getDescription();
         this.books = type.getBooksString();
     }

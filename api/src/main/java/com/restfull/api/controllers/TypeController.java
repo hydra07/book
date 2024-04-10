@@ -69,7 +69,8 @@ public class TypeController {
     public ResponseEntity<?> newType(@RequestBody TypeRequestDTO dto) {
         try {
             Type type = typeService.createType(dto);
-            return ResponseEntity.ok(new TypeResponseDTO(type));
+//            return ResponseEntity.ok(new TypeResponseDTO(type));
+            return ResponseEntity.ok("Successfully added!");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
