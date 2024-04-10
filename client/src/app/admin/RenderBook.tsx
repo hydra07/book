@@ -119,119 +119,84 @@ export default () => {
             </tr>
           </thead>
           <tbody>
-            {books.map(
-              (
-                {
-                  title,
-                  status,
-                  imageUrl,
-                  createdAt,
-                  lastUpdateAt,
-                  authorId,
-                  typesId,
-                }: BookDTO,
-                index
-              ) => {
-                const isLast = index === books.length - 1;
-                const classes = isLast
-                  ? "p-4 text-white"
-                  : " text-white bg-gray-600 p-4 ";
-                const formattedCreatedAt = createdAt
-                  ? new Date(createdAt.replace(" ", "T")).toLocaleDateString()
-                  : "N/A";
-                const formattedLastUpdateAt = lastUpdateAt
-                  ? new Date(
-                      lastUpdateAt.replace(" ", "T")
-                    ).toLocaleDateString()
-                  : "N/A";
-                return (
-                  <tr key={title}>
-                    <td className={`${classes} flex flex-row   `}>
-                      <Avatar
-                        placeholder={null}
-                        variant="square"
-                        src={imageUrl}
-                      ></Avatar>
-                      <Typography
-                        placeholder={null}
-                        variant="small"
-                        color="white"
-                        className="font-normal px-3"
-                      >
-                        {title}
-                      </Typography>
-                    </td>
+            {books.map((book) => {
+              
+              return (
+                <tr key={book.id}>
+                  <td className="text-white bg-gray-600 p-4 flex flex-row">
+                    <Avatar
+                      placeholder={null}
+                      variant="square"
+                      src={book.imageUrl}
+                    ></Avatar>
+                    <Typography
+                      placeholder={null}
+                      variant="small"
+                      color="white"
+                      className="font-normal px-3"
+                    >
+                      {book.title}
+                    </Typography>
+                  </td>
 
-                    <td className={classes}>
-                      <Typography
+                  <td className="text-white bg-gray-600 p-4">
+                    <Typography
+                      placeholder={null}
+                      variant="small"
+                      color="white"
+                      className="font-normal"
+                    >
+                      {book.status}
+                    </Typography>
+                  </td>
+                  <td className="text-white bg-gray-600 p-4">
+                    <Typography
+                      placeholder={null}
+                      variant="small"
+                      color="white"
+                      className="font-normal"
+                    >
+                      {book.createdAt}
+                    </Typography>
+                  </td>
+                  <td className="text-white bg-gray-600 p-4">
+                    <Typography
+                      placeholder={null}
+                      variant="small"
+                      color="white"
+                      className="font-normal"
+                    >
+                      {book.lastUpdateAt}
+                    </Typography>
+                  </td>
+                  <td className="text-white bg-gray-600 p-4">
+                    <Tooltip content="Edit">
+                      <IconButton
                         placeholder={null}
-                        variant="small"
-                        color="white"
-                        className="font-normal"
+                        onClick={() => {
+                          handleEdit(book);
+                        }}
                       >
-                        {status}
-                      </Typography>
-                    </td>
-                    <td className={classes}>
-                      <Typography
-                        placeholder={null}
-                        variant="small"
-                        color="white"
-                        className="font-normal"
-                      >
-                        {formattedCreatedAt}
-                      </Typography>
-                    </td>
-                    <td className={classes}>
-                      <Typography
-                        placeholder={null}
-                        variant="small"
-                        color="white"
-                        className="font-normal"
-                      >
-                        {formattedLastUpdateAt}
-                      </Typography>
-                    </td>
-                    <td className={classes}>
-                      <Tooltip content="Edit">
-                        <IconButton
-                          placeholder={null}
-                          onClick={() =>
-                            handleEdit({
-                              id: index,
-                              title,
-                              authorId: 1,
-                              description: "",
-                              typesId: [],
-                              createdAt,
-                              lastUpdateAt,
-                              url: "",
-                              imageUrl,
-                              status,
-                            })
-                          }
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          strokeWidth={1.5}
+                          stroke="currentColor"
+                          className="w-6 h-6"
                         >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth={1.5}
-                            stroke="currentColor"
-                            className="w-6 h-6"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"
-                            />
-                          </svg>
-                        </IconButton>
-                      </Tooltip>
-                    </td>
-                  </tr>
-                );
-              }
-            )}
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"
+                          />
+                        </svg>
+                      </IconButton>
+                    </Tooltip>
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </CardBody>
