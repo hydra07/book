@@ -33,11 +33,11 @@ export default () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const namePattern = /^[a-zA-Z0-9\s]+$/;
-    if (!namePattern.test(author.name)) {
-      toast.error("thêm tầm bậy tầm bạ rồi  ");
-      return;
-    }
+    // const namePattern = /^[a-zA-Z0-9\s]+$/;
+    // if (!namePattern.test(author.name)) {
+    //   toast.error("thêm tầm bậy tầm bạ rồi  ");
+    //   return;
+    // }
 
     try {
       const res = await axios.post(`/author/add`, author);

@@ -5,6 +5,7 @@ import useUploadFile from '@/lib/hooks/useUploadFile';
 import { timeFormatter } from '@/utils/epub.utils';
 import { Button, Input, Textarea } from '@material-tailwind/react';
 import { ChangeEvent, useCallback, useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 interface BookRequest {
   id: number | null;
   title: string;
@@ -92,6 +93,7 @@ export default ({ authors, types }: any) => {
     try {
       const res = await axios.post(`/book/add`, form);
       console.log(res.data);
+      toast.success("Thêm thành công  ");
     } catch (error) {
       console.log(error);
     }
