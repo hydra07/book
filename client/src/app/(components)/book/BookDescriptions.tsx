@@ -5,9 +5,15 @@ import RatingBar from './RatingBar';
 import BookAuthor from './BookAuthor';
 import {useState} from "react";
 import Link from "next/link";
+import axios from '@/lib/axios';
 // eslint-disable-next-line react/display-name,import/no-anonymous-default-export
 export default ({book}: { book: Book }) => {
     const [isExpanded, setIsExpanded] = useState<boolean>(false);
+    const handleReadClick = () =>{
+        axios.post(`/book/views/${book.id}`);
+        window.location.href= `/ebook/${book.id}`;
+    }
+    
     return (
         <div className="">
         <div className="text-white">
@@ -16,6 +22,7 @@ export default ({book}: { book: Book }) => {
             <span className="rate flex py-3 ">
                     <RatingBar book={book}/>
                 </span>
+            <p className="py-3">Lượt xem: {book.views}</p>
         </div>
         <span className="flex flex-row my-8 space-x-2">
 
@@ -23,14 +30,15 @@ export default ({book}: { book: Book }) => {
               <p className="text-white"> Loại sách: </p>
               {book.types!.map((type, index) => (
                   // eslint-disable-next-line react/jsx-key
-                  <Link href={'/'} key={index}
+                  <Link href={`/type/${type.id}`} key={index}
                         className="opacity-70 hover:opacity-100 text-white ">{type.name}</Link>))}
               {/*<a href="/" key={index}*/}
               {/*   className="p-2 text-white  rounded-lg bg-blue-gray-500 hover:bg-blue-gray-800">{type.name}</a>))}*/}
           </div>    
         </span>
             {/* <ButtonRead book={book} /> */}
-        <Button placeholder={null}> Read </Button>
+        <Button placeholder={null} onClick={handleReadClick}> Read </Button>
+        <Button placeholder={null} className="ml-4"> Follow </Button>
         <div className="pt-8 flex space-x-1 ">
             <p className="text-white  text-md">{isExpanded ? book.description : `${book.description?.substring(0, 100)}`}</p>
             <button className="bg-none text-green-400 text-nowrap self-end" onClick={() => setIsExpanded(!isExpanded)}>
