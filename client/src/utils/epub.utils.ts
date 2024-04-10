@@ -63,6 +63,31 @@ export const cfiRangeSpliter = (cfiRange: string) => {
 };
 
 /**
+ * Join two CFIs into a CFI range
+ * - null : Invalid CFIs
+ * @param startCfi Starting CFI
+ * @param endCfi Ending CFI
+ */
+export const cfiRangeJoiner = (startCfi: string, endCfi: string) => {
+  const originStart = startCfi.slice(8, -1);
+  const originEnd = endCfi.slice(8, -1);
+
+  if (!originStart || !originEnd) return null;
+
+  const commonPartArray = originStart.split(',');
+  if (commonPartArray.length === 0) return null;
+
+  const commonPart = commonPartArray.shift();
+  if (!commonPart) return null;
+
+  const start = originStart.slice(commonPart.length);
+  const end = originEnd.slice(commonPart.length);
+
+  const cfiRange = `epubcfi(${commonPart},${start},${end})`;
+  return cfiRange;
+};
+
+/**
  * Whether the two CFI ranges nested
  * - true : Nested
  * - false : Not nested
@@ -246,4 +271,10 @@ export function debounce<Params extends any[]>(
       func(...args);
     }, timeout);
   };
+}
+
+export function isValidCfi(cfi: string): boolean {
+  // const cfiRegex = /^epubcfi\(.+\)$/;
+  const cfiRegex = /^epubcfi\(\/(?:\d+\/(?:\d+!)?)*(?:\d+\/)?\d+:\d+\)$/;
+  return cfiRegex.test(cfi);
 }
