@@ -9,9 +9,10 @@ import {
 	MenuList
 } from "@material-tailwind/react";
 import axios from "@/lib/axios";
+import Type from "@/types/type";
 
 // const getStaticProps = async () => {
-	
+
 // 	return {
 // 		props: { types },
 // 		revalidate: 60,
@@ -19,7 +20,7 @@ import axios from "@/lib/axios";
 // }
 
 export default () => {
-	const [types, setTypes] = useState([]); 
+	const [types, setTypes] = useState<Type[]>([]);
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const renderItem = () => {
 		console.log(types);
@@ -32,15 +33,15 @@ export default () => {
 	}
 	useEffect(() => {
 		const fetchData = async () => {
-			const res = await axios.get(`/type/getList`)
+			const res = await axios.get(`/type/getAll`)
 			console.log(res.data)
 			setTypes(res.data);
 		}
 		fetchData();
 		return () => {}
 	},[])
-		
-	
+
+
 	return (
 		<Fragment>
 			<Menu open={isMenuOpen}
@@ -53,14 +54,19 @@ export default () => {
 				</MenuHandler>
 				<MenuList placeholder={null} className="bg-black">
 					<div className="space-x-3">
-						{types.map((type)=>(
-							<Button placeholder={null}>
-								{type}
+						{types.map((type) => (
+							<Button
+								placeholder={null}
+								onClick={() => {
+									window.location.href = `/type/${type.id}`;
+								}}
+							>
+								{type.name}
 							</Button>
-							))}
+						))}
 					</div>
-				</MenuList>	
-			</Menu>		
+				</MenuList>
+			</Menu>
 		</Fragment>
 	)
 
