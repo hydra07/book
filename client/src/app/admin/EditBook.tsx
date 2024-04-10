@@ -39,7 +39,7 @@ export default ({
     lastUpdateAt: "",
     id: null,
     title: "",
-    authorId: authors[0]?.id || 0, // fix for potential undefined authors
+    authorId: authors[0]?.id , // fix for potential undefined authors
     description: "",
     typesId: [],
     url: "",
@@ -54,15 +54,19 @@ export default ({
   const { fileUrl: imageUrl } = useUploadFile({ file: image, name: "image" });
   const { fileUrl: epubUrl } = useUploadFile({ file: epub, name: "epub" });
 
-  const authorOptions = authors.map((author) => (
-    <option
-      key={author.id}
-      value={author.id}
-      className="bg-gray-900 text-white"
-    >
-      {author.name}
-    </option>
-  ));
+  const author = () => {
+    return authors.map((author) => {
+      return (
+        <option
+          className="bg-gray-900 text-white"
+          key={author.name}
+          value={author.id}
+        >
+          {author.name}
+        </option>
+      );
+    });
+  };
   const handleTypeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { checked, value } = e.target;
     setForm((prevForm) => {
@@ -83,35 +87,30 @@ export default ({
     });
 };
 
-  const typeCheckboxes = types.map((type, index) => (
-    <div key={index} className=" text-white">
-      <input
-        type="checkbox"
-        id={`type-${index}`}
-        name="type"
-        value={type.id}
-        checked={Array.isArray(form.typesId) && form.typesId.includes(type.id)}
-        onChange={handleTypeChange}
-      />
-      <label htmlFor={`type-${index}`}>{type.name}</label>
-    </div>
-  ));
+const type = () => {
+  return types.map((type, index: number) => {
+    return (
+      <div key={index} className="">
+        <input
+          type="checkbox"
+          id={`type-${index}`}
+          name="type"
+          value={type.id}
+          onChange={handleTypeChange}
+        />
+        <label htmlFor={`type-${index}`}>{type.name}</label>
+      </div>
+    );
+  });
+};
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       const res = await axios.put(`/book/update/${form.id}`, form);
-      if (res.data.success) {
-        const updatedBook = res.data.book;
-        const updatedBooks = books.map((b) =>
-          b.id === updatedBook.id ? updatedBook : b
-        );
-        setBooks(updatedBooks);
-        closeModal();
-        toast.success("Cập nhật sách thành công");
-      } else {
-        toast.error("Có lỗi xảy ra khi cập nhật sách");
-      }
+      console.log(res.data.success)
+      closeModal();
+      toast.success('Cập nhật thành công');
     } catch (error) {
       console.log("Lỗi khi gửi yêu cầu đến backend:", error);
       toast.error("Có lỗi xảy ra khi gửi yêu cầu đến backend");
@@ -202,7 +201,7 @@ export default ({
                 value={form.authorId}
                 onChange={handleChange}
               >
-                {authorOptions}
+                {author()}
               </select>
               <label className="before:content[' '] after:content[' '] pointer-events-none absolute left-0 -top-1.5 flex h-full w-full select-none text-[11px] font-normal leading-tight text-white transition-all before:pointer-events-none before:mt-[6.5px] before:mr-1 before:box-border before:block before:h-1.5 before:w-2.5 before:rounded-tl-md before:border-t before:border-l before:border-blue-gray-200 before:transition-all after:pointer-events-none after:mt-[6.5px] after:ml-1 after:box-border after:block after:h-1.5 after:w-2.5 after:flex-grow after:rounded-tr-md after:border-t after:border-r after:border-blue-gray-200 after:transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:leading-[3.75] peer-placeholder-shown:text-blue-gray-500 peer-placeholder-shown:before:border-transparent peer-placeholder-shown:after:border-transparent peer-focus:text-[11px] peer-focus:leading-tight peer-focus:text-gray-900 peer-focus:before:border-t-2 peer-focus:before:border-l-2 peer-focus:before:border-gray-900 peer-focus:after:border-t-2 peer-focus:after:border-r-2 peer-focus:after:border-gray-900 peer-disabled:text-transparent peer-disabled:before:border-transparent peer-disabled:after:border-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500">
                 Chọn tác giả
@@ -219,7 +218,7 @@ export default ({
             />
             <div className="flex flex-col space-y-3 text-white">
               <div>Chọn thể loại:</div>
-              <div className="grid grid-cols-3 gap-2">{typeCheckboxes}</div>
+              <div className="grid grid-cols-3 gap-2">{type()}</div>
             </div>
             <div className="relative h-10 w-72 min-w-[200px]">
               <select
