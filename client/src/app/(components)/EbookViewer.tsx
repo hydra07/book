@@ -4,10 +4,11 @@ import useBookmark from '@/lib/hooks/ebook/useBookmark';
 import useDrawer from '@/lib/hooks/ebook/useDrawer';
 import useInitBook from '@/lib/hooks/ebook/useInitBook';
 import useSelection from '@/lib/hooks/ebook/useSelection';
-import ReactViewer from '@/lib/modules/ReactViewer/ReactViewer';
+// import ReactEpubViewer from '@/lib/modules/ReactViewer/ReactViewer';
 import Book from '@/types/book';
 import { ViewerRef } from '@/types/ebook';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { ReactEpubViewer } from 'react-epub-viewer';
 import Loading from './Loading';
 import Footer from './reader/Footer';
 import Header from './reader/Header';
@@ -16,8 +17,8 @@ import TableOfContent from './reader/TableOfContent';
 
 export default ({ book }: { book: Book }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const viewerRef = useRef<ViewerRef>(null);
-  const {} = useInitBook({ viewerRef, book });
+  const viewerRef = useRef<ViewerRef | any>(null);
+  const {} = useInitBook({ viewerRef, book, isLoading });
   const {
     // currentLocation,
     onPageMove,
@@ -25,31 +26,58 @@ export default ({ book }: { book: Book }) => {
     onBookChangeInfor,
     onTocChange,
     onLocationChange,
-  } = useBookController({ viewerRef, book, isLoading });
+  } = useBookController({ viewerRef, book });
 
   const {
     isLeftDrawer,
     isFirstRightDrawerOpen,
     isSecondRightDrawerOpen,
     isThirdRightDrawerOpen,
+    isFourthRightDrawerOpen,
     setThirdRightDrawerOpen,
+
     toggleLeftDrawer,
     toggleFirstRightDrawer,
     toggleSecondRightDrawer,
     toggleThirdRightDrawer,
+    toggleFourthRightDrawer,
   } = useDrawer();
   const { theme, isDarkMode, bookStyle, bookOption, viewerLayout, styleItem } =
     useBookStyle({ viewerRef });
 
   const { bookmarkItem, bookmarkButton } = useBookmark({
+    viewerRef,
     onLocationChange,
     onTonggle: toggleFirstRightDrawer,
+    book,
   });
 
-  const { onSelection, contextItem } = useSelection({
+  const { onSelection, contextItem, listHighLight } = useSelection({
     viewerRef,
-    onOpen: toggleThirdRightDrawer,
+    onOpen: toggleFourthRightDrawer,
   });
+
+  // function isViewerRef(ref: any): ref is ViewerRef {
+  //   return (
+  //     ref &&
+  //     typeof ref.prevPage === 'function' &&
+  //     typeof ref.nextPage === 'function' &&
+  //     typeof ref.getCurrentCfi === 'function' &&
+  //     typeof ref.onHighlight === 'function' &&
+  //     typeof ref.offHighlight === 'function' &&
+  //     typeof ref.setLocation === 'function'
+  //   );
+  // }
+
+  useEffect(() => {
+    // if (isViewerRef(viewerRef.current)) {
+    //   setIsLoading(true);
+    // }
+    // return () => {
+    //   setIsLoading(false);
+    // };
+    // console.log(isLoading);
+  }, [isLoading]);
 
   return (
     <>
@@ -69,7 +97,7 @@ export default ({ book }: { book: Book }) => {
           bookmarkButton={bookmarkButton()}
           onSelectToggle={toggleThirdRightDrawer}
         />
-        <ReactViewer
+        <ReactEpubViewer
           url={book.url}
           viewerStyleURL={theme}
           viewerLayout={viewerLayout}
@@ -104,8 +132,31 @@ export default ({ book }: { book: Book }) => {
         <RightDrawer
           isToggle={isThirdRightDrawerOpen}
           onToggle={toggleThirdRightDrawer}
+          children={listHighLight()}
+        />
+        <RightDrawer
+          isToggle={isFourthRightDrawerOpen}
+          onToggle={toggleFourthRightDrawer}
           children={contextItem()}
         />
+        {isLoading && (
+          <div
+            style={{
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '100%',
+              backgroundColor: 'rgba(0, 0, 0, 0.5)',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              zIndex: 9999,
+            }}
+          >
+            <p>Loading...</p>
+          </div>
+        )}
       </div>
     </>
   );

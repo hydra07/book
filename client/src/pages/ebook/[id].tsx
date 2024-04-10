@@ -23,8 +23,8 @@ export const getStaticPaths = (async () => {
 
 export const getStaticProps = (async (context) => {
   const res = await axios.post(`/book/find/${context.params?.id}`);
-  // console.log(context.params?.id);
   const book = (await res.data) as Book;
+
   return { props: { book } };
 }) satisfies GetStaticProps;
 
