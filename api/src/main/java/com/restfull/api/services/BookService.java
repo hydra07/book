@@ -1,5 +1,6 @@
 package com.restfull.api.services;
 
+import com.restfull.api.dtos.book.BookDTO;
 import com.restfull.api.dtos.book.BookRequestDTO;
 import com.restfull.api.dtos.book.CommentDTO;
 import com.restfull.api.entities.*;
@@ -34,6 +35,8 @@ public class BookService {
 
     @Autowired
     private AuthorService authorService;
+    @Autowired
+    private BookRepository bookRepository;
 
     public List<Book> findAll() {
         return repository.findAll();
@@ -48,7 +51,7 @@ public class BookService {
 
 
     // ...
-    public List<Book> searchBooksByTitle(String keyword) {
+    public List<BookDTO> searchBooksByTitle(String keyword) {
         return repository.searchByName(keyword);
     }
     public List<Author> searchByAuthor(String keyword)   {
@@ -100,18 +103,23 @@ public class BookService {
         return repository.save(_book);
     }
 //    public Book update(Book book) {
-//        return repository.findById(book.getId()).map(existingBook -> {
-//            existingBook.setTitle(book.getTitle());
-//            existingBook.setDescription(book.getDescription());
-//            existingBook.setImageUrl(book.getImageUrl());
-//            existingBook.setCreatedAt(book.getCreatedAt());
-//            existingBook.setLastUpdateAt(book.getLastUpdateAt());
-//            existingBook.setTypes(book.getTypes());
-//            return repository.save(existingBook);
-//        }).orElseThrow(() -> new NotFoundException("Book not found: " + book.getId()));
+////        return repository.findById(book.getId()).map(existingBook -> {
+////            existingBook.setTitle(book.getTitle());
+////            existingBook.setDescription(book.getDescription());
+////            existingBook.setImageUrl(book.getImageUrl());
+////            existingBook.setCreatedAt(book.getCreatedAt());
+////            existingBook.setLastUpdateAt(book.getLastUpdateAt());
+////            existingBook.setTypes(book.getTypes());
+////            return repository.save(existingBook);
+////        }).orElseThrow(() -> new NotFoundException("Book not found: " + book.getId()));
+////    }
+
+
+//    public Book delete(Book book) {
+//      return    repository.delete(book);
 //    }
 
-    public void delete(Long id) {
+    public void deleteBook(Long id) {
         Book book = findById(id);
         repository.delete(book);
     }

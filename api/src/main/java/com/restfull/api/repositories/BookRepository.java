@@ -1,5 +1,6 @@
 package com.restfull.api.repositories;
 
+import com.restfull.api.dtos.book.BookDTO;
 import com.restfull.api.entities.Author;
 import com.restfull.api.entities.Book;
 import com.restfull.api.entities.Type;
@@ -18,7 +19,7 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     @Query("SELECT b FROM Book b WHERE b.title LIKE %:keyword%")
     // @Query("SELECT b FROM Book b JOIN Author a ON b.author.id = a.id WHERE a.name
     // LIKE %?1%")
-    List<Book> searchByName(@Param("keyword") String keyword);
+    List<BookDTO> searchByName(@Param("keyword") String keyword);
 
     @Query("SELECT a.name FROM Author a WHERE a.name LIKE %:keyword%")
     List<Author> searchByAuthor(@Param("keyword") String keyword);

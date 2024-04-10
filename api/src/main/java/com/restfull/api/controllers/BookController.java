@@ -1,9 +1,6 @@
 package com.restfull.api.controllers;
 
-import com.restfull.api.dtos.book.BookRequestDTO;
-import com.restfull.api.dtos.book.BookResponseDTO;
-import com.restfull.api.dtos.book.CommentDTO;
-import com.restfull.api.dtos.book.SearchResponseDTO;
+import com.restfull.api.dtos.book.*;
 import com.restfull.api.entities.*;
 import com.restfull.api.services.BookService;
 import com.restfull.api.services.JwtService;
@@ -44,7 +41,7 @@ public class BookController {
     @GetMapping("/search")
     public ResponseEntity<SearchResponseDTO> searchBooks(
             @RequestParam(name = "keyword", defaultValue = "") String keyword) {
-        List<Book> foundBooksByTitle = bookService.searchBooksByTitle(keyword);
+        List<BookDTO> foundBooksByTitle = bookService.searchBooksByTitle(keyword);
         List<Author> foundAuthorsByBook = bookService.searchByAuthor(keyword);
         List<Type> foundTypesByBook = bookService.searchByType(keyword);
         return ResponseEntity.ok(new SearchResponseDTO(foundBooksByTitle, foundAuthorsByBook, foundTypesByBook));
@@ -65,6 +62,11 @@ public class BookController {
     public ResponseEntity<?> updateBook(@PathVariable Long id, @RequestBody BookRequestDTO book) {
         bookService.update(book);
         return ResponseEntity.ok(new BookResponseDTO(bookService.findById(id)));
+    }
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> deleteBook(@PathVariable Long id) {
+        bookService.deleteBook(id);
+        return ResponseEntity.ok("Successfully deleted!");
     }
     @GetMapping("/comment/{id}")
     public ResponseEntity<?> comment(@PathVariable Long id) {
