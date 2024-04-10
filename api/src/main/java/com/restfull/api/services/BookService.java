@@ -115,9 +115,7 @@ public class BookService {
 ////    }
 
 
-//    public Book delete(Book book) {
-//      return    repository.delete(book);
-//    }
+
 
     public void deleteBook(Long id) {
         Book book = findById(id);

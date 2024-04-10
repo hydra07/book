@@ -1,8 +1,6 @@
 package com.restfull.api.dtos.book;
 
 import com.restfull.api.entities.Book;
-import com.restfull.api.entities.User;
-import com.restfull.api.enums.Rate;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -33,7 +31,8 @@ public class BookDTO {
         this.id = book.getId();
         this.title = book.getTitle();
         this.description = book.getDescription();
-//        this.images = book.getImagesString();
+        this.images = book.getImages().stream().map(Object::toString).collect(Collectors.toList());
+
         this.types = book.getTypesString();
         this.status = book.getStatus().toString();
         this.followedUsers = book.getFollowedUsersString();
