@@ -33,7 +33,6 @@ public class BookResponseDTO {
     private String description;
     private Set<BookType> types = new HashSet<>();
     private Long views;
-//    private double price;
     private Date createdAt;
     private Date lastUpdateAt;
     private Double rating;

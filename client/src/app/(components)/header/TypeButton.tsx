@@ -33,6 +33,7 @@ export default () => {
 	}
 	useEffect(() => {
 		const fetchData = async () => {
+
 			const res = await axios.get(`/type/getAll`)
 			console.log(res.data)
 			setTypes(res.data);

@@ -97,6 +97,7 @@ public class BookService {
 //        _book.setFollowedBook(book.getFollowedBook());
         _book.setTypes(
                 bookDto.getTypesId().stream().map(id -> typeService.getTypeById(id)).collect(Collectors.toSet()));
+
         return repository.save(_book);
     }
 //    public Book update(Book book) {
