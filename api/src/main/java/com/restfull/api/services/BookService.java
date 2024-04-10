@@ -2,18 +2,16 @@ package com.restfull.api.services;
 
 import com.restfull.api.dtos.book.BookRequestDTO;
 import com.restfull.api.dtos.book.CommentDTO;
-import com.restfull.api.entities.Book;
-import com.restfull.api.entities.Comment;
-import com.restfull.api.entities.User;
+import com.restfull.api.entities.*;
 import com.restfull.api.enums.Status;
 import com.restfull.api.repositories.BookRepository;
 import com.restfull.api.utils.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
@@ -44,9 +42,20 @@ public class BookService {
     public Book findById(Long id) {
         return repository.findById(id).orElseThrow(() -> new NotFoundException("Book not found: " + id));
     }
+// In BookService.java
 
-    public List<Book> searchByName(String keyword, String keyword1) {
-        return repository.searchByName(keyword, keyword1);
+// ...
+
+
+    // ...
+    public List<Book> searchBooksByTitle(String keyword) {
+        return repository.searchByName(keyword);
+    }
+    public List<Author> searchByAuthor(String keyword)   {
+        return repository.searchByAuthor(keyword);
+    }
+    public List<Type> searchByType(String keyword)   {
+        return repository.searchByType(keyword);
     }
 
     public Book create(Book book) {
@@ -73,17 +82,34 @@ public class BookService {
         return repository.save(_book);
     }
 
-    public Book update(Book book) {
-        Book _book = findById(book.getId());
-        _book.setTitle(book.getTitle());
-        _book.setDescription(book.getDescription());
-        _book.setImageUrl(book.getImageUrl());
-        _book.setCreatedAt(book.getCreatedAt());
-        _book.setLastUpdateAt(book.getLastUpdateAt());
-        _book.setFollowedBook(book.getFollowedBook());
-        _book.setTypes(book.getTypes());
+    public Book update(BookRequestDTO bookDto) {
+        Book _book = findById(bookDto.getId());
+        _book.setTitle(bookDto.getTitle());
+        _book.setAuthor(authorService.findById(bookDto.getAuthorId()));
+        _book.setDescription(bookDto.getDescription());
+        _book.setImageUrl(bookDto.getImageUrl());
+        _book.setStatus(Status.valueOf(bookDto.getStatus()));
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime _lastUpdateAt = LocalDateTime.parse(bookDto.getLastUpdateAt(), formatter);
+        _book.setLastUpdateAt(Date.from(_lastUpdateAt.atZone(java.time.ZoneId.systemDefault()).toInstant()));
+        _book.setUrl(bookDto.getUrl());
+
+//        _book.setFollowedBook(book.getFollowedBook());
+        _book.setTypes(
+                bookDto.getTypesId().stream().map(id -> typeService.getTypeById(id)).collect(Collectors.toSet()));
         return repository.save(_book);
     }
+//    public Book update(Book book) {
+//        return repository.findById(book.getId()).map(existingBook -> {
+//            existingBook.setTitle(book.getTitle());
+//            existingBook.setDescription(book.getDescription());
+//            existingBook.setImageUrl(book.getImageUrl());
+//            existingBook.setCreatedAt(book.getCreatedAt());
+//            existingBook.setLastUpdateAt(book.getLastUpdateAt());
+//            existingBook.setTypes(book.getTypes());
+//            return repository.save(existingBook);
+//        }).orElseThrow(() -> new NotFoundException("Book not found: " + book.getId()));
+//    }
 
     public void delete(Long id) {
         Book book = findById(id);
@@ -96,15 +122,29 @@ public class BookService {
         repository.updateViews(id, book.getViews());
         // update(book);
     }
-
+    public List<Book> findAllSortedByViews() {
+        return repository.findAll(Sort.by(Sort.Direction.DESC, "views"));
+    }
     public void addFollowedUser(Book book, User user) {
         book.getFollowedBook().add(user);
-        update(book);
+        BookRequestDTO bookDto = convertToBookRequestDTO(book);
+        update(bookDto);
     }
 
     public void removeFollowedUser(Book book, User user) {
         book.getFollowedBook().removeIf(_user -> _user.getId().equals(user.getId()));
-        update(book);
+        BookRequestDTO bookDto = convertToBookRequestDTO(book);
+        update(bookDto);
+    }
+
+    private BookRequestDTO convertToBookRequestDTO(Book book) {
+        BookRequestDTO bookDto = new BookRequestDTO();
+        bookDto.setId(book.getId());
+        bookDto.setTitle(book.getTitle());
+        bookDto.setDescription(book.getDescription());
+        bookDto.setImageUrl(book.getImageUrl());
+        // ... set other fields as necessary ...
+        return bookDto;
     }
 
     public String isUserFollowedBook(User user, Book book) {
@@ -117,9 +157,10 @@ public class BookService {
         comment.setBook(book);
         comment.setUser(user);
 
-//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-//        LocalDateTime _createAt = LocalDateTime.parse(dto.getCreatedAt(), formatter);
-//        comment.setCreatedAt(Date.from(_createAt.atZone(java.time.ZoneId.systemDefault()).toInstant()));
+        // DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd
+        // HH:mm:ss");
+        // LocalDateTime _createAt = LocalDateTime.parse(dto.getCreatedAt(), formatter);
+        // comment.setCreatedAt(Date.from(_createAt.atZone(java.time.ZoneId.systemDefault()).toInstant()));
         comment.setCreatedAt(new Date());
         return commentService.create(comment);
     }
@@ -128,7 +169,8 @@ public class BookService {
         Book book = findById(id);
         return commentService.findByBook(book);
     }
-    public Comment newComment(Book book,User user,CommentDTO dto){
+
+    public Comment newComment(Book book, User user, CommentDTO dto) {
         Comment comment = new Comment();
         comment.setContent(dto.getContent());
         comment.setBook(book);
@@ -137,46 +179,48 @@ public class BookService {
         return commentService.add(comment);
     }
 
-    public Comment replyComment(Long parentId, Book book, User user, CommentDTO dto){
+    public Comment replyComment(Long parentId, Book book, User user, CommentDTO dto) {
         Comment reply = new Comment();
         reply.setBook(book);
         reply.setUser(user);
         reply.setContent(dto.getContent());
         reply.setCreatedAt(new Date());
-        return commentService.replyComment(reply,parentId);
+        return commentService.replyComment(reply, parentId);
     }
 
-    public List<Comment> getRootCommentByBookId(Long bookId){
+    public List<Comment> getRootCommentByBookId(Long bookId) {
         return commentService.getRootCommentsByBookId(bookId);
     }
-    public List<Comment> getCommentByBookId(Long bookId){
+
+    public List<Comment> getCommentByBookId(Long bookId) {
         return commentService.getCommentsByBookId(bookId);
     }
 
-//    public List<Comment> getCommentTreeByBookId(Long bookId){
-//        return commentService.getCommentTreeByBookId(bookId);
-//    }
+    // public List<Comment> getCommentTreeByBookId(Long bookId){
+    // return commentService.getCommentTreeByBookId(bookId);
+    // }
 }
 
-//    public Book addTypeToBook(Long bookID, TypeRequestDTO typeDTO) {
-//        try {
-//            // Get book from repository
-//            Book book = findById(bookID);
-//            // Check if the book is already in this type
-//            if (book.getTypesIDString().contains(typeDTO.getId())) {
-//                throw new NotFoundException("The specified type is already in the list!");
-//            }
-//            // Get type from service
-//            Type type = typeService.getTypeById(typeDTO.getId());
-//            // Add the type list to the book
-//            book.addNewTypeToList(type);
-//            // Save the book to the repository
-//            return repository.save(book);
-//        } catch (Exception e) {
-//            String errorMessage = "An error occurred while adding the book to the type: " + e.getMessage();
-//            throw new RuntimeException(errorMessage);
-//        }
-//    }
+// public Book addTypeToBook(Long bookID, TypeRequestDTO typeDTO) {
+// try {
+// // Get book from repository
+// Book book = findById(bookID);
+// // Check if the book is already in this type
+// if (book.getTypesIDString().contains(typeDTO.getId())) {
+// throw new NotFoundException("The specified type is already in the list!");
+// }
+// // Get type from service
+// Type type = typeService.getTypeById(typeDTO.getId());
+// // Add the type list to the book
+// book.addNewTypeToList(type);
+// // Save the book to the repository
+// return repository.save(book);
+// } catch (Exception e) {
+// String errorMessage = "An error occurred while adding the book to the type: "
+// + e.getMessage();
+// throw new RuntimeException(errorMessage);
+// }
+// }
 
 // public Book removeTypeFromBook (Long bookID, TypeRequestDTO typeDTO){
 // try {
@@ -207,4 +251,3 @@ public class BookService {
 // book = setImageByString(bookDTO.getImages(), book);
 // update(book);
 // }
-
