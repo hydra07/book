@@ -3,7 +3,8 @@ import {
   BookOption,
   BookStyle,
   Bookmarks,
-  Highlight,
+  Color,
+  // Highlight,
   Page,
   Toc,
   ViewerLayout,
@@ -11,6 +12,17 @@ import {
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { RootState } from '..';
 // import { getServerSession } from 'next-auth';
+export interface Highlight {
+  key: number;
+  cfiRange: string;
+  content: string;
+  color?: string;
+  createAt: string;
+  chpaterName: string;
+  pageNum: number;
+  lastAccess?: string;
+}
+
 interface EbookState {
   book: any;
   currentLocation: Page;
@@ -21,6 +33,10 @@ interface EbookState {
   bookOption: BookOption;
   bookStyle: BookStyle;
   viewerLayout: ViewerLayout;
+  color: Color[];
+  _fetchingCurrentLocation: Page | null;
+  _fetchingBookmarks: Bookmarks | [];
+  _isFetching: boolean;
 }
 
 const initialBook = {
@@ -57,6 +73,14 @@ const initialBookStyle: BookStyle = {
   marginVertical: 7,
 };
 
+const initialColor: Color[] = [
+  { name: 'yellow', code: '#f7f48b' },
+  { name: 'green', code: '#a1f48b' },
+  { name: 'blue', code: '#8bb1f4' },
+  { name: 'red', code: '#f48b8b' },
+  { name: 'purple', code: '#d88bf4' },
+];
+
 const initialViewerLayout: ViewerLayout = {
   MIN_VIEWER_WIDTH: 600,
   MIN_VIEWER_HEIGHT: 300,
@@ -64,7 +88,6 @@ const initialViewerLayout: ViewerLayout = {
   VIEWER_FOOTER_HEIGHT: 40,
   VIEWER_SIDEMENU_WIDTH: 0,
 };
-
 const initialTheme: string = '/themes/dark.theme.css';
 
 const initialState: EbookState = {
@@ -77,6 +100,10 @@ const initialState: EbookState = {
   bookOption: initialBookOption,
   bookStyle: initialBookStyle,
   viewerLayout: initialViewerLayout,
+  color: initialColor,
+  _fetchingCurrentLocation: null,
+  _fetchingBookmarks: [],
+  _isFetching: false,
 };
 
 // Slice
@@ -104,8 +131,8 @@ const ebookSlice = createSlice({
     },
     updateBookmark(state, action) {
       state.bookmarks = action.payload;
-      console.log(JSON.stringify(state.bookmarks));
-      console.table(state.bookmarks);
+      // console.log(JSON.stringify(state.bookmarks));
+      // console.table(state.bookmarks);
     },
     updateBookOption(state, action) {
       state.bookOption = action.payload;
@@ -116,22 +143,40 @@ const ebookSlice = createSlice({
     updateViewerLayout(state, action) {
       state.viewerLayout = action.payload;
     },
+    initFetchingCurrentLocation(state, action) {
+      state._fetchingCurrentLocation = action.payload;
+    },
+    initFetchingBookmarks(state, action) {
+      state._fetchingBookmarks = action.payload;
+    },
+    updateHighLight(state, action) {
+      state.highLight = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
-      // .addCase(initBookReader.pending, () => {
-      //   console.log('initBookReader.pending');
-      // })
+      .addCase(initBookReader.rejected, (state, action) => {
+        state._fetchingCurrentLocation = null;
+        state._fetchingBookmarks = [];
+        state._isFetching = true;
+      })
       .addCase(
         initBookReader.fulfilled,
         (state, action: PayloadAction<ReaderResponse>) => {
+          state._fetchingCurrentLocation = action.payload.currentPage;
+          state._fetchingBookmarks = action.payload.bookmarks;
+          state._isFetching = true;
           // state.currentLocation = action.payload.currentPage;
-          console.log('initBookReader.fulfilled', action.payload.currentPage);
+          // console.log('initBookReader.fulfilled', action.payload.currentPage);
         },
       )
       .addCase(movePageAction.fulfilled, (state, action) => {
         state.currentLocation = action.payload.currentPage;
         // console.log('<->', action.payload.bookmarks);
+        // console.log('<->', action.payload.bookmarks);
+        // state.bookmarks = action.payload.bookmarks;
+      })
+      .addCase(setBookmark.fulfilled, (state, action) => {
         state.bookmarks = action.payload.bookmarks;
       });
   },
@@ -151,7 +196,7 @@ export const movePageAction = createAsyncThunk(
         startCfi: state.ebook.currentLocation.startCfi,
         endCfi: state.ebook.currentLocation.endCfi,
         base: state.ebook.currentLocation.base,
-        bookmarks: state.ebook.bookmarks,
+        // bookmarks: state.ebook.bookmarks,
         // bookmarks: [
         //   {
         //     cfi: 'epubcfi(/6/12!/14/116/1:341)',
@@ -162,10 +207,8 @@ export const movePageAction = createAsyncThunk(
         // ],
       };
 
-      console.log('state', state.ebook.bookmarks);
+      // console.log('state', state.ebook.bookmarks);
       const response = await axios.post(`/ebook/read/${id}`, data);
-      console.log('movePageAction');
-      console.log(response.data);
       return response.data;
     } catch (error: any) {
       return rejectWithValue(error.response.data);
@@ -181,9 +224,27 @@ export const initBookReader = createAsyncThunk(
     try {
       const axios = axiosWithAuth(token);
       const response = await axios.get(`/ebook/fetch/${id}`);
-      console.log('init data', response.data.currentPage.startCfi);
-      console.log(response.data);
+      // console.log('init data', response.data.currentPage.startCfi);
+      // console.log(response.data);
       callback && callback(response.data);
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
+
+export const setBookmark = createAsyncThunk(
+  'bookmark/update',
+  async ({ token, id }: Props, thunkAPI) => {
+    const { rejectWithValue, getState } = thunkAPI;
+    const state = getState() as RootState;
+    try {
+      const axios = axiosWithAuth(token);
+      const data = {
+        bookmarks: state.ebook.bookmarks,
+      };
+      const response = await axios.post(`/ebook/bookmark/${id}`, data);
       return response.data;
     } catch (error: any) {
       return rejectWithValue(error.response.data);
@@ -200,6 +261,9 @@ export const {
   updateBookOption,
   updateBookStyle,
   updateViewerLayout,
+  updateHighLight,
+  initFetchingCurrentLocation,
+  initFetchingBookmarks,
 } = ebookSlice.actions;
 export default ebookSlice.reducer;
 

@@ -37,12 +37,12 @@ public class TypeService {
     }
 
     public Type createType(TypeRequestDTO typeDTO) {
-        Type type = new Type(typeDTO.getName(), typeDTO.isLicense(), typeDTO.getDescription());
+        Type type = new Type(typeDTO.getName(), typeDTO.getDescription());
         return repository.save(type);
     }
 
     public Type createNewType(TypeRequestDTO typeDTO) {
-        Type type = new Type(typeDTO.getName(), typeDTO.isLicense(), typeDTO.getDescription());  
+        Type type = new Type(typeDTO.getName(), typeDTO.getDescription());
         return repository.save(type);
     }
 

@@ -7,7 +7,7 @@ type User = {
   image: string;
   gender: boolean;
   accessToken: string;
-  // role: any;
+  role: Array<string>;
 };
 
 export default User;

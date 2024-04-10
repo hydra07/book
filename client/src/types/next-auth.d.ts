@@ -13,6 +13,7 @@ declare module "next-auth" {
       gender: boolean;
       phone:string;
       accessToken: string;
+      role:Array<string>;
       // refreshToken: string;
     }
   };

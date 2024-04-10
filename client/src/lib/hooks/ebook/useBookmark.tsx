@@ -1,13 +1,17 @@
-import { RootState } from '@/lib/store';
-import { updateBookmark } from '@/lib/store/ebook/ebookSlice';
-import { BookmarkItem, Bookmarks } from '@/types/ebook';
+import { AppDispatch, RootState } from '@/lib/store';
+import { setBookmark, updateBookmark } from '@/lib/store/ebook/ebookSlice';
+import Book from '@/types/book';
+import { BookmarkItem, Bookmarks, ViewerRef } from '@/types/ebook';
 import { isCfiInRange, timeFormatter } from '@/utils/epub.utils';
-import { useCallback, useMemo } from 'react';
+import { RefObject, useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import useUser from '../useUser';
 /**
  * Hooks for bookmarking
  */
 type Props = {
+  book: Book;
+  viewerRef: RefObject<ViewerRef | any>;
   onLocationChange: (location: string) => void;
   onTonggle: () => void;
 };
@@ -26,16 +30,20 @@ type useBookmark = {
 };
 
 export default function useBookmark({
+  viewerRef,
   onLocationChange,
   onTonggle,
+  book,
 }: Props): useBookmark {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const bookmarks = useSelector<RootState, Bookmarks>(
     (state: RootState) => state.ebook.bookmarks,
   );
   const currentLocation = useSelector(
     (state: RootState) => state.ebook.currentLocation,
   );
+  const { user } = useUser();
+
 
   const addBookmark = useCallback(
     (cfi: string) => {
@@ -44,14 +52,16 @@ export default function useBookmark({
         name: 'Bookmark',
         cfi,
         date: timeFormatter(new Date()),
-        // date: new Date().toISOString(),
       };
-      console.log('added bookmark', bookmark);
+      console.log('added bookmark', bookmarks);
       // bookmarks.push(bookmark);
       // dispatch(updateBookmark(bookmarks));
       dispatch(updateBookmark([...bookmarks, bookmark]));
+      const token = user?.accessToken;
+      token && dispatch(setBookmark({ token, id: book.id }));
+      // console.log('bookmarks', bookmarks);
     },
-    [bookmarks, dispatch],
+    [bookmarks, dispatch, user, currentLocation],
   );
 
   const removeBookmark = useCallback(
@@ -60,8 +70,11 @@ export default function useBookmark({
         (bookmark) => bookmark.cfi !== cfi,
       );
       dispatch(updateBookmark(bookmarksFilter));
+      const token = user?.accessToken;
+      token && dispatch(setBookmark({ token, id: book.id }));
+      // console.log('bookmarks', bookmarks);
     },
-    [bookmarks],
+    [bookmarks, user],
   );
 
   const goToBookmark = useCallback(
@@ -101,15 +114,15 @@ export default function useBookmark({
           <span>Bookmarks</span>
         </div>
         {bookmarks &&
-          bookmarks.map((item) => (
+          bookmarks.map((item: BookmarkItem) => (
             <div
               className="w-full p-4 flex flex-row justify-between items-center text-left bg-gray-800 rounded-md shadow-md"
               key={item.key}
             >
-              <button className="flex-grow" onClick={() => goToBookmark(item)}>
+              <button className="flex-grow " onClick={() => goToBookmark(item)}>
                 <div>
-                  <div className="text-gray-200">{item.name}</div>
-                  <div className="text-gray-400">{item.time}</div>
+                  <div className="text-white">{item.name}</div>
+                  <div className="text-white">{item.date}</div>
                 </div>
               </button>
               <button onClick={() => removeBookmark(item.cfi)}>

@@ -37,6 +37,7 @@ export default ({ authors, types }: any) => {
 
   });
   // const [progress, setProgress] = useState<number>(0);
+  // const [isAdder, setIsAdder] = useState<boolean>(false);
   const [image, setImage] = useState<File | null>(null);
   const [epub, setEpub] = useState<File | null>(null);
 
@@ -92,8 +93,16 @@ export default ({ authors, types }: any) => {
     e.preventDefault();
     try {
       const res = await axios.post(`/book/add`, form);
-      console.log(res.data);
-      toast.success("Thêm thành công  ");
+      if (form.url === '' || form.imageUrl === '') {
+        toast.error(
+          'Vui lòng chọn file ảnh và file epub, hoặc thử upload lại file',
+        );
+        return;
+      }
+      if (res.status === 200) {
+        // setIsAdder(true);
+        toast.success('Thêm sách thành công');
+      }
     } catch (error) {
       console.log(error);
     }

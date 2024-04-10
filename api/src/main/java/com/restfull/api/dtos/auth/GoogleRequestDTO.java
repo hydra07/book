@@ -10,13 +10,13 @@ import java.util.Random;
 @Getter
 @Setter
 public class GoogleRequestDTO {
-    private static final Random RANDOM = new SecureRandom();
-    private static final int PASSWORD_LENGTH = 10;
-    private static final String ALPHABET = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+//    private static final Random RANDOM = new SecureRandom();
+//    private static final int PASSWORD_LENGTH = 10;
+//    private static final String ALPHABET = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 
     private String name;
     private String email;
-    private String password;
+//    private String password;
     private String avatar;
     private String phone;
 
@@ -24,16 +24,16 @@ public class GoogleRequestDTO {
         super();
         this.name = name;
         this.email = email;
-        this.password = generatePassword();
+//        this.password = generatePassword();
         this.avatar = avatarUrl;
         this.phone = phone;
     }
 
-    private String generatePassword() {
-        StringBuilder returnValue = new StringBuilder(PASSWORD_LENGTH);
-        for (int i = 0; i < PASSWORD_LENGTH; i++) {
-            returnValue.append(ALPHABET.charAt(RANDOM.nextInt(ALPHABET.length())));
-        }
-        return new String(returnValue);
-    }
+//    private String generatePassword() {
+//        StringBuilder returnValue = new StringBuilder(PASSWORD_LENGTH);
+//        for (int i = 0; i < PASSWORD_LENGTH; i++) {
+//            returnValue.append(ALPHABET.charAt(RANDOM.nextInt(ALPHABET.length())));
+//        }
+//        return new String(returnValue);
+//    }
 }
