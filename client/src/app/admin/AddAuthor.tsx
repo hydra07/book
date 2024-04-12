@@ -4,7 +4,7 @@ import { Button, Input, Textarea } from "@material-tailwind/react";
 import { ChangeEvent, useCallback, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 
-interface AuthorInfo {
+ export interface AuthorInfo {
   id: number | null;
   name: string;
   description: string;

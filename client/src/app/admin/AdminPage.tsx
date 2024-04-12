@@ -1,47 +1,81 @@
 "use client";
 import {
-  Accordion,
-  AccordionBody,
-  AccordionHeader,
-  List,
-  ListItem,
-  ListItemPrefix,
   Tab,
   TabPanel,
   Tabs,
   TabsBody,
   TabsHeader,
-  Typography,
 } from "@material-tailwind/react";
-
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import AddAuthor from "./AddAuthor";
 import RenderBook from "./RenderBook";
+import RenderAuthor from "./RenderAuthor";
 
 const AddBook = dynamic(() => import("./AddBook"), { ssr: false });
 const AddType = dynamic(() => import("./AddType"), { ssr: false });
 
 export default ({ authors, types }: any) => {
-  const [open, setOpen] = useState<number>(0);
-
-  const handleOpen = (value: number) => {
-    setOpen(open === value ? 0 : value);
-  };
   const [showData, setShowData] = useState<boolean>(false);
   const [showtype, setShowType] = useState<boolean>(false);
   const [showauthor, setShowAuthor] = useState<boolean>(false);
   const [showpage, setshowPage] = useState<boolean>(false);
   const [showlist, setshowList] = useState<boolean>(false);
+  const [showlistauthors, setshowListAuthors] = useState<boolean>(false);
+  const [showAddTabs, setShowAddTabs] = useState<boolean>(false);
+
+  // const handleAction = (
+  //   action: "book" | "type" | "author" | "page" | "render"
+  // ): void => {
+  //   setShowData(action === "book");
+  //   setShowType(action === "type");
+  //   setShowAuthor(action === "author");
+  //   setshowPage(action === "page");
+  //   setshowList(action === "render");
+  //   setShowAddTabs(false);
+  // };
+
   const handleAction = (
-    action: "book" | "type" | "author" | "page" | "render"
+    action: "book" | "type" | "author" | "page" | "renderbook" | "renderauthor"
   ): void => {
-    setShowData(action === "book");
-    setShowType(action === "type");
-    setShowAuthor(action === "author");
-    setshowPage(action === "page");
-    setshowList(action === "render");
+    if (action === "book") {
+      setShowData(true);
+      setShowType(false);
+      setShowAuthor(false);
+    } else if (action === "author") {
+      setShowData(false);
+      setShowType(false);
+      setShowAuthor(true);
+    } else if (action === "type") {
+      setShowData(false);
+      setShowType(true);
+      setShowAuthor(false);
+    } else {
+      // Ẩn tab "Add More" khi chọn các tab khác
+      setShowAddTabs(false);
+
+      if (action === "page") {
+        setShowData(false);
+        setShowType(false);
+        setShowAuthor(false);
+      } else if (action === "renderbook") {
+        setShowData(false);
+        setShowType(false);
+        setShowAuthor(false);
+        setshowList(true);
+      } else if (action === "renderauthor") {
+        setShowData(false);
+        setShowType(false);
+        setShowAuthor(false);
+        setshowListAuthors(true);
+      }
+    }
   };
+
+  const handleShowAddTabs = (): void => {
+    setShowAddTabs(!showAddTabs);
+  };
+
   useEffect(() => {
     setshowPage(true);
   }, []);
@@ -59,46 +93,66 @@ export default ({ authors, types }: any) => {
           }}
           placeholder={null}
         >
-          {/* <Tab
+          <Tab
             placeholder={true}
             className="text-white justify-center w-4/5"
-            onClick={() => handleAction('page')}
+            onClick={() => handleAction("page")}
             value="page"
           >
             Home
           </Tab>
           <Tab
             placeholder={true}
-            value="book"
-            className="text-white justify-center w-4/5"
-            onClick={() => handleAction('book')}
+            value="addMore"
+            className="text-white justify-center w-4/5 "
+            onClick={handleShowAddTabs}
           >
-            Add Book
+            Add More
           </Tab>
+          {showAddTabs && (
+            <>
+              <Tab
+                placeholder={true}
+                value="book"
+                className="text-white justify-center w-4/5 tab-animation"
+                onClick={() => handleAction("book")}
+              >
+                Add Book
+              </Tab>
+              <Tab
+                placeholder={true}
+                value="author"
+                className="text-white justify-center w-4/5 tab-animation"
+                onClick={() => handleAction("author")}
+              >
+                Add Author
+              </Tab>
+              <Tab
+                placeholder={true}
+                value="type"
+                className="text-white justify-center w-4/5 tab-animation"
+                onClick={() => handleAction("type")}
+              >
+                Add Type
+              </Tab>
+            </>
+          )}
           <Tab
             placeholder={true}
-            value="author"
+            value="renderbook"
             className="text-white justify-center w-4/5"
-            onClick={() => handleAction('author')}
-          >
-            Add Author
-          </Tab>
-          <Tab
-            placeholder={true}
-            value="type"
-            className="text-white justify-center w-4/5"
-            onClick={() => handleAction('type')}
-          >
-            Add Type
-          </Tab>
-          <Tab
-            placeholder={true}
-            value="render"
-            className="text-white justify-center w-4/5"
-            onClick={() => handleAction('render')}
+            onClick={() => handleAction("renderbook")}
           >
             List Book
-          </Tab> */}
+          </Tab>
+          <Tab
+            placeholder={true}
+            value="renderauthor"
+            className="text-white justify-center w-4/5"
+            onClick={() => handleAction("renderauthor")}
+          >
+            List Author
+          </Tab>
           {/* {data.map(({ label, value, icon }) => (
           <Tab key={value} value={value} className="place-items-start">
             <div className="flex items-center gap-2">
@@ -107,75 +161,6 @@ export default ({ authors, types }: any) => {
             </div>
           </Tab>
         ))} */}
-          <Accordion
-            placeholder={null}
-            open={open === 1}
-            icon={
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className={`mx-auto h-4 w-4 transition-transform ${
-                  open === 1 ? "rotate-180" : ""
-                }`}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="m19.5 8.25-7.5 7.5-7.5-7.5"
-                />
-              </svg>
-            }
-          >
-            <ListItem placeholder={null} className="p-0" selected={open === 1}>
-              <AccordionHeader
-                placeholder={null}
-                onClick={() => handleOpen(1)}
-                className="border-b-0 p-3"
-              >
-                <Typography
-                  placeholder={null}
-                  color="blue-gray"
-                  className="mr-auto font-normal"
-                >
-                  Dashboard
-                </Typography>
-              </AccordionHeader>
-              <AccordionBody p className="py-1">
-                <List placeholder={null} className="p-0">
-                  <ListItem placeholder={null}>
-                    <button
-                      value="book"
-                      className="text-white justify-center w-4/5"
-                      onClick={() => handleAction("book")}
-                    >
-                      Add Book
-                    </button>
-                  </ListItem>
-                  <ListItem placeholder={null}>
-                    <button
-                      value="author"
-                      className="text-white justify-center w-4/5"
-                      onClick={() => handleAction("author")}
-                    >
-                      Add Author
-                    </button>
-                  </ListItem>
-                  <ListItem placeholder={null}>
-                    <button
-                      value="book"
-                      className="text-white justify-center w-4/5"
-                      onClick={() => handleAction("type")}
-                    >
-                      Add Type
-                    </button>
-                  </ListItem>
-                </List>
-              </AccordionBody>
-            </ListItem>
-          </Accordion>
         </TabsHeader>
         <TabsBody placeholder={null}>
           {/* {data.map(({ value, desc }) => (
@@ -195,11 +180,15 @@ export default ({ authors, types }: any) => {
           <TabPanel value="type" className="py-0">
             {showtype && <AddType />}
           </TabPanel>
-          <TabPanel value="render" className="py-0">
+          <TabPanel value="renderbook" className="py-0">
             {showlist && <RenderBook />}
+          </TabPanel>
+          <TabPanel value="renderauthor" className="py-0">
+            {showlistauthors && <RenderAuthor />}
           </TabPanel>
         </TabsBody>
       </Tabs>
+     
     </div>
     // <div className="pt-20 bg-gray-900 text-white min-h-screen">
     //   <div className="h-full flex flex-row">
