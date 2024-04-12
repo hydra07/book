@@ -6,9 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Data
 @AllArgsConstructor
@@ -17,7 +15,7 @@ public class BookDTO {
     private Long id;
     private String title;
     private String description;
-    private List<String> images;
+    private String imageUrl;
     private Set<String> types;
     private String status;
     private Double price;
@@ -31,7 +29,7 @@ public class BookDTO {
         this.id = book.getId();
         this.title = book.getTitle();
         this.description = book.getDescription();
-        this.images = book.getImages().stream().map(Object::toString).collect(Collectors.toList());
+        this.imageUrl = book.getImageUrl();
 
         this.types = book.getTypesString();
         this.status = book.getStatus().toString();

@@ -42,8 +42,8 @@ public class BookController {
     public ResponseEntity<SearchResponseDTO> searchBooks(
             @RequestParam(name = "keyword", defaultValue = "") String keyword) {
         List<BookDTO> foundBooksByTitle = bookService.searchBooksByTitle(keyword);
-        List<Author> foundAuthorsByBook = bookService.searchByAuthor(keyword);
-        List<Type> foundTypesByBook = bookService.searchByType(keyword);
+        List<AuthorDTO> foundAuthorsByBook = bookService.searchByAuthor(keyword);
+        List<TypeDTO> foundTypesByBook = bookService.searchByType(keyword);
         return ResponseEntity.ok(new SearchResponseDTO(foundBooksByTitle, foundAuthorsByBook, foundTypesByBook));
     }
 
@@ -52,22 +52,26 @@ public class BookController {
         bookService.increaseViews(id);
         return ResponseEntity.ok(new BookResponseDTO(bookService.findById(id)));
     }
+
     @GetMapping("/sorted-by-views")
-        public ResponseEntity<List<BookResponseDTO>> sortedByViews() {
-            List<Book> books = bookService.findAllSortedByViews();
-            List<BookResponseDTO> bookResponseDTOs = books.stream().map(BookResponseDTO::new).collect(Collectors.toList());
-            return ResponseEntity.ok(bookResponseDTOs);
+    public ResponseEntity<List<BookResponseDTO>> sortedByViews() {
+        List<Book> books = bookService.findAllSortedByViews();
+        List<BookResponseDTO> bookResponseDTOs = books.stream().map(BookResponseDTO::new).collect(Collectors.toList());
+        return ResponseEntity.ok(bookResponseDTOs);
     }
+
     @PutMapping("/update/{id}")
     public ResponseEntity<?> updateBook(@PathVariable Long id, @RequestBody BookRequestDTO book) {
         bookService.update(book);
         return ResponseEntity.ok(new BookResponseDTO(bookService.findById(id)));
     }
+
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteBook(@PathVariable Long id) {
         bookService.deleteBook(id);
         return ResponseEntity.ok("Successfully deleted!");
     }
+
     @GetMapping("/comment/{id}")
     public ResponseEntity<?> comment(@PathVariable Long id) {
         List<Comment> comments = bookService.getComment(id);
