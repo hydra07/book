@@ -14,7 +14,7 @@ export default ({ book }: { book: Book }) => {
         <div className="p-5 mt-1 space-y-2">
           <p className="text-lg font-semibold">{book.title}</p>
           {/* <p>Tác giả: {book.author.name}</p> */}
-          <p className="text-gray-400">{book.description ? book.description.slice(0, 100) + '...' : 'No description available'}</p>
+          <p className="text-gray-400">{book.description ? book.description.slice(0, 200) + '...' : 'No description available'}</p>
           <div className="flex pt-20">
             <p className="text-gray-400 pr-2">Lượt xem: {book.views}</p>
             <svg className="w-4 text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />  <circle cx="12" cy="12" r="3" /></svg>
