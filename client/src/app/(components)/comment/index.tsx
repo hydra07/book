@@ -75,7 +75,11 @@ const CommentComponent: React.FC<Props> = ({
   const [replyTo, setReplyTo] = useState<number | null>(null);
 
   const handleReply = (commentId: number) => {
-    setReplyTo(commentId);
+    if (replyTo === commentId) {
+      setReplyTo(null);
+    } else {
+      setReplyTo(commentId);
+    }
   };
 
   const handleSubmit = useCallback(() => {
@@ -106,6 +110,7 @@ const CommentComponent: React.FC<Props> = ({
       console.log(comments);
       setComments(comments);
     });
+
     // return () => {
     //   setComments([]);
     // };

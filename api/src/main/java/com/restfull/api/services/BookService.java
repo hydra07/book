@@ -1,8 +1,10 @@
 package com.restfull.api.services;
 
+import com.nimbusds.jose.crypto.RSASSAVerifier;
 import com.restfull.api.dtos.book.BookRequestDTO;
 import com.restfull.api.dtos.book.CommentDTO;
 import com.restfull.api.entities.*;
+import com.restfull.api.enums.Rate;
 import com.restfull.api.enums.Status;
 import com.restfull.api.repositories.BookRepository;
 import com.restfull.api.utils.NotFoundException;
@@ -34,6 +36,9 @@ public class BookService {
 
     @Autowired
     private AuthorService authorService;
+
+    @Autowired
+    private RateBookService rateBookService;
 
     public List<Book> findAll() {
         return repository.findAll();
@@ -195,6 +200,56 @@ public class BookService {
     public List<Comment> getCommentByBookId(Long bookId) {
         return commentService.getCommentsByBookId(bookId);
     }
+
+
+//    public Book rateBook(Long bookId, int rate){
+//        Book book = findById(bookId);
+//        book.getRate().add(Rate.valueOf(rate));
+//        return repository.save(book);
+//    }
+
+
+    public Book rateBook(Book book, User user, int rate){
+        try {
+            RateBook rateBook = rateBookService.findByBookAndUser(user, book);
+//            rateBook = new RateBook(user, book, Rate.valueOf(rate));
+            rateBook.setRate(Rate.valueOf(rate));
+            rateBookService.save(rateBook);
+//            System.out.println("rateBook: " + rateBook.getRate());
+            book.setRate(rateBookService.findAllRatesByBook(book));
+            return repository.save(book);
+        } catch (Exception e) {
+            RateBook rateBook = new RateBook(user, book, Rate.valueOf(rate));
+            rateBookService.save(rateBook);
+            book.setRate(rateBookService.findAllRatesByBook(book));
+            return repository.save(book);
+        }
+    }
+
+    public int getRateBook(User user, Book book){
+        try {
+            return rateBookService.findByBookAndUser(user, book).getRate().getValue();
+        } catch (Exception e) {
+            return 0;
+        }
+    }
+    public Book deleteRateBook(Book book, User user){
+        RateBook rateBook = rateBookService.findByBookAndUser(user, book);
+        rateBookService.delete(rateBook.getId());
+        return book;
+    }
+
+    public boolean isRated(User user, Book book){
+        return isRated(user, book);
+    }
+
+//    public Book updateRateBook(Book book, User user, int rate){
+//        RateBook rateBook = rateBookService.findByBookAndUser(user, book);
+//        rateBook.setRate(Rate.valueOf(rate));
+//        rateBookService.save(rateBook);
+//        return book;
+//    }
+
 
     // public List<Comment> getCommentTreeByBookId(Long bookId){
     // return commentService.getCommentTreeByBookId(bookId);

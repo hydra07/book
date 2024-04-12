@@ -1,9 +1,6 @@
 package com.restfull.api.controllers;
 
-import com.restfull.api.dtos.book.BookRequestDTO;
-import com.restfull.api.dtos.book.BookResponseDTO;
-import com.restfull.api.dtos.book.CommentDTO;
-import com.restfull.api.dtos.book.SearchResponseDTO;
+import com.restfull.api.dtos.book.*;
 import com.restfull.api.entities.*;
 import com.restfull.api.services.BookService;
 import com.restfull.api.services.JwtService;
@@ -119,6 +116,25 @@ public class BookController {
         List<Comment> comments = bookService.getCommentByBookId(bookId);
         return ResponseEntity.ok(comments.stream().map(CommentDTO::new).toList());
     }
+//    @PostMapping("/rate/{bookId}/{rate}")
+//    public ResponseEntity<?> rate(@PathVariable Long bookId,@PathVariable int rate){
+//        Book book = bookService.rateBook(bookId,rate);
+//        return ResponseEntity.ok(new BookResponseDTO(book));
+//    }
+    @PostMapping("/rate/{bookId}")
+    public ResponseEntity<?> rate(@PathVariable Long bookId, @RequestHeader("Authorization") String token, @RequestBody RateRequestDTO dto){
+        User user = jwtService.getUser(jwtService.validateRequestHeader(token));
+        Book book = bookService.findById(bookId);
+        Book ratedBook = bookService.rateBook(book, user, dto.getRate());
+        return ResponseEntity.ok(new BookResponseDTO(ratedBook));
+    }
+    @GetMapping("/rate/{bookId}")
+    public ResponseEntity<?> isRate(@PathVariable Long bookId,@RequestHeader("Authorization") String token){
+        User user = jwtService.getUser(jwtService.validateRequestHeader(token));
+        Book book = bookService.findById(bookId);
+        return ResponseEntity.ok(bookService.getRateBook(user,book));
+    }
+
     // @GetMapping("getTreeComment/{bookId}")
     // public ResponseEntity<?> getTreeComment(@PathVariable Long bookId){
     // List<Comment> comments = bookService.getCommentTreeByBookId(bookId);

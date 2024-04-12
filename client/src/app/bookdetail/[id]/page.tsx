@@ -41,21 +41,27 @@ export default async ({ params }: { params: { id: number } }) => {
     return <ErrorHandle message={`Không tìm thấy book với id:${params.id}`} />;
   } else {
     return (
-      <div className="pt-20">
-        <Breadcrumbs book={book} />
-        <div className="flex flex-row p-5">
-          <div className="basis-1/3 sticky">
-            <BookImage book={book} />
-          </div>
-          <div className=" pl-4 basis-2/3">
-            <div className="flex flex-col">
-              <BookDescriptions book={book} />
-              <CommentComponent
-                // comments={comments} 
-                book={book} 
-              />
+      <div className="pt-20 flex flex-col">
+        <div className="">
+          <Breadcrumbs book={book} />
+          <div className="flex flex-row p-5">
+            <div className="basis-1/3 sticky">
+              <BookImage book={book} />
+            </div>
+            <div className=" pl-4 basis-2/3">
+              <div className="flex flex-col">
+                <BookDescriptions book={book} />
+              </div>
             </div>
           </div>
+        </div>
+        <div className="border-t border-gray-300 my-4"></div>{' '}
+        {/* This is the line */}
+        <div className="p-5 w-4/6 self-center">
+          <CommentComponent
+            // comments={comments}
+            book={book}
+          />
         </div>
       </div>
     );
