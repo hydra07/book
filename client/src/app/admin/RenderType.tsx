@@ -20,28 +20,29 @@ import { timeFormatter } from "@/utils/epub.utils";
 import EditBook from "./EditBook";
 import SearchList from "./SearchList";
 import EditAuthor from "./EditAuthor";
+import EditType from "./EditType";
 
-interface AuthorInfo {
+interface TypeInfo {
     id: number | null;
     name: string;
     description: string;
 }
 
 export default () => {
-    const [authors, setAuthors] = useState<AuthorInfo[]>([]);
+    const [types, setTypes] = useState<TypeInfo[]>([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [selectedAuthors, setSelectedAuthors] = useState<AuthorInfo | null>(
+    const [selectedTypes, setSelectedTypes] = useState<TypeInfo | null>(
         null
     );
     const TABLE_HEAD = ["Name", "Description", ""];
 
     useEffect(() => {
-        const loadAuthors = async () => {
+        const loadTypes = async () => {
             try {
-                const res = await axios.get(`/author/getAll`);
-                setAuthors(res.data);
+                const res = await axios.get(`/type/getAll`);
+                setTypes(res.data);
                 if (Array.isArray(res.data)) {
-                    setAuthors(res.data);
+                    setTypes(res.data);
                 }
             } catch (error) {
                 console.error("Error fetching books:", error);
@@ -49,11 +50,11 @@ export default () => {
             // Ở đây bạn có thể thực hiện các xử lý dựa trên dữ liệu authors nếu cần
         };
 
-        loadAuthors();
+        loadTypes();
     }, []);
 
-    const handleEdit = (author: AuthorInfo) => {
-        setSelectedAuthors(author);
+    const handleEdit = (type: TypeInfo) => {
+        setSelectedTypes(type);
         setIsModalOpen(true);
     };
     const ClosedModal = () => {
@@ -90,9 +91,9 @@ export default () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {authors.map((author) => {
+                        {types.map((type) => {
                             return (
-                                <tr key={author.id}>
+                                <tr key={type.id}>
                                     <td className="text-white bg-gray-600 p-4 flex flex-row">
                                         <Typography
                                             placeholder={null}
@@ -100,7 +101,7 @@ export default () => {
                                             color="white"
                                             className="font-strong "
                                         >
-                                            {author.name}
+                                            {type.name}
                                         </Typography>
                                     </td>
 
@@ -111,7 +112,7 @@ export default () => {
                                             color="white"
                                             className="font-normal"
                                         >
-                                            {author.description}
+                                            {type.description}
                                         </Typography>
                                     </td>
 
@@ -120,7 +121,7 @@ export default () => {
                                             <IconButton
                                                 placeholder={null}
                                                 onClick={() => {
-                                                    handleEdit(author);
+                                                    handleEdit(type);
                                                 }}
                                             >
                                                 <svg
@@ -147,11 +148,11 @@ export default () => {
                 </table>
             </CardBody>
             {isModalOpen && (
-                <EditAuthor
-                    author={selectedAuthors}
+                <EditType
+                    type={selectedTypes}
                     closeModal={ClosedModal}
-                    setAuthors={setAuthors}
-                    authors={authors}
+                    setTypes={setTypes}
+                    types={types}
                 />
             )}
         </Card>

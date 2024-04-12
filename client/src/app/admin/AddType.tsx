@@ -4,7 +4,7 @@ import axios from "@/lib/axios";
 import { Button, Input } from "@material-tailwind/react";
 import { ChangeEvent, useCallback, useState } from "react";
 import { toast } from "react-toastify";
-interface TypeInfo {
+export interface TypeInfo {
   name: string;
   id: number | null;
   description: string;

@@ -110,7 +110,7 @@ const type = () => {
       const res = await axios.put(`/book/update/${form.id}`, form);
       console.log(res.data.success)
       closeModal();
-      toast.success('Cập nhật thành công');
+      toast.success ('Cập nhật thành công');
     } catch (error) {
       console.log("Lỗi khi gửi yêu cầu đến backend:", error);
       toast.error("Có lỗi xảy ra khi gửi yêu cầu đến backend");
