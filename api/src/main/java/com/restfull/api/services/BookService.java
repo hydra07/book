@@ -99,22 +99,11 @@ public class BookService {
                 bookDto.getTypesId().stream().map(id -> typeService.getTypeById(id)).collect(Collectors.toSet()));
         return repository.save(_book);
     }
-    // public Book update(Book book) {
-    //// return repository.findById(book.getId()).map(existingBook -> {
-    //// existingBook.setTitle(book.getTitle());
-    //// existingBook.setDescription(book.getDescription());
-    //// existingBook.setImageUrl(book.getImageUrl());
-    //// existingBook.setCreatedAt(book.getCreatedAt());
-    //// existingBook.setLastUpdateAt(book.getLastUpdateAt());
-    //// existingBook.setTypes(book.getTypes());
-    //// return repository.save(existingBook);
-    //// }).orElseThrow(() -> new NotFoundException("Book not found: " +
-    // book.getId()));
-    //// }
 
-    public void deleteBook(Long id) {
-        Book book = findById(id);
-        repository.delete(book);
+
+    public void delete(Long id) {
+
+        repository.deleteById(id);
     }
 
     public void increaseViews(Long id) {
@@ -197,6 +186,10 @@ public class BookService {
 
     public List<Comment> getCommentByBookId(Long bookId) {
         return commentService.getCommentsByBookId(bookId);
+    }
+
+    public boolean existsById(Long id) {
+        return false;
     }
 
     // public List<Comment> getCommentTreeByBookId(Long bookId){

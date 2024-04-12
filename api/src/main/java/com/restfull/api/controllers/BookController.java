@@ -1,7 +1,9 @@
 package com.restfull.api.controllers;
 
 import com.restfull.api.dtos.book.*;
-import com.restfull.api.entities.*;
+import com.restfull.api.entities.Book;
+import com.restfull.api.entities.Comment;
+import com.restfull.api.entities.User;
 import com.restfull.api.services.BookService;
 import com.restfull.api.services.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,13 +67,16 @@ public class BookController {
         bookService.update(book);
         return ResponseEntity.ok(new BookResponseDTO(bookService.findById(id)));
     }
-
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> deleteBook(@PathVariable Long id) {
-        bookService.deleteBook(id);
+    
+@DeleteMapping("/delete/{id}")
+public ResponseEntity<?> delete(@PathVariable Long id) {
+    try {
+        bookService.delete(id);
         return ResponseEntity.ok("Successfully deleted!");
+    } catch (Exception e) {
+        return ResponseEntity.badRequest().body(e.getMessage());
     }
-
+}
     @GetMapping("/comment/{id}")
     public ResponseEntity<?> comment(@PathVariable Long id) {
         List<Comment> comments = bookService.getComment(id);

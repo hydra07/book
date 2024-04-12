@@ -33,6 +33,13 @@ public class AuthorService {
         return repository.save(author);
     }
 
+    public Author update(Long id, AuthorRequestDTO dto) {
+//        Author author = findById(dto.getId());
+        Author author = findById(id);
+        author.setName(dto.getName());
+        author.setDescription(dto.getDescription());
+        return repository.save(author);
+    }
     public void delete(Long id) {
         Author author = findById(id);
         repository.delete(author);
