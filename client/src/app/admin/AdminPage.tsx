@@ -1,26 +1,41 @@
-'use client';
+"use client";
 import {
+  Accordion,
+  AccordionBody,
+  AccordionHeader,
+  List,
+  ListItem,
+  ListItemPrefix,
   Tab,
   TabPanel,
   Tabs,
   TabsBody,
   TabsHeader,
-} from '@material-tailwind/react';
-import dynamic from 'next/dynamic';
-import { useEffect, useState } from 'react';
-import AddAuthor from './AddAuthor';
-import RenderBook from './RenderBook';
+  Typography,
+} from "@material-tailwind/react";
+
+import dynamic from "next/dynamic";
+import { useEffect, useState } from "react";
+import AddAuthor from "./AddAuthor";
+import RenderBook from "./RenderBook";
 
 const AddBook = dynamic(() => import("./AddBook"), { ssr: false });
 const AddType = dynamic(() => import("./AddType"), { ssr: false });
 
 export default ({ authors, types }: any) => {
+  const [open, setOpen] = useState<number>(0);
+
+  const handleOpen = (value: number) => {
+    setOpen(open === value ? 0 : value);
+  };
   const [showData, setShowData] = useState<boolean>(false);
   const [showtype, setShowType] = useState<boolean>(false);
   const [showauthor, setShowAuthor] = useState<boolean>(false);
   const [showpage, setshowPage] = useState<boolean>(false);
   const [showlist, setshowList] = useState<boolean>(false);
-  const handleAction = (action: "book" | "type" | "author" | "page" |"render"): void => {
+  const handleAction = (
+    action: "book" | "type" | "author" | "page" | "render"
+  ): void => {
     setShowData(action === "book");
     setShowType(action === "type");
     setShowAuthor(action === "author");
@@ -40,11 +55,11 @@ export default ({ authors, types }: any) => {
         <TabsHeader
           className="pt-20 w-80 bg-gray-900 min-h-[calc(100vh_-_80px)] border-r rounded-none"
           indicatorProps={{
-            className: 'bg-black shadow-none !text-gray-900',
+            className: "bg-black shadow-none !text-gray-900",
           }}
           placeholder={null}
         >
-          <Tab
+          {/* <Tab
             placeholder={true}
             className="text-white justify-center w-4/5"
             onClick={() => handleAction('page')}
@@ -83,7 +98,7 @@ export default ({ authors, types }: any) => {
             onClick={() => handleAction('render')}
           >
             List Book
-          </Tab>
+          </Tab> */}
           {/* {data.map(({ label, value, icon }) => (
           <Tab key={value} value={value} className="place-items-start">
             <div className="flex items-center gap-2">
@@ -92,6 +107,75 @@ export default ({ authors, types }: any) => {
             </div>
           </Tab>
         ))} */}
+          <Accordion
+            placeholder={null}
+            open={open === 1}
+            icon={
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className={`mx-auto h-4 w-4 transition-transform ${
+                  open === 1 ? "rotate-180" : ""
+                }`}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="m19.5 8.25-7.5 7.5-7.5-7.5"
+                />
+              </svg>
+            }
+          >
+            <ListItem placeholder={null} className="p-0" selected={open === 1}>
+              <AccordionHeader
+                placeholder={null}
+                onClick={() => handleOpen(1)}
+                className="border-b-0 p-3"
+              >
+                <Typography
+                  placeholder={null}
+                  color="blue-gray"
+                  className="mr-auto font-normal"
+                >
+                  Dashboard
+                </Typography>
+              </AccordionHeader>
+              <AccordionBody p className="py-1">
+                <List placeholder={null} className="p-0">
+                  <ListItem placeholder={null}>
+                    <button
+                      value="book"
+                      className="text-white justify-center w-4/5"
+                      onClick={() => handleAction("book")}
+                    >
+                      Add Book
+                    </button>
+                  </ListItem>
+                  <ListItem placeholder={null}>
+                    <button
+                      value="author"
+                      className="text-white justify-center w-4/5"
+                      onClick={() => handleAction("author")}
+                    >
+                      Add Author
+                    </button>
+                  </ListItem>
+                  <ListItem placeholder={null}>
+                    <button
+                      value="book"
+                      className="text-white justify-center w-4/5"
+                      onClick={() => handleAction("type")}
+                    >
+                      Add Type
+                    </button>
+                  </ListItem>
+                </List>
+              </AccordionBody>
+            </ListItem>
+          </Accordion>
         </TabsHeader>
         <TabsBody placeholder={null}>
           {/* {data.map(({ value, desc }) => (
