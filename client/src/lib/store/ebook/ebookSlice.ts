@@ -1,4 +1,5 @@
 import { axiosWithAuth } from '@/lib/axios';
+// import { Highlight } from '@/lib/store/ebook/ebookSlice';
 import {
   BookOption,
   BookStyle,
@@ -18,9 +19,10 @@ export interface Highlight {
   content: string;
   color?: string;
   createAt: string;
-  chpaterName: string;
+  chapterName: string;
   pageNum: number;
   lastAccess?: string;
+  // note: string;
 }
 
 interface EbookState {
@@ -28,7 +30,7 @@ interface EbookState {
   currentLocation: Page;
   theme: string;
   toc: Toc[];
-  highLight: Highlight[];
+  highLights: Highlight[];
   bookmarks: Bookmarks;
   bookOption: BookOption;
   bookStyle: BookStyle;
@@ -36,6 +38,7 @@ interface EbookState {
   color: Color[];
   _fetchingCurrentLocation: Page | null;
   _fetchingBookmarks: Bookmarks | [];
+  _fetchingHighlights: Highlight[] | [];
   _isFetching: boolean;
 }
 
@@ -95,7 +98,7 @@ const initialState: EbookState = {
   currentLocation: initialCurrentLocation,
   theme: initialTheme,
   toc: [],
-  highLight: [],
+  highLights: [],
   bookmarks: [],
   bookOption: initialBookOption,
   bookStyle: initialBookStyle,
@@ -103,6 +106,7 @@ const initialState: EbookState = {
   color: initialColor,
   _fetchingCurrentLocation: null,
   _fetchingBookmarks: [],
+  _fetchingHighlights: [],
   _isFetching: false,
 };
 
@@ -150,7 +154,7 @@ const ebookSlice = createSlice({
       state._fetchingBookmarks = action.payload;
     },
     updateHighLight(state, action) {
-      state.highLight = action.payload;
+      state.highLights = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -158,6 +162,7 @@ const ebookSlice = createSlice({
       .addCase(initBookReader.rejected, (state, action) => {
         state._fetchingCurrentLocation = null;
         state._fetchingBookmarks = [];
+        state._fetchingHighlights = [];
         state._isFetching = true;
       })
       .addCase(
@@ -165,6 +170,7 @@ const ebookSlice = createSlice({
         (state, action: PayloadAction<ReaderResponse>) => {
           state._fetchingCurrentLocation = action.payload.currentPage;
           state._fetchingBookmarks = action.payload.bookmarks;
+          state._fetchingHighlights = action.payload.highlights;
           state._isFetching = true;
           // state.currentLocation = action.payload.currentPage;
           // console.log('initBookReader.fulfilled', action.payload.currentPage);
@@ -178,6 +184,9 @@ const ebookSlice = createSlice({
       })
       .addCase(setBookmark.fulfilled, (state, action) => {
         state.bookmarks = action.payload.bookmarks;
+      })
+      .addCase(setHighlight.fulfilled, (state, action) => {
+        state.highLights = action.payload.highlights;
       });
   },
 });
@@ -252,6 +261,25 @@ export const setBookmark = createAsyncThunk(
   },
 );
 
+export const setHighlight = createAsyncThunk(
+  'highlight/update',
+  async ({ token, id }: Props, thunkAPI) => {
+    const { rejectWithValue, getState } = thunkAPI;
+    const state = getState() as RootState;
+    try {
+      const axios = axiosWithAuth(token);
+      const data = {
+        highlights: state.ebook.highLights,
+      };
+      const response = await axios.post(`/ebook/highlight/${id}`, data);
+      console.log(response.data);
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
+
 export const {
   updateBook,
   updateCurrentPage,
@@ -283,4 +311,5 @@ interface CurrentPage {
 interface ReaderResponse {
   currentPage: Page;
   bookmarks: Bookmarks;
+  highlights: Highlight[];
 }

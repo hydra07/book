@@ -1,5 +1,10 @@
 import { AppDispatch, RootState } from '@/lib/store';
-import { initBookReader, updateBookmark } from '@/lib/store/ebook/ebookSlice';
+import {
+  Highlight,
+  initBookReader,
+  updateBookmark,
+  updateHighLight,
+} from '@/lib/store/ebook/ebookSlice';
 import Book from '@/types/book';
 import { Bookmarks, Page, ViewerRef } from '@/types/ebook';
 import { RefObject, useCallback, useEffect, useRef, useState } from 'react';
@@ -21,14 +26,21 @@ export default function useInitBook({ viewerRef, book, isLoading }: Props) {
   const currentLocation = useSelector<RootState, Page>(
     (state: RootState) => state.ebook.currentLocation,
   );
-  const bookmark = useSelector<RootState, Bookmarks>(
+  const bookmarks = useSelector<RootState, Bookmarks>(
     (state: RootState) => state.ebook.bookmarks,
   );
+  const highlights = useSelector<RootState, Highlight[]>(
+    (state: RootState) => state.ebook.highLights,
+  );
+
   const _currentLocation = useSelector<RootState, Page | null>(
     (state: RootState) => state.ebook._fetchingCurrentLocation,
   );
   const _bookmarks = useSelector<RootState, Bookmarks | []>(
     (state: RootState) => state.ebook._fetchingBookmarks,
+  );
+  const _highlights = useSelector<RootState, Highlight[]>(
+    (state: RootState) => state.ebook._fetchingHighlights,
   );
   const _isfetching = useSelector<RootState, boolean>(
     (state: RootState) => state.ebook._isFetching,
@@ -49,11 +61,15 @@ export default function useInitBook({ viewerRef, book, isLoading }: Props) {
 
   //init bookmark
   useEffect(() => {
-    if (_bookmarks.length > 0 && bookmark.length === 0) {
+    if (_bookmarks.length > 0 && bookmarks.length === 0) {
       dispatch(updateBookmark(_bookmarks));
     }
   }, [_bookmarks]);
-
+  useEffect(() => {
+    if (_highlights.length > 0 && highlights.length === 0) {
+      dispatch(updateHighLight(_highlights));
+    }
+  }, [_highlights]);
   // useEffect(() => {
   //   if (_currentLocation) {
   //     setLocation(_currentLocation.startCfi);
