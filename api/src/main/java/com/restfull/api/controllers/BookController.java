@@ -43,11 +43,26 @@ public class BookController {
     @GetMapping("/search")
     public ResponseEntity<SearchResponseDTO> searchBooks(
             @RequestParam(name = "keyword", defaultValue = "") String keyword) {
-        List<BookDTO> foundBooksByTitle = bookService.searchBooksByTitle(keyword);
-        List<AuthorDTO> foundAuthorsByBook = bookService.searchByAuthor(keyword);
-        List<TypeDTO> foundTypesByBook = bookService.searchByType(keyword);
+        List<BookResponseDTO> foundBooksByTitle = bookService.searchBooksByTitle(keyword).stream().map(BookResponseDTO::new)
+                .collect(Collectors.toList());
+        List<AuthorResponseDTO> foundAuthorsByBook = bookService.searchByAuthor(keyword).stream().map(AuthorResponseDTO::new)
+                .collect(Collectors.toList());
+        List<TypeResponseDTO> foundTypesByBook = bookService.searchByType(keyword).stream().map(TypeResponseDTO::new)
+                .collect(Collectors.toList());
         return ResponseEntity.ok(new SearchResponseDTO(foundBooksByTitle, foundAuthorsByBook, foundTypesByBook));
     }
+//    @GetMapping("/search")
+//    public ResponseEntity<?> searchBooks(@RequestParam(name = "keyword", defaultValue = "") String keyword) {
+//        return ResponseEntity.ok(bookService.searchBooksByTitle(keyword).stream().map(BookResponseDTO::new).collect(Collectors.toList()));
+//    }
+//    @GetMapping("/searchByAuthor")
+//    public ResponseEntity<?> searchByAuthor(@RequestParam(name = "keyword", defaultValue = "") String keyword) {
+//        return ResponseEntity.ok(bookService.searchByAuthor(keyword).stream().map(AuthorResponseDTO::new).collect(Collectors.toList()));
+//    }
+//    @GetMapping("/searchByType")
+//    public ResponseEntity<?> searchByType(@RequestParam(name = "keyword", defaultValue = "") String keyword) {
+//        return ResponseEntity.ok(bookService.searchByType(keyword).stream().map(TypeResponseDTO::new).collect(Collectors.toList()));
+//    }
 
     @PostMapping("/views/{id}")
     public ResponseEntity<?> views(@PathVariable Long id) {
@@ -58,25 +73,28 @@ public class BookController {
     @GetMapping("/sorted-by-views")
     public ResponseEntity<List<BookResponseDTO>> sortedByViews() {
         List<Book> books = bookService.findAllSortedByViews();
-        List<BookResponseDTO> bookResponseDTOs = books.stream().map(BookResponseDTO::new).collect(Collectors.toList());
+        List<BookResponseDTO> bookResponseDTOs = books.stream().map(BookResponseDTO::new).limit(6).collect(Collectors.toList());
+        return ResponseEntity.ok(bookResponseDTOs);
+    }
+    @GetMapping("/sorted-by-latest")
+    public ResponseEntity<List<BookResponseDTO>> sortedByLatest() {
+        List<Book> books = bookService.findAllSortedByLatest();
+        List<BookResponseDTO> bookResponseDTOs = books.stream().map(BookResponseDTO::new).limit(6).collect(Collectors.toList());
         return ResponseEntity.ok(bookResponseDTOs);
     }
 
     @PutMapping("/update/{id}")
     public ResponseEntity<?> updateBook(@PathVariable Long id, @RequestBody BookRequestDTO book) {
         bookService.update(book);
-        return ResponseEntity.ok(new BookResponseDTO(bookService.findById(id)));
+        return ResponseEntity.ok("Successfully updated!");
     }
 
 @DeleteMapping("/delete/{id}")
-public ResponseEntity<?> delete(@PathVariable Long id) {
-    try {
+    public ResponseEntity<?> delete(@PathVariable Long id) {
         bookService.delete(id);
-        return ResponseEntity.ok("Successfully deleted!");
-    } catch (Exception e) {
-        return ResponseEntity.badRequest().body(e.getMessage());
-    }
+    return ResponseEntity.ok(new BookResponseDTO(bookService.findById(id)));
 }
+
     @GetMapping("/comment/{id}")
     public ResponseEntity<?> comment(@PathVariable Long id) {
         List<Comment> comments = bookService.getComment(id);

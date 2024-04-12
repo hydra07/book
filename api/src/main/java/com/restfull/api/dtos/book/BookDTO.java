@@ -5,7 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Set;
 
 @Data
@@ -21,8 +22,8 @@ public class BookDTO {
     private Double price;
     private Set<String> followedUsers;
     private Set<Integer> rate;
-    private Date createdAt;
-    private Date lastUpdateAt;
+    private String createdAt;
+    private String lastUpdateAt;
     private String url;
 
     public BookDTO(Book book) {
@@ -35,8 +36,9 @@ public class BookDTO {
         this.status = book.getStatus().toString();
         this.followedUsers = book.getFollowedUsersString();
         this.rate = book.getRateString();
-        this.createdAt = book.getCreatedAt();
-        this.lastUpdateAt = book.getLastUpdateAt();
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        this.createdAt = dateFormat.format(book.getCreatedAt());
+        this.lastUpdateAt = dateFormat.format(book.getLastUpdateAt());
         this.url = book.getUrl();
     }
 }

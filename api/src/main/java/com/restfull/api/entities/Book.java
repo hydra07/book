@@ -145,6 +145,7 @@ public class Book {
         return rate.stream().map(Rate::getValue).collect(Collectors.toSet());
     }
 
+
     public void setRate(Set<Rate> rate) {
         if (rate == null || rate.isEmpty()) {
             this.rate.clear();

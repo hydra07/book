@@ -12,7 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SearchResponseDTO {
-    private List<BookDTO> books;
-    private List<AuthorDTO> authors;
-    private List<TypeDTO> types;
+    private List<BookResponseDTO> books;
+    private List<AuthorResponseDTO> authors;
+    private List<TypeResponseDTO> types;
 }

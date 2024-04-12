@@ -48,15 +48,15 @@ public class BookService {
     // ...
 
     // ...
-    public List<BookDTO> searchBooksByTitle(String keyword) {
+    public List<Book> searchBooksByTitle(String keyword) {
         return repository.searchByName(keyword);
     }
 
-    public List<AuthorDTO> searchByAuthor(String keyword) {
+    public List<Author> searchByAuthor(String keyword) {
         return repository.searchByAuthor(keyword);
     }
 
-    public List<TypeDTO> searchByType(String keyword) {
+    public List<Type> searchByType(String keyword) {
         return repository.searchByType(keyword);
     }
 
@@ -94,17 +94,19 @@ public class BookService {
 
         _book.setUrl(bookDto.getUrl());
 
-        // _book.setFollowedBook(book.getFollowedBook());
+
         _book.setTypes(
                 bookDto.getTypesId().stream().map(id -> typeService.getTypeById(id)).collect(Collectors.toSet()));
         return repository.save(_book);
     }
 
-
     public void delete(Long id) {
+        Book book = findById(id);
+        repository.delete(book);
 
-        repository.deleteById(id);
     }
+
+
 
     public void increaseViews(Long id) {
         Book book = findById(id);
@@ -115,6 +117,9 @@ public class BookService {
 
     public List<Book> findAllSortedByViews() {
         return repository.findAll(Sort.by(Sort.Direction.DESC, "views"));
+    }
+    public List<Book> findAllSortedByLatest() {
+        return repository.findAll(Sort.by(Sort.Direction.DESC, "createdAt"));
     }
 
     public void addFollowedUser(Book book, User user) {
