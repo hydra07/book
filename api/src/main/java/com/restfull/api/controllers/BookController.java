@@ -1,5 +1,6 @@
 package com.restfull.api.controllers;
 
+import com.restfull.api.dtos.book.BookRateDTO;
 import com.restfull.api.dtos.book.BookRequestDTO;
 import com.restfull.api.dtos.book.BookResponseDTO;
 import com.restfull.api.dtos.book.CommentDTO;
@@ -60,6 +61,7 @@ public class BookController {
         return ResponseEntity.ok(new BookResponseDTO(bookService.findById(id)));
     }
 
+//--------------------------------------Comment-------------------------------------------------------
     @GetMapping("/comment/{id}")
     public ResponseEntity<?> comment(@PathVariable Long id) {
         List<Comment> comments = bookService.getComment(id);
@@ -81,9 +83,6 @@ public class BookController {
         }
     }
 
-
-
-
     @PostMapping("/addComment/{bookId}")
     public ResponseEntity<?> addComment(@PathVariable Long bookId, @RequestHeader("Authorization") String token, @RequestBody CommentDTO dto) {
         User user = jwtService.getUser(jwtService.validateRequestHeader(token));
@@ -92,6 +91,7 @@ public class BookController {
         return ResponseEntity.ok(new CommentDTO(comment));
 
     }
+   
     @PostMapping("/repyComment/{bookId}")
     public ResponseEntity<?> replyComment(@PathVariable Long bookId,@RequestHeader("Authorization") String token, @RequestBody CommentDTO dto){
         User user = jwtService.getUser(jwtService.validateRequestHeader(token));
@@ -112,11 +112,13 @@ public class BookController {
         List<Comment> comments = bookService.getCommentByBookId(bookId);
         return ResponseEntity.ok(comments.stream().map(CommentDTO::new).toList());
     }
-    @GetMapping("getTreeComment/{bookId}")
-    public ResponseEntity<?> getTreeComment(@PathVariable Long bookId){
-        List<Comment> comments = bookService.getCommentTreeByBookId(bookId);
-        return ResponseEntity.ok(comments.stream().map(CommentDTO::new).toList());
-    }
+//    @GetMapping("getTreeComment/{bookId}")
+//    public ResponseEntity<?> getTreeComment(@PathVariable Long bookId){
+//        List<Comment> comments = bookService.getCommentTreeByBookId(bookId);
+//        return ResponseEntity.ok(comments.stream().map(CommentDTO::new).toList());
+//    }
+
+//---------------------------------------------------Type--------------------------------------------------------
 //    @PostMapping("/addTypeToBook/{bookId}")
 //    public ResponseEntity<?> addTypeToBook(@PathVariable long bookId, @RequestBody TypeRequestDTO typeDTO) {
 //        try {
@@ -126,8 +128,6 @@ public class BookController {
 //            return ResponseEntity.badRequest().body(e.getMessage());
 //        }
 //    }
-
-
 
     // @PostMapping("/removeTypeFromBook/{bookId}")
     // public ResponseEntity<?> removeTypeFromBook(@RequestBody TypeRequestDTO
@@ -140,4 +140,40 @@ public class BookController {
     // }
     // }
 
+//--------------------------------------------------Rate-----------------------------------------------------------
+    @PostMapping("/rate/{id}")
+    public ResponseEntity<?> rate(@RequestHeader("Authorization") String token, @PathVariable Long id, @RequestBody BookRateDTO bookRateDTO){
+        try {
+            User user = jwtService.getUser(jwtService.validateRequestHeader(token));
+            Book book = bookService.findById(id);
+            bookService.rateBook(book, user, bookRateDTO);
+            return ResponseEntity.ok(new BookResponseDTO(book));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+    
+    @GetMapping("/getAvgRate/{id}")
+    public ResponseEntity<?> getAvgRate(@PathVariable Long id) {
+        try {
+            // User user = jwtService.getUser(jwtService.validateRequestHeader(token));
+            Book book = bookService.findById(id);
+            Double avgRate = bookService.getAvgRate(book);
+            return ResponseEntity.ok(avgRate);
+        } catch (Exception e) {
+        return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/getUserRate/{id}")
+    public ResponseEntity<?> getUserRate(@RequestHeader("Authorization") String token, @PathVariable Long id) {
+        try {
+            User user = jwtService.getUser(jwtService.validateRequestHeader(token));
+            Book book = bookService.findById(id);
+            Integer uRate = bookService.getUserRate(book, user);
+            return ResponseEntity.ok(uRate);
+        } catch (Exception e) {
+        return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 }

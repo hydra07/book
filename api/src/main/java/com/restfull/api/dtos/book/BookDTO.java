@@ -22,7 +22,6 @@ public class BookDTO {
     private List<String> images;
     private Set<String> types;
     private String status;
-    private Double price;
     private Set<String> followedUsers;
     private Set<Integer> rate;
     private Date createdAt;

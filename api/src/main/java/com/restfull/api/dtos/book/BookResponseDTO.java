@@ -33,7 +33,6 @@ public class BookResponseDTO {
     private String description;
     private Set<BookType> types = new HashSet<>();
     private Long views;
-    private double price;
     private Date createdAt;
     private Date lastUpdateAt;
     private Double rating;
@@ -56,8 +55,8 @@ public class BookResponseDTO {
         this.views = book.getViews();
         this.createdAt = book.getCreatedAt();
         this.lastUpdateAt = book.getLastUpdateAt();
-        this.rating = book.getAverageRate();
-        this.reviews = (long) book.getRate().size();
+        this.rating = book.getAverageBookRate();
+        this.reviews = (long) book.getRateString().size();
         this.imageUrl = book.getImageUrl();
         this.url = book.getUrl();
         this.status = book.getStatus().toString();

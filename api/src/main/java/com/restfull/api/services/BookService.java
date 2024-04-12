@@ -1,11 +1,14 @@
 package com.restfull.api.services;
 
+import com.restfull.api.dtos.book.BookRateDTO;
 import com.restfull.api.dtos.book.BookRequestDTO;
 import com.restfull.api.dtos.book.CommentDTO;
 import com.restfull.api.entities.Book;
 import com.restfull.api.entities.Comment;
 import com.restfull.api.entities.User;
+import com.restfull.api.entities.BookRate;
 import com.restfull.api.enums.Status;
+import com.restfull.api.enums.Rate;
 import com.restfull.api.repositories.BookRepository;
 import com.restfull.api.utils.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +33,9 @@ public class BookService {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private BookRateService rateService;
 
     @Autowired
     private CommentService commentService;
@@ -82,6 +88,7 @@ public class BookService {
         _book.setLastUpdateAt(book.getLastUpdateAt());
         _book.setFollowedBook(book.getFollowedBook());
         _book.setTypes(book.getTypes());
+        _book.setBookRate(book.getBookRates());
         return repository.save(_book);
     }
 
@@ -128,6 +135,7 @@ public class BookService {
         Book book = findById(id);
         return commentService.findByBook(book);
     }
+
     public Comment newComment(Book book,User user,CommentDTO dto){
         Comment comment = new Comment();
         comment.setContent(dto.getContent());
@@ -153,11 +161,34 @@ public class BookService {
         return commentService.getCommentsByBookId(bookId);
     }
 
-    public List<Comment> getCommentTreeByBookId(Long bookId){
-        return commentService.getCommentTreeByBookId(bookId);
-    }
-}
+    // public List<Comment> getCommentTreeByBookId(Long bookId){
+    //     return commentService.getCommentTreeByBookId(bookId);
+    // }
 
+
+//----------------------Rate---------------------
+    public BookRate rateBook (Book book, User user, BookRateDTO dto){
+        BookRate rate = new BookRate();
+        rate.setBook(book);
+        rate.setUser(user);
+        rate.setRate(Rate.valueOf(dto.getRate()));
+        return rateService.saveOrUpdate(rate);
+    }
+
+    public Double getAvgRate (Book book) {
+        return book.getAverageBookRate();
+    }
+
+    public int getUserRate (Book book, User user){    
+        try {
+            BookRate rate = rateService.findByUserIdAndBookId(book.getId(), user.getId());
+            return rate.getRateValue();
+        } catch (Exception e) {
+            return 0;
+        }
+    }
+    
+}
 //    public Book addTypeToBook(Long bookID, TypeRequestDTO typeDTO) {
 //        try {
 //            // Get book from repository
