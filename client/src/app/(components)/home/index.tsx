@@ -3,6 +3,9 @@ import Book, { Type } from "@/types/book";
 import TypeBook from "./TypeBook";
 import { getAllTypesFromBooks, getBookByType } from '@/utils/sort.utils';
 import { useState } from "react";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 export default ({ listBook }: { listBook: Book[] }) => {
 	const [books, setBooks] = useState<Book[]>(listBook);
 	const [types, setTypes] = useState<Type[]>(getAllTypesFromBooks(listBook!));
@@ -22,6 +25,7 @@ export default ({ listBook }: { listBook: Book[] }) => {
 					})}
 				</div>
 			</div>
+			<ToastContainer />
 		</div>
 	);
 }

@@ -3,6 +3,7 @@ import { useState, useCallback, ChangeEvent } from 'react';
 import { Button, ButtonGroup, Input } from '@material-tailwind/react';
 import { axiosWithAuth } from '@/lib/axios';
 import User from '@/types/user';
+import { toast } from 'react-toastify';
 
 export default ({
     isChangePassword,
@@ -31,7 +32,7 @@ export default ({
         async (event: ChangeEvent<HTMLFormElement>) => {
             event.preventDefault();
             if (newPassword !== confirmPassword) {
-                alert('Passwords do not match');
+                toast.error('Mật khẩu không khớp');
                 return;
             }
             const token = user.accessToken;

@@ -4,6 +4,8 @@ import { signIn } from 'next-auth/react';
 import { ChangeEvent, FormEvent, useState } from 'react';
 import { ShowDiaLog } from '../header/AuthButton';
 import Google from './Google';
+import { isEmailValid } from '@/utils/validation.utils';
+import { toast } from 'react-toastify';
 // import { useDispatch } from 'react-redux';
 // import { login } from '../../store/auth';
 // import Google from '../auth/Google';
@@ -20,6 +22,10 @@ export default ({ setShowSignUpDialog, setShowSignInDialog }: ShowDiaLog) => {
   };
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (!isEmailValid(form.email)) {
+      toast.error('Email không hợp lệ!')
+      return;
+    }
     await signIn('credentials', {
       email: form.email,
       password: form.password,

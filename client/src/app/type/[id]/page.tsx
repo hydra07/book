@@ -29,9 +29,9 @@ export default async ({ params }: { params: { id: number } }) => {
     const typeDesc: string = res.data.description;
     return (
       <div className="container mx-auto px-4 py-8 mt-24">
-        <div className="border ">
+        <div className="">
           <h2 className="text-4xl font-bold mb-4">{typeName}</h2>
-          <h4 className="text-lg">{typeDesc}</h4>
+          <h4 className="text-lg pl-10">{typeDesc}</h4>
         </div>
         {books.map(book => (
           <BookCard key={book.id} book={book} />
