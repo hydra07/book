@@ -67,7 +67,7 @@ public class BookController {
         bookService.update(book);
         return ResponseEntity.ok(new BookResponseDTO(bookService.findById(id)));
     }
-    
+
 @DeleteMapping("/delete/{id}")
 public ResponseEntity<?> delete(@PathVariable Long id) {
     try {
