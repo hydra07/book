@@ -2,6 +2,7 @@
 import { Input } from '@material-tailwind/react';
 import { signIn } from 'next-auth/react';
 import { ChangeEvent, FormEvent, useState } from 'react';
+import { toast } from 'react-toastify';
 import { ShowDiaLog } from '../header/AuthButton';
 import Google from './Google';
 // import { useDispatch } from 'react-redux';
@@ -20,12 +21,19 @@ export default ({ setShowSignUpDialog, setShowSignInDialog }: ShowDiaLog) => {
   };
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    await signIn('credentials', {
+    // try {
+    const res = await signIn('credentials', {
       email: form.email,
       password: form.password,
-      callbackUrl: '/',
-      // redirect: false,
+      // callbackUrl: '/',
+      redirect: false,
     });
+    console.log('res', JSON.stringify(res));
+    // toast.success(res?.ok);
+    toast.error(res?.error);
+    // } catch (error: any) {
+    //   toast.error(error?.message);
+    // }
   };
   const handleOpenSignUpDialog = () => {
     setShowSignUpDialog(true);

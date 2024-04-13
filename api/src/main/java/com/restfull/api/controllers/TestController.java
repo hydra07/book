@@ -179,29 +179,29 @@ public class TestController {
         }
     }
 
-    @PostMapping("/token/followBook")
-    public ResponseEntity<?> followBook(@RequestHeader("Authorization") String token, @RequestBody BookDTO bookDTO) {
-        try {
-            token = jwtService.validateRequestHeader(token);
-            User user = jwtService.getUser(token);
-            Book book = bookService.findById(bookDTO.getId());
-            bookService.addFollowedUser(book, user);
-            return ResponseEntity.ok("Book followed!");
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
+//    @PostMapping("/token/followBook")
+//    public ResponseEntity<?> followBook(@RequestHeader("Authorization") String token, @RequestBody BookDTO bookDTO) {
+//        try {
+//            token = jwtService.validateRequestHeader(token);
+//            User user = jwtService.getUser(token);
+//            Book book = bookService.findById(bookDTO.getId());
+//            bookService.addFollowedUser(book, user);
+//            return ResponseEntity.ok("Book followed!");
+//        } catch (Exception e) {
+//            return ResponseEntity.badRequest().body(e.getMessage());
+//        }
+//    }
 
-    @PostMapping("/token/unFollowBook")
-    public ResponseEntity<?> unfollowBook(@RequestHeader("Authorization") String token, @RequestBody BookDTO bookDTO) {
-        try {
-            token = jwtService.validateRequestHeader(token);
-            User user = jwtService.getUser(token);
-            Book book = bookService.findById(bookDTO.getId());
-            bookService.removeFollowedUser(book, user);
-            return ResponseEntity.ok("Book unfollowed!");
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
+//    @PostMapping("/token/unFollowBook")
+//    public ResponseEntity<?> unfollowBook(@RequestHeader("Authorization") String token, @RequestBody BookDTO bookDTO) {
+//        try {
+//            token = jwtService.validateRequestHeader(token);
+//            User user = jwtService.getUser(token);
+//            Book book = bookService.findById(bookDTO.getId());
+//            bookService.removeFollowedUser(book, user);
+//            return ResponseEntity.ok("Book unfollowed!");
+//        } catch (Exception e) {
+//            return ResponseEntity.badRequest().body(e.getMessage());
+//        }
+//    }
 }

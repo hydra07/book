@@ -1,6 +1,7 @@
 package com.restfull.api.services;
 
-import com.restfull.api.dtos.book.*;
+import com.restfull.api.dtos.book.BookRequestDTO;
+import com.restfull.api.dtos.book.CommentDTO;
 import com.restfull.api.entities.*;
 import com.restfull.api.enums.Status;
 import com.restfull.api.repositories.BookRepository;
@@ -33,8 +34,6 @@ public class BookService {
 
     @Autowired
     private AuthorService authorService;
-    @Autowired
-    private BookRepository bookRepository;
 
     public List<Book> findAll() {
         return repository.findAll();
@@ -43,20 +42,16 @@ public class BookService {
     public Book findById(Long id) {
         return repository.findById(id).orElseThrow(() -> new NotFoundException("Book not found: " + id));
     }
-    // In BookService.java
 
-    // ...
 
-    // ...
+
     public List<Book> searchBooksByTitle(String keyword) {
         return repository.searchByName(keyword);
     }
-
-    public List<Author> searchByAuthor(String keyword) {
+    public List<Author> searchByAuthor(String keyword)   {
         return repository.searchByAuthor(keyword);
     }
-
-    public List<Type> searchByType(String keyword) {
+    public List<Type> searchByType(String keyword)   {
         return repository.searchByType(keyword);
     }
 
@@ -91,22 +86,17 @@ public class BookService {
         _book.setDescription(bookDto.getDescription());
         _book.setImageUrl(bookDto.getImageUrl());
         _book.setStatus(Status.valueOf(bookDto.getStatus()));
-
         _book.setUrl(bookDto.getUrl());
-
-
         _book.setTypes(
                 bookDto.getTypesId().stream().map(id -> typeService.getTypeById(id)).collect(Collectors.toSet()));
         return repository.save(_book);
     }
 
+
     public void delete(Long id) {
-        Book book = findById(id);
-        repository.delete(book);
 
+        repository.deleteBook(id);
     }
-
-
 
     public void increaseViews(Long id) {
         Book book = findById(id);
@@ -114,25 +104,24 @@ public class BookService {
         repository.updateViews(id, book.getViews());
         // update(book);
     }
-
     public List<Book> findAllSortedByViews() {
         return repository.findAll(Sort.by(Sort.Direction.DESC, "views"));
+
     }
     public List<Book> findAllSortedByLatest() {
         return repository.findAll(Sort.by(Sort.Direction.DESC, "createdAt"));
     }
-
-    public void addFollowedUser(Book book, User user) {
-        book.getFollowedBook().add(user);
-        BookRequestDTO bookDto = convertToBookRequestDTO(book);
-        update(bookDto);
-    }
-
-    public void removeFollowedUser(Book book, User user) {
-        book.getFollowedBook().removeIf(_user -> _user.getId().equals(user.getId()));
-        BookRequestDTO bookDto = convertToBookRequestDTO(book);
-        update(bookDto);
-    }
+//    public void addFollowedUser(Book book, User user) {
+//        book.getFollowedBook().add(user);
+//        BookRequestDTO bookDto = convertToBookRequestDTO(book);
+//        update(bookDto);
+//    }
+//
+//    public void removeFollowedUser(Book book, User user) {
+//        book.getFollowedBook().removeIf(_user -> _user.getId().equals(user.getId()));
+//        BookRequestDTO bookDto = convertToBookRequestDTO(book);
+//        update(bookDto);
+//    }
 
     private BookRequestDTO convertToBookRequestDTO(Book book) {
         BookRequestDTO bookDto = new BookRequestDTO();
@@ -191,10 +180,6 @@ public class BookService {
 
     public List<Comment> getCommentByBookId(Long bookId) {
         return commentService.getCommentsByBookId(bookId);
-    }
-
-    public boolean existsById(Long id) {
-        return false;
     }
 
     // public List<Comment> getCommentTreeByBookId(Long bookId){

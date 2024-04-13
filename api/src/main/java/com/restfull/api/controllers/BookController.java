@@ -89,11 +89,11 @@ public class BookController {
         return ResponseEntity.ok("Successfully updated!");
     }
 
-@DeleteMapping("/delete/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
         bookService.delete(id);
-    return ResponseEntity.ok(new BookResponseDTO(bookService.findById(id)));
-}
+        return ResponseEntity.ok("Book deleted successfully");
+    }
 
     @GetMapping("/comment/{id}")
     public ResponseEntity<?> comment(@PathVariable Long id) {
@@ -103,7 +103,7 @@ public class BookController {
 
     @PostMapping("/comment/{id}")
     public ResponseEntity<?> comment(@PathVariable Long id, @RequestHeader("Authorization") String token,
-            @RequestBody CommentDTO dto) {
+                                     @RequestBody CommentDTO dto) {
         try {
             User user = jwtService.getUser(jwtService.validateRequestHeader(token));
             Book book = bookService.findById(id);
@@ -118,7 +118,7 @@ public class BookController {
 
     @PostMapping("/addComment/{bookId}")
     public ResponseEntity<?> addComment(@PathVariable Long bookId, @RequestHeader("Authorization") String token,
-            @RequestBody CommentDTO dto) {
+                                        @RequestBody CommentDTO dto) {
         User user = jwtService.getUser(jwtService.validateRequestHeader(token));
         Book book = bookService.findById(bookId);
         Comment comment = bookService.newComment(book, user, dto);
@@ -128,7 +128,7 @@ public class BookController {
 
     @PostMapping("/repyComment/{bookId}")
     public ResponseEntity<?> replyComment(@PathVariable Long bookId, @RequestHeader("Authorization") String token,
-            @RequestBody CommentDTO dto) {
+                                          @RequestBody CommentDTO dto) {
         User user = jwtService.getUser(jwtService.validateRequestHeader(token));
         Book book = bookService.findById(bookId);
         Comment comment = bookService.replyComment(dto.getParent().getId(), book, user, dto);

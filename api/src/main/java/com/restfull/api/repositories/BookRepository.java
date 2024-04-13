@@ -15,7 +15,7 @@ import java.util.Optional;
 
 @Repository
 public interface BookRepository extends JpaRepository<Book, Long> {
-    @Query("SELECT b FROM Book b WHERE b.title LIKE %:keyword% or b.title like '_%keyword%'")
+    @Query("SELECT b FROM Book b WHERE b.title LIKE %:keyword%")
     List<Book> searchByName(@Param("keyword") String keyword);
 
     @Query("SELECT a FROM Author a WHERE a.name LIKE %:keyword%")
@@ -26,7 +26,6 @@ public interface BookRepository extends JpaRepository<Book, Long> {
 
     List<Type> searchByType(@Param("keyword") String keyword);
 
-    // ...
     Optional<Book> findById(long id);
 
     @Transactional
@@ -34,4 +33,9 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     @Query("UPDATE Book  b SET b.views = :views WHERE b.id = :id")
     void updateViews(@Param("id") Long id, @Param("views") Long views);
 
+
+    @Modifying
+    @Transactional
+    @Query("delete from Book b where b.id = :id")
+     void deleteBook(@Param("id") Long id);
 }
