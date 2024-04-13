@@ -53,7 +53,7 @@ const SearchPage: React.FC<{ params: { keyword: string } }> = ({ params }) => {
           {authors.map(author => (
             <div className="my-4" key={author.id}>
               <div className="font-semibold pl-10">{author.name}</div>
-              <div className="text-gray-500">{author.description}</div>
+              <div className="text-gray-500 pl-14">{author.description}</div>
             </div>
           ))}
         </div>
@@ -64,7 +64,7 @@ const SearchPage: React.FC<{ params: { keyword: string } }> = ({ params }) => {
           {types.map(type => (
             <div className="my-4" key={type.id}>
               <div className="font-semibold pl-10">{type.name}</div>
-              <div className="text-gray-500 pl-12">{type.description}</div>
+              <div className="text-gray-500 pl-14">{type.description}</div>
             </div>
           ))}
         </div>
