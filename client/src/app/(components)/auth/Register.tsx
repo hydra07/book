@@ -1,10 +1,10 @@
+import { validateRegisterForm } from '@/utils/validation.utils';
 import { Input } from '@material-tailwind/react';
 import { signIn } from 'next-auth/react';
 import { ChangeEvent, FormEvent, useState } from 'react';
 import { toast } from 'react-toastify';
 import { ShowDiaLog } from '../header/AuthButton';
 import Google from './Google';
-import { isEmailValid } from '@/utils/validation.utils';
 // eslint-disable-next-line react/display-name,import/no-anonymous-default-export
 export default ({ setShowSignInDialog, setShowSignUpDialog }: ShowDiaLog) => {
   const [form, setForm] = useState({
@@ -18,6 +18,13 @@ export default ({ setShowSignInDialog, setShowSignUpDialog }: ShowDiaLog) => {
     email: '',
     password: '',
   });
+  const [errors, setErrors] = useState({
+    name: '',
+    email: '',
+    password: '',
+    repassword: '',
+  });
+
   // const dispatch = useDispatch();
 
   const isFormFilled = form.email && form.password && form.repassword;
@@ -27,25 +34,25 @@ export default ({ setShowSignInDialog, setShowSignUpDialog }: ShowDiaLog) => {
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (!isEmailValid(form.email)) {
-      toast.error('Email không hợp lệ');
-      return;
-    } else
-    if (form.password !== form.repassword) {
-      // console.log('not match');
-      toast.error('Mật khẩu không trùng khớp');
-      return;
-    } else {
-      const { repassword, ...rest } = form;
-      setFromData(rest);
-      await signIn('register', {
-        name: form.name,
-        email: form.email,
-        password: form.password,
-        // callbackUrl: '/',
-        redirect: false,
-      });
-    }
+
+    // if (form.password !== form.repassword) {
+    //   // console.log('not match');
+    //   toast.error('Mật khẩu không trùng khớp');
+    //   return;
+    // } else {
+    if (!validateRegisterForm(form, (message) => toast.error(message))) return;
+    const { repassword, ...rest } = form;
+    // setFromData(rest);
+    await signIn('register', {
+      name: form.name,
+      email: form.email,
+      password: form.password,
+      // callbackUrl: '/',
+      redirect: false,
+    });
+    console.log(JSON.stringify(errors));
+    console.log(JSON.stringify(form));
+    // }
   };
 
   const handleOpenSignInDialog = () => {
