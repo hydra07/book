@@ -80,6 +80,9 @@ public class Book {
     public Set<String> getTypesString() {
         return this.types.stream().map(Type::getName).collect(Collectors.toSet());
     }
+    public List<String> getImages() {
+        return this.imageUrl == null ? new ArrayList<>() : Arrays.asList(this.imageUrl.split(","));
+    }
 
     public void setTypes(Set<Type> types) {
         if (types == null || types.isEmpty()) {
@@ -141,6 +144,7 @@ public class Book {
     public Set<Integer> getRateString() {
         return rate.stream().map(Rate::getValue).collect(Collectors.toSet());
     }
+
 
     public void setRate(Set<Rate> rate) {
         if (rate == null || rate.isEmpty()) {
