@@ -27,8 +27,6 @@ public class BookReader {
 
     private Date lastAccess;
 
-
-
     //Page
     @Column(columnDefinition = "NVARCHAR(1000)")
     private String chapterName;
