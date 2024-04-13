@@ -5,7 +5,6 @@ import { ChangeEvent, FormEvent, useState } from 'react';
 import { toast } from 'react-toastify';
 import { ShowDiaLog } from '../header/AuthButton';
 import Google from './Google';
-import { isEmailValid } from '@/utils/validation.utils';
 // import { useDispatch } from 'react-redux';
 // import { login } from '../../store/auth';
 // import Google from '../auth/Google';
@@ -22,10 +21,6 @@ export default ({ setShowSignUpDialog, setShowSignInDialog }: ShowDiaLog) => {
   };
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (!isEmailValid(form.email)) {
-      toast.error('Email không hợp lệ!')
-      return;
-    }
     // try {
     const res = await signIn('credentials', {
       email: form.email,
