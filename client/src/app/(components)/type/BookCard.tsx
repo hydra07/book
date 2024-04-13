@@ -50,4 +50,3 @@ export default ({ book }: { book: Book }) => {
     </div>
   );
 };
-
