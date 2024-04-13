@@ -13,29 +13,39 @@
 //         </div>)
 // }
 
-
-'use client'
-import React from 'react';
-import axios from '../../../lib/axios';
-import Book from '@/types/book';
+// 'use client';
 import BookCard from '@/app/(components)/type/BookCard';
+import axios from '@/lib/axios';
+import Book from '@/types/book';
 
-export default async ({ params }: { params: { id: number } }) => {
-  
+const fectchingBooks = async (id: number) => {
   try {
-    const res = await axios.get(`type/get/${params.id}`);
-    const books: Book[] = await res.data.books;
-    
-  return (
-    <div className="container mx-auto px-4 py-8 mt-20">
-      <h2 className="text-2xl font-bold mb-4 pl-4">Type {params.id}</h2>
-      {books.map(book => (
-        <BookCard key={book.id} book={book} />
-      ))}
-    </div>
-  );
+    const res = await axios.get(`type/get/${id}`);
+    return await res.data;
   } catch (error) {
-    console.error('Error fetching books:', error);
+    return null;
   }
 };
 
+export default async ({ params }: { params: { id: number } }) => {
+  const data = await fectchingBooks(params.id);
+  const books = data.books as Book[];
+  const name = data.name;
+  const description = data.description;
+  if (!books) {
+    return <div>Books not found!</div>;
+  }
+  return (
+    <div className="container mx-auto px-4 py-8 mt-24">
+      <div className=" p-4 rounded-lg shadow-lg ">
+        <h2 className="text-4xl font-bold mb-4 text-white">{name}</h2>
+        <h4 className="text-lg text-gray-700">{description}</h4>
+      </div>
+      <div className="flex flex-col space-y-4 mt-8">
+        {books.map((book) => (
+          <BookCard key={book.id} book={book} />
+        ))}
+      </div>
+    </div>
+  );
+};

@@ -90,7 +90,9 @@ export default () => {
     <div>
       {rootComments.map((comment) => (
         <div key={comment.id}>
-          <p>{comment.content}</p>
+          <p>
+            {comment.content}:{comment.lft} -{comment.rgt}
+          </p>
           <div style={{ marginLeft: '20px' }}>
             {sortedReplies
               .filter(

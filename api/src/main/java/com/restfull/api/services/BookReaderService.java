@@ -1,10 +1,7 @@
 package com.restfull.api.services;
 
 
-import com.restfull.api.entities.Book;
-import com.restfull.api.entities.BookReader;
-import com.restfull.api.entities.Bookmark;
-import com.restfull.api.entities.User;
+import com.restfull.api.entities.*;
 import com.restfull.api.repositories.BookReaderRepository;
 import com.restfull.api.utils.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +24,9 @@ public class BookReaderService {
 
     @Autowired
     private BookmarkService bookmarkService;
+
+    @Autowired
+    private HighlightService highlightService;
 
     private BookReader findBookReader(Long id){
         return repository.findBookReaderById(id).orElseThrow(
@@ -99,5 +99,13 @@ public class BookReaderService {
         repository.save(bookReader);
     }
 
+    public void addHighlight(BookReader bookReader, Highlight highlight){
+        bookReader.addHighlight(highlight);
+        repository.save(bookReader);
+    }
+    public void removeHighlight(BookReader bookReader, Highlight highlight){
+        bookReader.getHighlights().remove(highlight);
+        repository.save(bookReader);
+    }
 
 }

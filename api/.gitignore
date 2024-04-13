@@ -33,3 +33,6 @@ build/
 .vscode/
 
 Dockerfile
+
+### remove properties file
+/src/main/resources/application.properties

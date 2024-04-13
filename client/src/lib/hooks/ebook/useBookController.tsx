@@ -1,6 +1,5 @@
-import { AppDispatch } from '@/lib/store';
+import { AppDispatch, RootState } from '@/lib/store';
 import {
-  movePageAction,
   updateBook,
   updateCurrentPage,
   updateToc,
@@ -8,11 +7,11 @@ import {
 import Book from '@/types/book';
 import { BookType, Page, Toc, ViewerRef } from '@/types/ebook';
 import { RefObject, useCallback } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import useUser from '../useUser';
 
 type Props = {
-  isLoading: boolean;
+  // isLoading: boolean;
   viewerRef: RefObject<ViewerRef> | any;
   book: Book;
 };
@@ -30,10 +29,15 @@ type useBookStyle = {
 export default function useBookController({
   viewerRef,
   book,
-  isLoading,
 }: Props): useBookStyle {
   const dispatch = useDispatch<AppDispatch>();
   const { user, status } = useUser();
+  const _currentLocation = useSelector<RootState, Page | null>(
+    (state: RootState) => state.ebook._fetchingCurrentLocation,
+  );
+  const _isfetching = useSelector<RootState, boolean>(
+    (state: RootState) => state.ebook._isFetching,
+  );
   // const bookmarks = useSelector((state: RootState) => state.ebook.bookmarks);
 
   // Dùng để di chuyển giữa các trang
@@ -50,13 +54,18 @@ export default function useBookController({
   // Dùng để cập nhật sau khi chuyển trang
   const onPageChange = useCallback(
     (page: Page) => {
-      if ('epubcfi(/6/2!/14/1:0)' === page.startCfi) return;
       dispatch(updateCurrentPage(page));
-      const token = user?.accessToken;
-      if (!token) return;
-      dispatch(movePageAction({ token, id: book.id }));
+      console.log('onPageChange', page);
+      // console.log(_isfetching);
+      // if (_isfetching) {
+      //   // console.log(_currentLocation);
+      //   dispatch(updateCurrentPage(page));
+      //   const token = user?.accessToken;
+      //   if (!token) return;
+      //   dispatch(movePageAction({ token, id: book.id }));
+      // }
     },
-    [viewerRef, onPageMove, user, isLoading],
+    [viewerRef, onPageMove, user],
   );
 
   const onBookChangeInfor = useCallback(

@@ -1,7 +1,10 @@
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+
 const Search = () => {
   const [showSearch, setShowSearch] = useState(false);
   const [searchValue, setSearchValue] = useState('');
+  const router = useRouter();
   const handleOpenSearch = () => {
     setShowSearch(true);
   };
@@ -12,7 +15,9 @@ const Search = () => {
     event.preventDefault();
     console.log(searchValue);
     console.log('submit');
+    router.push(`/search/${searchValue}`);
   };
+  
   return (
     <>
       {showSearch ? (

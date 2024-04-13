@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import com.restfull.api.entities.Book;
+import com.sun.tools.jconsole.JConsoleContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +21,7 @@ import com.restfull.api.dtos.book.ReaderRequestDTO;
 import com.restfull.api.dtos.book.ReaderResponseDTO;
 import com.restfull.api.entities.BookReader;
 import com.restfull.api.entities.Bookmark;
+import com.restfull.api.entities.Highlight;
 import com.restfull.api.entities.User;
 import com.restfull.api.services.BookReaderService;
 import com.restfull.api.services.JwtService;
@@ -52,10 +55,9 @@ public class EbookController {
             User user = jwtService.getUser(jwtService.validateRequestHeader(token));
             BookReader bookReader = bookReaderService.readBook(user.getId(), id);
             System.out.println(dto.toString());
-            if (dto.getBookmarks() != null) {
-                bookReader.setBookmarks(dto.getBookmarks().stream().map(Bookmark::new).toList());
-
-            }
+//            if (dto.getBookmarks() != null) {
+//                bookReader.setBookmarks(dto.getBookmarks().stream().map(Bookmark::new).toList());
+//            }
             // bookReader.setLastCurrentCfi(dto.getLastCurrentCfi());
             bookReader.setChapterName(dto.getChapterName());
             bookReader.setCurrentPage(dto.getCurrentPage());
@@ -71,15 +73,42 @@ public class EbookController {
         }
     }
 
-    @PostMapping("/bookmark")
-    public ResponseEntity<?> addBookmark(@RequestHeader("Authorization") String token,
-            @RequestBody List<BookmarkRequestDTO> lsDto) {
-          List<Bookmark> bm = lsDto.stream()
-                .map(Bookmark::new)
-                .toList();
-          List<BookmarkRequestDTO> rs = bm.stream().map(BookmarkRequestDTO::new).toList();
-        return ResponseEntity.ok(rs);
+//    @PostMapping("/bookmark")
+//    public ResponseEntity<?> addBookmark(@RequestHeader("Authorization") String token,
+//            @RequestBody List<BookmarkRequestDTO> lsDto) {
+//        List<Bookmark> bookmarks = lsDto.stream().map(Bookmark::new).toList();
+//
+////          List<Bookmark> bm = lsDto.stream()
+////                .map(Bookmark::new)
+////                .toList();
+////          List<BookmarkRequestDTO> rs = bm.stream().map(BookmarkRequestDTO::new).toList();
+//
+//        return ResponseEntity.ok(rs);
+//    }
+
+    @PostMapping("/bookmark/{id}")
+    public ResponseEntity<?> addBookmark(@RequestHeader("Authorization") String token, @PathVariable Long id, @RequestBody ReaderRequestDTO dto){
+        User user = jwtService.getUser(jwtService.validateRequestHeader(token));
+        BookReader bookReader = bookReaderService.findBookReader(user.getId(), id);
+        if (dto.getBookmarks() != null) {
+            bookReader.setBookmarks(dto.getBookmarks().stream().map(Bookmark::new).toList());
+        }
+        bookReaderService.updateBookReader(bookReader);
+        return ResponseEntity.ok(new ReaderResponseDTO(bookReader));
     }
+
+    @PostMapping("/highlight/{id}")
+    public ResponseEntity<?> addHighlight(@RequestHeader("Authorization") String token, @PathVariable Long id, @RequestBody ReaderRequestDTO dto){
+        User user = jwtService.getUser(jwtService.validateRequestHeader(token));
+        BookReader bookReader = bookReaderService.findBookReader(user.getId(), id);
+        System.out.println(dto.getHighlights().toString());
+        if (dto.getHighlights() != null) {
+            bookReader.setHighlights(dto.getHighlights().stream().map(Highlight::new).toList());
+        }
+        bookReaderService.updateBookReader(bookReader);
+        return ResponseEntity.ok(new ReaderResponseDTO(bookReader));
+    }
+
 
     @PostMapping("/bookmark/demo")
     public ResponseEntity<?> testBookmark(@RequestBody BookmarkRequestDTO dto) {

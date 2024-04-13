@@ -1,19 +1,11 @@
 package com.restfull.api.controllers;
 
-import com.restfull.api.dtos.book.BookRequestDTO;
-import com.restfull.api.dtos.book.BookResponseDTO;
-import com.restfull.api.dtos.book.CommentDTO;
-import com.restfull.api.dtos.book.TypeRequestDTO;
-import com.restfull.api.entities.Book;
-import com.restfull.api.entities.Comment;
-import com.restfull.api.entities.User;
+import com.restfull.api.dtos.book.*;
+import com.restfull.api.entities.*;
 import com.restfull.api.services.BookService;
 import com.restfull.api.services.JwtService;
-import com.restfull.api.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,9 +15,8 @@ import java.util.stream.Collectors;
 @RequestMapping("/book")
 public class BookController {
 
-
-//    @Autowired
-//    private UserService userService;
+    // @Autowired
+    // private UserService userService;
     @Autowired
     private JwtService jwtService;
     @Autowired
@@ -48,10 +39,12 @@ public class BookController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<?> search(@RequestParam(name = "keyword", defaultValue = "") String keyword) {
-        List<Book> books = bookService.searchByName(keyword.toLowerCase(),
-                keyword.toLowerCase().substring(0, keyword.length() - 1));
-        return ResponseEntity.ok(books);
+    public ResponseEntity<SearchResponseDTO> searchBooks(
+            @RequestParam(name = "keyword", defaultValue = "") String keyword) {
+        List<Book> foundBooksByTitle = bookService.searchBooksByTitle(keyword);
+        List<Author> foundAuthorsByBook = bookService.searchByAuthor(keyword);
+        List<Type> foundTypesByBook = bookService.searchByType(keyword);
+        return ResponseEntity.ok(new SearchResponseDTO(foundBooksByTitle, foundAuthorsByBook, foundTypesByBook));
     }
 
     @PostMapping("/views/{id}")
@@ -59,7 +52,17 @@ public class BookController {
         bookService.increaseViews(id);
         return ResponseEntity.ok(new BookResponseDTO(bookService.findById(id)));
     }
-
+    @GetMapping("/sorted-by-views")
+        public ResponseEntity<List<BookResponseDTO>> sortedByViews() {
+            List<Book> books = bookService.findAllSortedByViews();
+            List<BookResponseDTO> bookResponseDTOs = books.stream().map(BookResponseDTO::new).collect(Collectors.toList());
+            return ResponseEntity.ok(bookResponseDTOs);
+    }
+    @PutMapping("/update/{id}")
+    public ResponseEntity<?> updateBook(@PathVariable Long id, @RequestBody BookRequestDTO book) {
+        bookService.update(book);
+        return ResponseEntity.ok(new BookResponseDTO(bookService.findById(id)));
+    }
     @GetMapping("/comment/{id}")
     public ResponseEntity<?> comment(@PathVariable Long id) {
         List<Comment> comments = bookService.getComment(id);
@@ -67,25 +70,23 @@ public class BookController {
     }
 
     @PostMapping("/comment/{id}")
-    public ResponseEntity<?> comment(@PathVariable Long id, @RequestHeader("Authorization") String token, @RequestBody CommentDTO dto){
+    public ResponseEntity<?> comment(@PathVariable Long id, @RequestHeader("Authorization") String token,
+            @RequestBody CommentDTO dto) {
         try {
             User user = jwtService.getUser(jwtService.validateRequestHeader(token));
             Book book = bookService.findById(id);
-            System.out.println(user.getEmail()+ " : " + book.getTitle());
+            System.out.println(user.getEmail() + " : " + book.getTitle());
             Comment comment = bookService.addComment(book, user, dto);
             return ResponseEntity.ok(new CommentDTO(comment));
-        }
-        catch (Exception e) {
-//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch (Exception e) {
+            // return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
-
-
-
     @PostMapping("/addComment/{bookId}")
-    public ResponseEntity<?> addComment(@PathVariable Long bookId, @RequestHeader("Authorization") String token, @RequestBody CommentDTO dto) {
+    public ResponseEntity<?> addComment(@PathVariable Long bookId, @RequestHeader("Authorization") String token,
+            @RequestBody CommentDTO dto) {
         User user = jwtService.getUser(jwtService.validateRequestHeader(token));
         Book book = bookService.findById(bookId);
         Comment comment = bookService.newComment(book, user, dto);
@@ -93,41 +94,61 @@ public class BookController {
     }
 
     @PostMapping("/repyComment/{bookId}")
-    public ResponseEntity<?> replyComment(@PathVariable Long bookId,@RequestHeader("Authorization") String token, @RequestBody CommentDTO dto){
+    public ResponseEntity<?> replyComment(@PathVariable Long bookId, @RequestHeader("Authorization") String token,
+            @RequestBody CommentDTO dto) {
         User user = jwtService.getUser(jwtService.validateRequestHeader(token));
         Book book = bookService.findById(bookId);
-        Comment comment = bookService.replyComment(dto.getParent().getId(),book, user,dto);
+        Comment comment = bookService.replyComment(dto.getParent().getId(), book, user, dto);
         return ResponseEntity.ok(new CommentDTO(comment));
     }
 
     @GetMapping("getRootComment/{bookId}")
-    public ResponseEntity<?> getCommentById(@PathVariable Long bookId){
-//        Book book = bookService.findById(bookId);
+    public ResponseEntity<?> getCommentById(@PathVariable Long bookId) {
+        // Book book = bookService.findById(bookId);
         List<Comment> comments = bookService.getRootCommentByBookId(bookId);
         comments.stream().peek(comment -> System.out.println(comment.getId())).collect(Collectors.toList());
         return ResponseEntity.ok(comments.stream().map(CommentDTO::new).toList());
     }
+
     @GetMapping("getAllCommentByBook/{bookId}")
-    public ResponseEntity<?> getAllCommentByBook(@PathVariable Long bookId){
+    public ResponseEntity<?> getAllCommentByBook(@PathVariable Long bookId) {
         List<Comment> comments = bookService.getCommentByBookId(bookId);
         return ResponseEntity.ok(comments.stream().map(CommentDTO::new).toList());
     }
-//    @GetMapping("getTreeComment/{bookId}")
-//    public ResponseEntity<?> getTreeComment(@PathVariable Long bookId){
-//        List<Comment> comments = bookService.getCommentTreeByBookId(bookId);
-//        return ResponseEntity.ok(comments.stream().map(CommentDTO::new).toList());
+//    @PostMapping("/rate/{bookId}/{rate}")
+//    public ResponseEntity<?> rate(@PathVariable Long bookId,@PathVariable int rate){
+//        Book book = bookService.rateBook(bookId,rate);
+//        return ResponseEntity.ok(new BookResponseDTO(book));
 //    }
-//    @PostMapping("/addTypeToBook/{bookId}")
-//    public ResponseEntity<?> addTypeToBook(@PathVariable long bookId, @RequestBody TypeRequestDTO typeDTO) {
-//        try {
-//            bookService.addTypeToBook(bookId, typeDTO);
-//            return ResponseEntity.ok("Successfully added!");
-//        } catch (Exception e) {
-//            return ResponseEntity.badRequest().body(e.getMessage());
-//        }
-//    }
+    @PostMapping("/rate/{bookId}")
+    public ResponseEntity<?> rate(@PathVariable Long bookId, @RequestHeader("Authorization") String token, @RequestBody RateRequestDTO dto){
+        User user = jwtService.getUser(jwtService.validateRequestHeader(token));
+        Book book = bookService.findById(bookId);
+        Book ratedBook = bookService.rateBook(book, user, dto.getRate());
+        return ResponseEntity.ok(new BookResponseDTO(ratedBook));
+    }
+    @GetMapping("/rate/{bookId}")
+    public ResponseEntity<?> isRate(@PathVariable Long bookId,@RequestHeader("Authorization") String token){
+        User user = jwtService.getUser(jwtService.validateRequestHeader(token));
+        Book book = bookService.findById(bookId);
+        return ResponseEntity.ok(bookService.getRateBook(user,book));
+    }
 
-
+    // @GetMapping("getTreeComment/{bookId}")
+    // public ResponseEntity<?> getTreeComment(@PathVariable Long bookId){
+    // List<Comment> comments = bookService.getCommentTreeByBookId(bookId);
+    // return ResponseEntity.ok(comments.stream().map(CommentDTO::new).toList());
+    // }
+    // @PostMapping("/addTypeToBook/{bookId}")
+    // public ResponseEntity<?> addTypeToBook(@PathVariable long bookId,
+    // @RequestBody TypeRequestDTO typeDTO) {
+    // try {
+    // bookService.addTypeToBook(bookId, typeDTO);
+    // return ResponseEntity.ok("Successfully added!");
+    // } catch (Exception e) {
+    // return ResponseEntity.badRequest().body(e.getMessage());
+    // }
+    // }
 
     // @PostMapping("/removeTypeFromBook/{bookId}")
     // public ResponseEntity<?> removeTypeFromBook(@RequestBody TypeRequestDTO
