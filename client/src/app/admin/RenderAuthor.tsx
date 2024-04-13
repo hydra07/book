@@ -61,7 +61,7 @@ export default () => {
     };
     const handleDelete = async (authorId: number | null) => {
         try {
-            // await axios.delete(`/author/delete/${authorId}`);
+            await axios.delete(`/author/delete/${authorId}`);
             // Sau khi xóa thành công, cập nhật danh sách tác giả
             const updatedAuthors = authors.filter((author) => author.id !== authorId);
             setAuthors(updatedAuthors);
@@ -155,7 +155,7 @@ export default () => {
                                             <IconButton
                                                 placeholder={null}
                                                 onClick={() => {
-                                                    handleEdit(author);
+                                                    handleDelete(author.id);
                                                 }}
                                             >
                                                 <svg
