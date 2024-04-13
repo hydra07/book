@@ -90,8 +90,8 @@ public class BookController {
         Book book = bookService.findById(bookId);
         Comment comment = bookService.newComment(book, user, dto);
         return ResponseEntity.ok(new CommentDTO(comment));
-
     }
+
     @PostMapping("/repyComment/{bookId}")
     public ResponseEntity<?> replyComment(@PathVariable Long bookId,@RequestHeader("Authorization") String token, @RequestBody CommentDTO dto){
         User user = jwtService.getUser(jwtService.validateRequestHeader(token));

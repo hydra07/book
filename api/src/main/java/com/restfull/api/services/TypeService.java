@@ -46,17 +46,17 @@ public class TypeService {
         return repository.save(type);
     }
 
-    public Type update(Type type){
+    public Type update(TypeRequestDTO type){
         Type _type = getTypeById(type.getId());
         _type.setName(type.getName());
         _type.setDescription(type.getDescription());
-        _type.setBooks(type.getBooks());
+//        _type.setBooks(type.getBooks());
         return repository.save(_type);
     }
 
     public void delete(Long id) {
-        Type type = getTypeById(id);
-        repository.delete(type);
+        repository.deleteById(id);
+        repository.flush();
     }
 
     public Set<Type> getTypesByBookId(Long id) {
