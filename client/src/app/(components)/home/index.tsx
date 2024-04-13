@@ -5,6 +5,8 @@ import { getAllTypesFromBooks, getBookByType } from '@/utils/sort.utils';
 import { useState } from "react";
 import Carousel from "./Carousel";
 import Footer from "./Footer";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default ({ listBook }: { listBook: Book[] }) => {
   const [books, setBooks] = useState<Book[]>(listBook);
@@ -27,6 +29,7 @@ export default ({ listBook }: { listBook: Book[] }) => {
         </div>
       </div>
       <Footer />
+	  <ToastContainer />
     </div>
   );
 }

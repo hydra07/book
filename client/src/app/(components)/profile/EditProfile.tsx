@@ -5,6 +5,8 @@ import User from '@/types/user';
 import { Button, ButtonGroup, Input, Radio } from '@material-tailwind/react';
 import { useSession } from 'next-auth/react';
 import { ChangeEvent, useCallback, useEffect, useRef, useState } from 'react';
+import { isPhoneValid } from '@/utils/validation.utils';
+import { toast } from 'react-toastify';
 
 export default ({
   isEditUser,
@@ -40,8 +42,13 @@ export default ({
   const handleSubmit = useCallback(
     async (event: ChangeEvent<HTMLFormElement>) => {
       event.preventDefault();
+      if (!isPhoneValid(form.phone)) {
+        toast.error('Số điện thoại không hợp lệ')
+        return;
+      }
       await editProfile(session?.user.accessToken as string, form as User);
       console.log('form', form);
+      toast.success('Edit Profile thành công');
       setIsEditUser(false);
     },
     [form, session],
