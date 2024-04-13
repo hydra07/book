@@ -4,7 +4,6 @@ import com.restfull.api.dtos.user.UserRequestDTO;
 import com.restfull.api.dtos.user.UserResetPasswordDTO;
 import com.restfull.api.dtos.user.UserResponseDTO;
 import com.restfull.api.entities.Book;
-import com.restfull.api.entities.Follow;
 import com.restfull.api.entities.User;
 import com.restfull.api.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -98,31 +97,31 @@ public class UserController {
         }
     }
 
-    @GetMapping("/getFollower")
-    public ResponseEntity<?> getFollower(@RequestHeader("Authorization") String token) {
-        try {
-            User user = jwtService.getUser(jwtService.validateRequestHeader(token));
-            List<Follow> followers = followService.getFollowers(user);
-            UserResponseDTO userResponseDTO = new UserResponseDTO(user);
-            userResponseDTO.setFollowers(followers);
-            return ResponseEntity.ok(userResponseDTO);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
-
-    @GetMapping("/getFollowing")
-    public ResponseEntity<?> getFollowing(@RequestHeader("Authorization") String token) {
-        try {
-            User user = jwtService.getUser(jwtService.validateRequestHeader(token));
-            List<Follow> following = followService.getFollowing(user);
-            UserResponseDTO userResponseDTO = new UserResponseDTO(user);
-            userResponseDTO.setFollowing(following);
-            return ResponseEntity.ok(userResponseDTO);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
+//    @GetMapping("/getFollower")
+//    public ResponseEntity<?> getFollower(@RequestHeader("Authorization") String token) {
+//        try {
+//            User user = jwtService.getUser(jwtService.validateRequestHeader(token));
+//            List<Follow> followers = followService.getFollowers(user);
+//            UserResponseDTO userResponseDTO = new UserResponseDTO(user);
+//            userResponseDTO.setFollowers(followers);
+//            return ResponseEntity.ok(userResponseDTO);
+//        } catch (Exception e) {
+//            return ResponseEntity.badRequest().body(e.getMessage());
+//        }
+//    }
+//
+//    @GetMapping("/getFollowing")
+//    public ResponseEntity<?> getFollowing(@RequestHeader("Authorization") String token) {
+//        try {
+//            User user = jwtService.getUser(jwtService.validateRequestHeader(token));
+//            List<Follow> following = followService.getFollowing(user);
+//            UserResponseDTO userResponseDTO = new UserResponseDTO(user);
+//            userResponseDTO.setFollowing(following);
+//            return ResponseEntity.ok(userResponseDTO);
+//        } catch (Exception e) {
+//            return ResponseEntity.badRequest().body(e.getMessage());
+//        }
+//    }
 
     @GetMapping("/isFollowing/{id}")
     public ResponseEntity<?> isFollowing(@RequestHeader("Authorization") String token, @PathVariable Long id) {
