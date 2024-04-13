@@ -18,7 +18,6 @@ class BookShort {
     private String Author;
     private String description;
     private Long views;
-    private double price;
     private Double rating;
     private String status;
     private String imageUrl;

@@ -91,11 +91,15 @@ public class BookService {
         _book.setDescription(bookDto.getDescription());
         _book.setImageUrl(bookDto.getImageUrl());
         _book.setStatus(Status.valueOf(bookDto.getStatus()));
+
         _book.setUrl(bookDto.getUrl());
+
         _book.setTypes(
                 bookDto.getTypesId().stream().map(id -> typeService.getTypeById(id)).collect(Collectors.toSet()));
+
         return repository.save(_book);
     }
+
 
     public void delete(Long id) {
 
