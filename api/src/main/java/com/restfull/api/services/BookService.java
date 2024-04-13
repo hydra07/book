@@ -1,12 +1,8 @@
 package com.restfull.api.services;
 
-import com.restfull.api.dtos.book.BookRequestDTO;
-import com.restfull.api.dtos.book.CommentDTO;
-
 import com.nimbusds.jose.crypto.RSASSAVerifier;
 import com.restfull.api.dtos.book.BookRequestDTO;
 import com.restfull.api.dtos.book.CommentDTO;
-import com.restfull.api.dtos.book.*;
 import com.restfull.api.entities.*;
 import com.restfull.api.enums.Rate;
 import com.restfull.api.enums.Status;
@@ -36,13 +32,13 @@ public class BookService {
     private UserService userService;
 
     @Autowired
-    private RateBookService rateBookService;
-
-    @Autowired
     private CommentService commentService;
 
     @Autowired
     private AuthorService authorService;
+
+    @Autowired
+    private RateBookService rateBookService;
 
     public List<Book> findAll() {
         return repository.findAll();
@@ -121,17 +117,18 @@ public class BookService {
     public List<Book> findAllSortedByLatest() {
         return repository.findAll(Sort.by(Sort.Direction.DESC, "createdAt"));
     }
-    // public void addFollowedUser(Book book, User user) {
-    // book.getFollowedBook().add(user);
-    // BookRequestDTO bookDto = convertToBookRequestDTO(book);
-    // update(bookDto);
-    // }
-    //
-    // public void removeFollowedUser(Book book, User user) {
-    // book.getFollowedBook().removeIf(_user -> _user.getId().equals(user.getId()));
-    // BookRequestDTO bookDto = convertToBookRequestDTO(book);
-    // update(bookDto);
-    // }
+
+    public void addFollowedUser(Book book, User user) {
+        book.getFollowedBook().add(user);
+        BookRequestDTO bookDto = convertToBookRequestDTO(book);
+        update(bookDto);
+    }
+
+    public void removeFollowedUser(Book book, User user) {
+        book.getFollowedBook().removeIf(_user -> _user.getId().equals(user.getId()));
+        BookRequestDTO bookDto = convertToBookRequestDTO(book);
+        update(bookDto);
+    }
 
     private BookRequestDTO convertToBookRequestDTO(Book book) {
         BookRequestDTO bookDto = new BookRequestDTO();
@@ -240,11 +237,6 @@ public class BookService {
     // return book;
     // }
 
-    public boolean existsById(Long id) {
-        return false;
-    }
-
-    // >>>>>>>782 cb31d212c1e97c6239195a1015953a9179ca9
     // public List<Comment> getCommentTreeByBookId(Long bookId){
     // return commentService.getCommentTreeByBookId(bookId);
     // }
