@@ -20,6 +20,7 @@ import { timeFormatter } from "@/utils/epub.utils";
 import EditBook from "./EditBook";
 import SearchList from "./SearchList";
 import EditAuthor from "./EditAuthor";
+import { toast } from "react-toastify";
 
 interface AuthorInfo {
     id: number | null;
@@ -61,14 +62,19 @@ export default () => {
     };
     const handleDelete = async (authorId: number | null) => {
         try {
-            await axios.delete(`/author/delete/${authorId}`);
-            // Sau khi xóa thành công, cập nhật danh sách tác giả
+            const res = await axios.delete(`/author/delete/${authorId}`);
+            console.log(res.data);
+            ClosedModal();
+            // Cập nhật danh sách tác giả sau khi xóa
             const updatedAuthors = authors.filter((author) => author.id !== authorId);
             setAuthors(updatedAuthors);
+            toast.success("Delete book successfully");
         } catch (error) {
-            console.error("Error deleting author:", error);
+            console.log("Lỗi khi gửi yêu cầu đến backend:", error);
+            toast.error("Có lỗi xảy ra khi gửi yêu cầu đến backend");
         }
     };
+
     return (
         <Card placeholder={null} className="h-full w-full bg-gray-700 ">
             <CardHeader
@@ -149,7 +155,6 @@ export default () => {
                                                 </svg>
                                             </IconButton>
                                         </Tooltip>
-
 
                                         <Tooltip content="Delete">
                                             <IconButton

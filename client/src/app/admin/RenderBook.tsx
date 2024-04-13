@@ -19,6 +19,7 @@ import { useRouter } from "next/router";
 import { timeFormatter } from "@/utils/epub.utils";
 import EditBook from "./EditBook";
 import SearchList from "./SearchList";
+import { toast } from "react-toastify";
 
 export interface BookDTO {
   id: number | null;
@@ -87,6 +88,8 @@ export default () => {
       // Sau khi xóa thành công, cập nhật danh sách tác giả
       const updatedBooks = books.filter((book) => book.id !== bookId);
       setBooks(updatedBooks);
+      toast.success("Delete book successfully");
+
     } catch (error) {
       console.error("Error deleting author:", error);
     }
