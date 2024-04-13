@@ -34,6 +34,7 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     void updateViews(@Param("id") Long id, @Param("views") Long views);
 
 
+
     @Modifying
     @Transactional
     @Query("delete from Book b where b.id = :id")
