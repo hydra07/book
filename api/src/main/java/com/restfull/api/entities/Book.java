@@ -10,9 +10,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Entity
@@ -35,6 +33,12 @@ public class Book {
     @ManyToOne
     @JoinColumn(name = "author_id")
     private Author author;
+
+    // ...
+
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(name = "book_author", joinColumns = @JoinColumn(name = "book_id"), inverseJoinColumns = @JoinColumn(name = "author_id"))
+    private Set<Author> authors = new HashSet<>();
 
     @Column(nullable = true, columnDefinition = "NVARCHAR(2000)")
     private String description;
@@ -68,6 +72,9 @@ public class Book {
     public Book() {
         super();
     }
+
+
+
     // ----------------Type----------------
 
     public Set<String> getTypesString() {
@@ -108,6 +115,8 @@ public class Book {
     //     currentTypes.removeAll(removeList);
     //     setTypes(currentTypes);
     // }
+
+
 
     public void addNewTypeToList(Type newType) {
         Set<Type> currentTypes = getTypes();

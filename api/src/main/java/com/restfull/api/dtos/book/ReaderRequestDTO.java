@@ -39,4 +39,5 @@ public class ReaderRequestDTO {
 
 //    @JsonProperty("bookmarks")
     private List<BookmarkRequestDTO> bookmarks;
+    private List<HighlightRequestDTO> highlights;
 }

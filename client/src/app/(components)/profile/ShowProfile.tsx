@@ -9,14 +9,21 @@ import { useCallback } from 'react';
 export default ({
   isEditUser,
   setIsEditUser,
+  isChangePassword,
+  setIsChangePassword,
   user,
 }: {
   isEditUser: boolean;
   setIsEditUser: any;
+  isChangePassword: boolean;
+  setIsChangePassword: any;
   user: User;
 }) => {
   const handleEditClick = useCallback(() => {
     setIsEditUser(true);
+  }, []);
+  const handleChangeClick = useCallback(() => {
+    setIsChangePassword(true);
   }, []);
   return (
     <div className="backdrop-blur-3xl bg-white/5 p-4 rounded shadow w-3/5 h-5/6 flex flex-col relative">
@@ -68,7 +75,11 @@ export default ({
           >
             Edit
           </Button>
-          <Button className="w-1/2" placeholder={null}>
+          <Button
+            className="w-1/2"
+            onClick={handleChangeClick}
+            placeholder={null}
+          >
             Change Password
           </Button>
         </ButtonGroup>
