@@ -52,7 +52,7 @@ export default () => {
           <div className="flex gap-6 h-fit items-center whitespace-nowrap">
             <Search />
             {user && JSON.stringify(user) !== '{}' ? (
-              <UserAvatar user={user} isAdmin={isAdmin}/>
+              <UserAvatar user={user} isAdmin={isAdmin} />
             ) : (
               <AuthButton />
             )}

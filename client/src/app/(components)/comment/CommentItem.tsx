@@ -14,7 +14,11 @@ const CommentItem = ({
       <div className="flex items-center space-x-2">
         {/* {comment.id} */}
         <img
-          src={comment.user.image}
+          src={
+            comment.user.image
+              ? comment.user.image
+              : `https://i.pinimg.com/736x/0d/64/98/0d64989794b1a4c9d89bff571d3d5842.jpg`
+          }
           alt={comment.user.name}
           className="w-10 h-10 rounded-full"
         />

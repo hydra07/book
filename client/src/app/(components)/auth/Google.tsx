@@ -1,12 +1,15 @@
 import { signIn } from 'next-auth/react';
 import Image from 'next/image';
+import { toast } from 'react-toastify';
 // eslint-disable-next-line react/display-name,import/no-anonymous-default-export
 export default () => {
   const handleGoogleClick = async () => {
     try {
-      await signIn('google', {
-        callbackUrl: '/',
+      const res = await signIn('google', {
+        // callbackUrl: '/',
+        redirect: false,
       });
+      toast.error(res?.error);
     } catch (error) {
       console.log(error);
     }
