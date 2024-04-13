@@ -34,7 +34,6 @@ export default ({ setShowSignInDialog, setShowSignUpDialog }: ShowDiaLog) => {
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
     // if (form.password !== form.repassword) {
     //   // console.log('not match');
     //   toast.error('Mật khẩu không trùng khớp');
