@@ -39,8 +39,8 @@ export default ({
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            //   const res = await axios.put(`/book/update/${form.id}`, form);
-            //   console.log(res.data.success)
+            const res = await axios.put(`/author/update/${form.id}`, form);
+            console.log(res.data)
             closeModal();
             toast.success('Cập nhật thành công');
         } catch (error) {
@@ -95,7 +95,7 @@ export default ({
                         <Input
                             crossOrigin={null}
                             color="white"
-                            id="title"
+                            id="name"
                             type="text"
                             label="Tên tác giả"
                             required

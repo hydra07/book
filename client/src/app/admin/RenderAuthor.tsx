@@ -125,7 +125,7 @@ export default () => {
                                         </Typography>
                                     </td>
 
-                                    <td className="text-white bg-gray-600 p-4">
+                                    <td className="text-white bg-gray-600 p-4 space-x-2">
                                         <Tooltip content="Edit">
                                             <IconButton
                                                 placeholder={null}
@@ -149,8 +149,8 @@ export default () => {
                                                 </svg>
                                             </IconButton>
                                         </Tooltip>
-                                    </td>
-                                    <td className="text-white bg-gray-600 p-4">
+
+
                                         <Tooltip content="Delete">
                                             <IconButton
                                                 placeholder={null}

@@ -51,8 +51,7 @@ export default () => {
         };
 
         loadTypes();
-    }, []);
-
+    }, []);  
     const handleEdit = (type: TypeInfo) => {
         setSelectedTypes(type);
         setIsModalOpen(true);
