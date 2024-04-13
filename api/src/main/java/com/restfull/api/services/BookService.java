@@ -8,6 +8,7 @@ import com.restfull.api.dtos.book.BookRequestDTO;
 import com.restfull.api.dtos.book.CommentDTO;
 import com.restfull.api.dtos.book.*;
 import com.restfull.api.entities.*;
+import com.restfull.api.enums.Rate;
 import com.restfull.api.enums.Status;
 import com.restfull.api.repositories.BookRepository;
 import com.restfull.api.utils.NotFoundException;
@@ -33,6 +34,9 @@ public class BookService {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private RateBookService rateBookService;
 
     @Autowired
     private CommentService commentService;
@@ -188,8 +192,6 @@ public class BookService {
         return commentService.getCommentsByBookId(bookId);
     }
 
-    <<<<<<<HEAD=======
-
     // public Book rateBook(Long bookId, int rate){
     // Book book = findById(bookId);
     // book.getRate().add(Rate.valueOf(rate));
@@ -242,7 +244,7 @@ public class BookService {
         return false;
     }
 
-    >>>>>>>782 cb31d212c1e97c6239195a1015953a9179ca9
+    // >>>>>>>782 cb31d212c1e97c6239195a1015953a9179ca9
     // public List<Comment> getCommentTreeByBookId(Long bookId){
     // return commentService.getCommentTreeByBookId(bookId);
     // }
