@@ -1,12 +1,20 @@
 import { AppDispatch, RootState } from '@/lib/store';
-import { Highlight, updateHighLight } from '@/lib/store/ebook/ebookSlice';
+import {
+  Highlight,
+  setHighlight,
+  updateHighLight,
+} from '@/lib/store/ebook/ebookSlice';
+import Book from '@/types/book';
 import { Color, Page, ViewerRef } from '@/types/ebook';
 import { cfiRangeSpliter, compareCfi, timeFormatter } from '@/utils/epub.utils';
 import { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import useUser from '../useUser';
 type Props = {
   viewerRef: React.RefObject<ViewerRef>;
   onOpen: () => void;
+  onLocationChange: (cfi: string) => void;
+  book: Book;
 };
 type Mark = {
   cfiRange: string;
@@ -19,20 +27,26 @@ type Selection = {
   // paragraphCfi: string;
 };
 
-export default function useContextMenu({ viewerRef, onOpen }: Props) {
+export default function useContextMenu({
+  viewerRef,
+  onOpen,
+  onLocationChange,
+  book,
+}: Props) {
   const dispatch = useDispatch<AppDispatch>();
   const currentLocation = useSelector<RootState, Page>(
     (state: RootState) => state.ebook.currentLocation,
   );
   const highlights = useSelector<RootState, Highlight[]>(
-    (state: RootState) => state.ebook.highLight,
+    (state: RootState) => state.ebook.highLights,
   );
   const color = useSelector<RootState, Color[]>(
     (state: RootState) => state.ebook.color,
   );
-  // const marks: Mark[] = [];
-  // const [ls, setLs] = useState<Selection[]>([]);
+
   const [selection, setSelection] = useState<Highlight>();
+
+  const { user } = useUser();
 
   const onSelection = useCallback(
     (cfiRange: string) => {
@@ -47,48 +61,93 @@ export default function useContextMenu({ viewerRef, onOpen }: Props) {
       const content = iframeWin.getSelection()!.toString().trim();
       console.log(content, currentLocation);
       onOpen();
-      // const paragraphCfi = getParagraphCfi(cfiRange);
-      // const item: Selection = {
-      //   cfiRange,
-      //   content: _content,
-      // };
+
       setSelection({
         key: Date.now(),
         cfiRange,
         content,
         createAt: timeFormatter(new Date()),
-        chpaterName: currentLocation.chapterName,
+        chapterName: currentLocation.chapterName,
         pageNum: currentLocation.currentPage,
+        // note: '',
       });
-      // console.log('item', item);
-      // setLs([...ls, item]);
       console.log('ls', highlights);
     },
-
-    [viewerRef, highlights, selection, currentLocation],
+    [viewerRef, highlights, selection, currentLocation, onOpen],
   );
 
   const onHighlight = useCallback(
     (color: Color) => {
+      if (!viewerRef.current) return;
       if (!selection) return;
       const newSelection = {
         ...selection,
         color: color.code,
       };
       setSelection(newSelection);
-      dispatch(updateHighLight([...highlights, newSelection]));
-      // setSelection(null);
-      return () => {
-        setSelection(undefined);
-      };
-      // if (selection.color) {
-      //   setLs([...ls, selection]);
-      // }
+      const isSelectInHighlight = highlights.find(
+        (item) => item.key === selection.key,
+      );
+      if (isSelectInHighlight) {
+        // If the selection is already in the highlights array, update it
+        const updatedHighlights = highlights.map((highlight) =>
+          highlight.key === selection.key ? newSelection : highlight,
+        );
+        dispatch(updateHighLight(updatedHighlights));
+        const token = user?.accessToken;
+        console.log(token);
+        token && dispatch(setHighlight({ token, id: book.id }));
+      } else {
+        // If the selection is not in the highlights array, add it
+        dispatch(updateHighLight([...highlights, newSelection]));
+        const token = user?.accessToken;
+        token && dispatch(setHighlight({ token, id: book.id }));
+      }
     },
-    [viewerRef, highlights, selection, dispatch, currentLocation],
+    [
+      viewerRef,
+      highlights,
+      selection,
+      setSelection,
+      dispatch,
+      currentLocation,
+      user,
+    ],
   );
 
+  const gotoHighlight = useCallback(
+    (selection: Highlight) => {
+      const startCfi = cfiRangeSpliter(selection.cfiRange)?.startCfi;
+      if (!startCfi) return;
+      onLocationChange(startCfi);
+    },
+    [viewerRef, onLocationChange, highlights],
+  );
+
+  const onRemoveHighlight = useCallback(
+    (highlight: Highlight) => {
+      if (!viewerRef.current) return;
+      const newHighlights = highlights.filter(
+        (item) => item.key !== highlight.key,
+      );
+      dispatch(updateHighLight(newHighlights));
+      viewerRef.current.offHighlight(highlight.cfiRange);
+      setSelection(undefined);
+    },
+    [viewerRef, highlights, dispatch],
+  );
+
+  const onHighlightClick = useCallback(
+    (highlight: Highlight) => {
+      // onSelection(highlight.cfiRange);
+      onOpen();
+      setSelection(highlight);
+      // selection && setSelection({ ...selection, content: highlight.content });
+    },
+    [viewerRef, selection, highlights, currentLocation, onOpen],
+  );
   const contextItem = useCallback(() => {
+    if (!selection) return null;
     return (
       <div className="flex flex-col items-center justify-center p-4">
         <div className="flex flex-col items-center justify-center">
@@ -97,7 +156,7 @@ export default function useContextMenu({ viewerRef, onOpen }: Props) {
             {color.map((item) => (
               <div
                 key={item.name}
-                className="cursor-pointer w-full text-center rounded "
+                className="cursor-pointer w-full text-center rounded text-black"
                 style={{ backgroundColor: item.code }}
                 onClick={() => {
                   console.log(selection);
@@ -108,16 +167,45 @@ export default function useContextMenu({ viewerRef, onOpen }: Props) {
               </div>
             ))}
           </div>
-
-          <div className="w-full">
-            <div style={{ color: selection?.color }}>
-              {selection?.content?.substring(0, 100) + '...'}
+          <div className="w-full rounded border">
+            <div className="p-2" style={{ color: selection?.color }}>
+              "{selection.content?.substring(0, 100) + '...'}"
             </div>
           </div>
+          {highlights.find((item) => item.key === selection?.key) && (
+            <div className="flex flex-col space-y-10">
+              <button
+                className="w-full bg-red-500 text-white p-2 rounded mb-5"
+                onClick={() => {
+                  onRemoveHighlight(selection);
+                }}
+              >
+                Remove
+              </button>
+              {/* <Textarea
+                className="mt-5 text-white"
+                // variant="static"
+                // placeholder="Ghi chú"
+                id="note"
+                label="Ghi chú"
+                value={selection.note}
+                onChange={handleChange}
+                success
+              /> */}
+            </div>
+          )}
         </div>
       </div>
     );
-  }, [viewerRef, onOpen, onSelection, selection, onHighlight]);
+  }, [
+    viewerRef,
+    onOpen,
+    onSelection,
+    selection,
+    onHighlight,
+    // onUpdateHighlight,
+    // handleChange,
+  ]);
 
   const listHighLight = useCallback(() => {
     return (
@@ -126,22 +214,22 @@ export default function useContextMenu({ viewerRef, onOpen }: Props) {
         <div className="space-y-4 w-full self-center items-center">
           {highlights.map((item) => (
             <HighlightItem
-              key={item.cfiRange}
+              key={item.key}
               item={item}
-              onHighlightClick={onHighlightClick}
+              onHighlightClick={() => gotoHighlight(item)}
             />
           ))}
         </div>
       </div>
     );
-  }, [viewerRef, onSelection, highlights, currentLocation]);
-  const onHighlightClick = useCallback(
-    (highlight: Highlight) => {
-      onSelection(highlight.cfiRange);
-      selection && setSelection({ ...selection, content: highlight.content });
-    },
-    [viewerRef, selection, highlights, currentLocation],
-  );
+  }, [
+    viewerRef,
+    onSelection,
+    highlights,
+    currentLocation,
+    selection,
+    // handleChange,
+  ]);
 
   useEffect(() => {
     if (!viewerRef.current) return;
@@ -166,6 +254,7 @@ export default function useContextMenu({ viewerRef, onOpen }: Props) {
           },
           item.color,
         );
+        iframeWin.getSelection()!.removeAllRanges();
       }
     });
   }, [
@@ -175,6 +264,10 @@ export default function useContextMenu({ viewerRef, onOpen }: Props) {
     highlights,
     selection,
     onHighlight,
+    onRemoveHighlight,
+    onSelection,
+    onOpen,
+    contextItem,
   ]);
 
   return {
@@ -205,7 +298,7 @@ const HighlightItem = ({ item, onHighlightClick }: any) => {
         className="font-semibold text-sm text-left"
         style={{ color: item.color }}
       >
-        "{displayContent}"
+        "{displayContent} ..."
       </div>
       {item.content.length > 100 && (
         <button
@@ -215,6 +308,11 @@ const HighlightItem = ({ item, onHighlightClick }: any) => {
           {isExpanded ? 'Show less' : 'Show more'}
         </button>
       )}
+      {/* {item.note && ( */}
+      {/* <div className="mt-2 text-gray-500 text-sm text-left">
+        Note: {item.note}
+      </div> */}
+      {/* )} */}
       <div className="text-gray-500 text-xs text-left">{item.createAt}</div>
     </div>
   );

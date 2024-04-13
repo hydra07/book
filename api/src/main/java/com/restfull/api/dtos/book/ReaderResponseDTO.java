@@ -1,10 +1,7 @@
 package com.restfull.api.dtos.book;
 
 import com.restfull.api.dtos.user.UserResponseDTO;
-import com.restfull.api.entities.Book;
-import com.restfull.api.entities.BookReader;
-import com.restfull.api.entities.Bookmark;
-import com.restfull.api.entities.User;
+import com.restfull.api.entities.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -45,6 +42,30 @@ class CurrentPage {
 
 @Getter
 @Setter
+class HighlighResponseDTO {
+    private Long key;
+    private String cfiRange;
+    private String content;
+    private String color;
+    private String createAt;
+    private String chapterName;
+    private Long pageNum;
+
+    public HighlighResponseDTO(Highlight highlight){
+        this.key = highlight.getId();
+        this.cfiRange = highlight.getCfiRange();
+        this.content = highlight.getContent();
+        this.color = highlight.getColor();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        this.createAt = formatter.format(highlight.getCreateAt());
+        this.chapterName = highlight.getChapterName();
+        this.pageNum = highlight.getPageNum();
+    }
+}
+
+
+@Getter
+@Setter
 public class ReaderResponseDTO {
     private Long id;
     private UserResponseDTO user;
@@ -54,6 +75,7 @@ public class ReaderResponseDTO {
     private int accessCount;
     private CurrentPage currentPage;
     private List<BookmarkResponseDTO> bookmarks;
+    private List<HighlighResponseDTO> highlights;
 
 
     public ReaderResponseDTO (Long id, UserResponseDTO user, BookResponseDTO book, int accessCount){
@@ -71,6 +93,8 @@ public class ReaderResponseDTO {
         this.lastCurrentCfi = bookReader.getLastCurrentCfi();
         this.lastAccess = bookReader.getLastAccess();
         this.bookmarks = bookReader.getBookmarks().stream().map(BookmarkResponseDTO::new).toList();
+        this.highlights = bookReader.getHighlights().stream().map(HighlighResponseDTO::new).toList();
+
         // CurrentPage
         CurrentPage currentPage = new CurrentPage();
         currentPage.setChapterName(bookReader.getChapterName());

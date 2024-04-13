@@ -49,4 +49,23 @@ public class AuthorController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody AuthorRequestDTO dto) {
+        try {
+            authorService.update(id, dto);
+            return ResponseEntity.ok("Successfully updated!");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+    @DeleteMapping("/delete/{id}")  // delete author by id
+    public ResponseEntity<?> delete(@PathVariable Long id) {
+        try {
+            authorService.delete(id);
+            return ResponseEntity.ok("Successfully deleted!");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 }

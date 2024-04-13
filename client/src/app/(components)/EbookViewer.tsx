@@ -55,6 +55,8 @@ export default ({ book }: { book: Book }) => {
   const { onSelection, contextItem, listHighLight } = useSelection({
     viewerRef,
     onOpen: toggleFourthRightDrawer,
+    onLocationChange,
+    book,
   });
 
   // function isViewerRef(ref: any): ref is ViewerRef {

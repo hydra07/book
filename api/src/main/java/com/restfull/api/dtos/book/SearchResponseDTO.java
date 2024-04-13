@@ -1,8 +1,5 @@
 package com.restfull.api.dtos.book;
 
-import com.restfull.api.entities.Author;
-import com.restfull.api.entities.Book;
-import com.restfull.api.entities.Type;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,7 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SearchResponseDTO {
-    private List<Book> books;
-    private List<Author> authors;
-    private List<Type> types;
+    private List<BookResponseDTO> books;
+    private List<AuthorResponseDTO> authors;
+    private List<TypeResponseDTO> types;
 }
