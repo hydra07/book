@@ -134,7 +134,6 @@ public class BookController {
         Book book = bookService.findById(bookId);
         Comment comment = bookService.newComment(book, user, dto);
         return ResponseEntity.ok(new CommentDTO(comment));
-
     }
 
     @PostMapping("/repyComment/{bookId}")
