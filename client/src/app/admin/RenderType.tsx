@@ -35,6 +35,7 @@ export default () => {
     const [selectedTypes, setSelectedTypes] = useState<TypeInfo | null>(
         null
     );
+    const [isExpanded, setIsExpanded] = useState<boolean>(false);
     const TABLE_HEAD = ["Name", "Description", ""];
 
     useEffect(() => {
@@ -52,7 +53,7 @@ export default () => {
         };
 
         loadTypes();
-    }, []);  
+    }, []);
     const handleEdit = (type: TypeInfo) => {
         setSelectedTypes(type);
         setIsModalOpen(true);
@@ -84,7 +85,7 @@ export default () => {
                 placeholder={null}
             >
                 <div className="ml-auto">
-                    
+
                 </div>
             </CardHeader>
             <CardBody placeholder={null} className=" overflow-scroll">
@@ -127,7 +128,10 @@ export default () => {
                                             color="white"
                                             className="font-normal"
                                         >
-                                            {type.description}
+                                            {isExpanded
+                                                ? type.description
+                                                : `${type.description?.substring(0, 100)}`}
+                                                ..
                                         </Typography>
                                     </td>
 
