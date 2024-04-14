@@ -53,10 +53,14 @@ public class TypeService {
         _type.setBooks(type.getBooks());
         return repository.save(_type);
     }
+public void deleteByTypeId(Long typeId) {
 
-    public void delete(Long id) {
-        Type type = getTypeById(id);
-        repository.delete(type);
+        repository.deleteByTypeId(typeId);
+
+    }
+    public void deleteType(Long id) {
+
+        repository.deleteType(id);
     }
 
     public Set<Type> getTypesByBookId(Long id) {
