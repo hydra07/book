@@ -72,14 +72,25 @@ public class TypeController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
         try {
             typeService.deleteByTypeId(id);
             typeService.deleteType(id);
             return ResponseEntity.ok("Successfully deleted!");
+
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<?> updateType(@RequestBody TypeRequestDTO dto) {
+        try {
+            Type type = typeService.update(dto);
+//            return ResponseEntity.ok(new TypeResponseDTO(type));
+            return ResponseEntity.ok("Successfully updated!");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
+  
 }
