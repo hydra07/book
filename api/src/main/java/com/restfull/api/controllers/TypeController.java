@@ -1,16 +1,13 @@
 package com.restfull.api.controllers;
 
-import com.restfull.api.dtos.book.TypeResponseDTO;
-import com.restfull.api.dtos.book.BookRequestDTO;
-import com.restfull.api.dtos.book.BookResponseDTO;
 import com.restfull.api.dtos.book.TypeRequestDTO;
+import com.restfull.api.dtos.book.TypeResponseDTO;
 import com.restfull.api.entities.Type;
 import com.restfull.api.services.TypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
@@ -76,6 +73,14 @@ public class TypeController {
         }
     }
 
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> delete(@PathVariable Long id) {
+        try {
+            typeService.deleteByTypeId(id);
+            typeService.deleteType(id);
+            return ResponseEntity.ok("Successfully deleted!");
+
+
     @PutMapping("/update/{id}")
     public ResponseEntity<?> updateType(@RequestBody TypeRequestDTO dto) {
         try {
@@ -87,14 +92,5 @@ public class TypeController {
         }
     }
 
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> deleteType(@PathVariable Long id) {
-        try {
-            typeService.delete(id);
-//            return ResponseEntity.ok(new TypeResponseDTO(type));
-            return ResponseEntity.ok("Deleted successfully!");
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
+  
 }
