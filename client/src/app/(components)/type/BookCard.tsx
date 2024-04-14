@@ -18,7 +18,7 @@ export default ({ book }: { book: Book }) => {
           className="w-36 h-48 flex-none bg-cover text-center overflow-hidden"
           style={{ backgroundImage: `url('${book.imageUrl}')` }}
         ></div> */}
-        <div className="flex-2">
+        {/* <div className="flex-2"> */}
           {/* <BookImage book={book} style={{ width: '100px', height: '150px' }} /> */}
           <img
             className="w-36 h-48 flex-none bg-cover text-center overflow-hidden"
@@ -26,7 +26,7 @@ export default ({ book }: { book: Book }) => {
             src={book.imageUrl ? book.imageUrl : '/book-placeholder.jpg'}
             alt={book.title}
           />
-        </div>
+        {/* </div> */}
         <div className="p-5 mt-1 pr-5 space-y-2">
           <h1 className="text-lg font-semibold">{book.title}</h1>
           {/* <p><strong>Author:</strong> {book.author.name}</p> */}
