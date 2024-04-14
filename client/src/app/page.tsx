@@ -7,9 +7,17 @@ export default async () => {
   try {
     const res = await axios.get(`/book/getAll`);
     const listBook = res.data;
+    const resViews = await axios.get(`/book/sorted-by-views`);
+    const sortByViews = resViews.data;
+    const resLatest = await axios.get(`/book/sorted-by-latest`);
+    const sortByLatest = resLatest.data;
     return (
       <div>
-        <Home listBook={listBook ? listBook : []} />
+        <Home
+          listBook={listBook ? listBook : []}
+          sortByViews={sortByViews ? sortByViews : []}
+          sortByLatest={sortByLatest ? sortByLatest : []}
+        />
       </div>
     );
   } catch (error) {
