@@ -60,8 +60,11 @@ public class Book {
     @JoinTable(name = "follow_book", joinColumns = @JoinColumn(name = "book_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
     private Set<User> followedBook = new HashSet<>();
 
-    @Enumerated(EnumType.STRING)
-    private Set<Rate> rate = new HashSet<>();
+    // @Enumerated(EnumType.STRING)
+    // private Set<Rate> rate = new HashSet<>();
+
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<BookRate> bookRates = new HashSet<>();
 
     private Date createdAt;
 
@@ -140,22 +143,47 @@ public class Book {
         }
     }
 
-    // ----------------Rate----------------
+    // ----------------Rate by Huy----------------
+    // public Set<Integer> getRateString() {
+    //     return rate.stream().map(Rate::getValue).collect(Collectors.toSet());
+    // }
+
+    // public void setRate(Set<Rate> rate) {
+    //     if (rate == null || rate.isEmpty()) {
+    //         this.rate.clear();
+    //     } else {
+    //         this.rate = rate;
+    //     }
+    // }
+
+    // public Double getAverageRate() {
+    //     return rate.stream().mapToInt(Rate::getValue).average().orElse(0.0);
+    // }
+
+    // ----------------Rate by Dai----------------
     public Set<Integer> getRateString() {
-        return rate.stream().map(Rate::getValue).collect(Collectors.toSet());
+        return this.bookRates.stream()
+                .map(BookRate::getRate) 
+                .map(Rate::getValue)
+                .collect(Collectors.toSet());
     }
-
-
+  
     public void setRate(Set<Rate> rate) {
         if (rate == null || rate.isEmpty()) {
-            this.rate.clear();
+            this.bookRates.clear();
         } else {
-            this.rate = rate;
+            this.bookRates = rate;
         }
     }
 
-    public Double getAverageRate() {
-        return rate.stream().mapToInt(Rate::getValue).average().orElse(0.0);
+    public Double getAverageBookRate() {
+        if (this.bookRates.isEmpty()) {
+            return 0.0;
+        }
+        double totalRate = this.bookRates.stream()
+                .mapToDouble(rate -> rate.getRate().getValue())
+                .sum();
+        return totalRate / this.bookRates.size();
     }
 
     //-----------------View----------------

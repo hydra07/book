@@ -13,7 +13,6 @@ import java.util.Set;
 public class TypeDTO {
     private Long id;
     private String name;
-    private boolean license;
     private String description;
     private Set<String> books;
 

@@ -1,10 +1,12 @@
 package com.restfull.api.services;
 
+import com.restfull.api.dtos.book.BookRateDTO;
 import com.restfull.api.dtos.book.BookRequestDTO;
 import com.restfull.api.dtos.book.CommentDTO;
 import com.restfull.api.entities.*;
 import com.restfull.api.enums.Rate;
 import com.restfull.api.enums.Status;
+import com.restfull.api.enums.Rate;
 import com.restfull.api.repositories.BookRepository;
 import com.restfull.api.utils.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +31,9 @@ public class BookService {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private BookRateService rateService;
 
     @Autowired
     private CommentService commentService;

@@ -158,6 +158,7 @@ public class BookController {
         List<Comment> comments = bookService.getCommentByBookId(bookId);
         return ResponseEntity.ok(comments.stream().map(CommentDTO::new).toList());
     }
+
     // @GetMapping("getTreeComment/{bookId}")
     // public ResponseEntity<?> getTreeComment(@PathVariable Long bookId){
     // List<Comment> comments = bookService.getCommentTreeByBookId(bookId);
@@ -184,5 +185,4 @@ public class BookController {
     // return ResponseEntity.badRequest().body(e.getMessage());
     // }
     // }
-
 }

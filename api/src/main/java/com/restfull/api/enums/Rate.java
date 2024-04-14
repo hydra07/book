@@ -1,6 +1,6 @@
 package com.restfull.api.enums;
 
-import lombok.Getter;
+import lombok.*;
 
 @Getter
 public enum Rate {

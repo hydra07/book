@@ -18,7 +18,6 @@ class BookShort {
     private String Author;
     private String description;
     private Long views;
-    private double price;
     private Double rating;
     private String status;
     private String imageUrl;
@@ -29,7 +28,7 @@ class BookShort {
         this.Author = book.getAuthor().getName();
         this.description = book.getDescription();
         this.views = book.getViews();
-        this.rating = book.getAverageRate();
+        this.rating = book.getAverageBookRate();
         this.status = book.getStatus().toString();
         this.imageUrl = book.getImageUrl();
     }
