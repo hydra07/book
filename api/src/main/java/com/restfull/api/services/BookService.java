@@ -1,6 +1,5 @@
 package com.restfull.api.services;
 
-import com.nimbusds.jose.crypto.RSASSAVerifier;
 import com.restfull.api.dtos.book.BookRequestDTO;
 import com.restfull.api.dtos.book.CommentDTO;
 import com.restfull.api.entities.*;
