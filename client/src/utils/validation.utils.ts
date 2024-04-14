@@ -1,4 +1,3 @@
-
 export const isPhoneValid = (phone: string | null): boolean => {
   if (phone === null) {
     return false; // hoặc có thể throw error
@@ -93,6 +92,5 @@ const validateRegisterForm = (
 
 //   return !error;
 // }
-
 
 export { emailValidation, passwordValidation, validateRegisterForm };

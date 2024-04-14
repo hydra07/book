@@ -1,8 +1,8 @@
 // 'use client';
 
-import axios from "@/lib/axios";
-import useUploadFile from "@/lib/hooks/useUploadFile";
-import { timeFormatter } from "@/utils/epub.utils";
+import axios from '@/lib/axios';
+import useUploadFile from '@/lib/hooks/useUploadFile';
+import { timeFormatter } from '@/utils/epub.utils';
 import {
   Button,
   Dialog,
@@ -12,10 +12,10 @@ import {
   Input,
   Textarea,
   Typography,
-} from "@material-tailwind/react";
-import { ChangeEvent, useCallback, useEffect, useState } from "react";
-import { BookDTO } from "./RenderBook";
-import { ToastContainer, toast } from "react-toastify";
+} from '@material-tailwind/react';
+import { ChangeEvent, useCallback, useEffect, useState } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import { BookDTO } from './RenderBook';
 
 interface EditBookProps {
   book: BookDTO | null;
@@ -35,24 +35,24 @@ export default ({
   setBooks,
 }: EditBookProps) => {
   const initialBookData: BookDTO = {
-    createdAt: "",
-    lastUpdateAt: "",
+    createdAt: '',
+    lastUpdateAt: '',
     id: null,
-    title: "",
-    authorId: authors[0]?.id , // fix for potential undefined authors
-    description: "",
+    title: '',
+    authorId: authors[0]?.id, // fix for potential undefined authors
+    description: '',
     typesId: [],
-    url: "",
-    imageUrl: "",
-    status: "ONGOING",
+    url: '',
+    imageUrl: '',
+    status: 'ONGOING',
   };
 
   const [form, setForm] = useState<BookDTO>(initialBookData);
   const [image, setImage] = useState<File | null>(null);
   const [epub, setEpub] = useState<File | null>(null);
 
-  const { fileUrl: imageUrl } = useUploadFile({ file: image, name: "image" });
-  const { fileUrl: epubUrl } = useUploadFile({ file: epub, name: "epub" });
+  const { fileUrl: imageUrl } = useUploadFile({ file: image, name: 'image' });
+  const { fileUrl: epubUrl } = useUploadFile({ file: epub, name: 'epub' });
 
   const author = () => {
     return authors.map((author) => {
@@ -71,7 +71,10 @@ export default ({
     const { checked, value } = e.target;
     setForm((prevForm) => {
       if (checked) {
-        return { ...prevForm, typesId: [...(prevForm.typesId || []), Number(value)] };
+        return {
+          ...prevForm,
+          typesId: [...(prevForm.typesId || []), Number(value)],
+        };
       } else {
         // Kiểm tra và đảm bảo prevForm.typesId là mảng
         if (Array.isArray(prevForm.typesId)) {
@@ -80,55 +83,55 @@ export default ({
             typesId: prevForm.typesId.filter((id) => id !== Number(value)),
           };
         } else {
-          console.error("prevForm.typesId is not an array");
+          console.error('prevForm.typesId is not an array');
           return prevForm;
         }
       }
     });
-};
+  };
 
-const type = () => {
-  return types.map((type, index: number) => {
-    return (
-      <div key={index} className="">
-        <input
-          type="checkbox"
-          id={`type-${index}`}
-          name="type"
-          value={type.id}
-          onChange={handleTypeChange}
-        />
-        <label htmlFor={`type-${index}`}>{type.name}</label>
-      </div>
-    );
-  });
-};
+  const type = () => {
+    return types.map((type, index: number) => {
+      return (
+        <div key={index} className="">
+          <input
+            type="checkbox"
+            id={`type-${index}`}
+            name="type"
+            value={type.id}
+            onChange={handleTypeChange}
+          />
+          <label htmlFor={`type-${index}`}>{type.name}</label>
+        </div>
+      );
+    });
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       const res = await axios.put(`/book/update/${form.id}`, form);
-      console.log(res.data)
+      console.log(res.data);
       closeModal();
-      toast.success ('Cập nhật thành công');
+      toast.success('Cập nhật thành công');
     } catch (error) {
-      console.log("Lỗi khi gửi yêu cầu đến backend:", error);
-      toast.error("Có lỗi xảy ra khi gửi yêu cầu đến backend");
+      console.log('Lỗi khi gửi yêu cầu đến backend:', error);
+      toast.error('Có lỗi xảy ra khi gửi yêu cầu đến backend');
     }
   };
-  
+
   const handleChange = useCallback(
     (
       event: ChangeEvent<
         HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-      >
+      >,
     ) => {
       setForm((prev) => ({
         ...prev,
         [event.target.id]: event.target.value,
       }));
     },
-    []
+    [],
   );
   useEffect(() => {
     if (book) {
@@ -156,10 +159,12 @@ const type = () => {
         size="lg"
         open={true}
         handler={closeModal}
-        >
-        <ToastContainer/>
+      >
+        <ToastContainer />
         <DialogHeader placeholder={null} className="flex justify-between">
-          <Typography placeholder={null} className="text-white">Edit</Typography>
+          <Typography placeholder={null} className="text-white">
+            Edit
+          </Typography>
           <IconButton
             placeholder={null}
             onClick={closeModal}
@@ -245,10 +250,10 @@ const type = () => {
             <Input
               crossOrigin={null}
               color="white"
-              type={"file"}
-              name={"image"}
-              accept={"image/*"}
-              id={"image"}
+              type={'file'}
+              name={'image'}
+              accept={'image/*'}
+              id={'image'}
               label="Ảnh bìa"
               onChange={(event) => {
                 setImage(event.target.files![0]);
@@ -257,11 +262,11 @@ const type = () => {
             <Input
               crossOrigin={null}
               color="white"
-              type={"file"}
-              name={"epub"}
-              accept={".epub"}
+              type={'file'}
+              name={'epub'}
+              accept={'.epub'}
               label="File epub"
-              id={"epub"}
+              id={'epub'}
               onChange={(event) => {
                 setEpub(event.target.files![0]);
               }}
@@ -269,7 +274,7 @@ const type = () => {
             <Button
               placeholder={null}
               className="text-white content-center bg-green-600 w-1/2"
-              type={"submit"}
+              type={'submit'}
             >
               Save
             </Button>

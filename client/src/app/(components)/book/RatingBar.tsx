@@ -36,10 +36,12 @@ export default ({ book }: { book: Book }) => {
     const token = user?.accessToken;
     const fetchData = async () => {
       if (!token) return;
-      const res = await axiosWithAuth(token).get(`/book/rate/${book.id}`);
-      const data = await res.data;
-      setRated(data);
-      console.log(data);
+      try {
+        const res = await axiosWithAuth(token).get(`/book/rate/${book.id}`);
+        const data = await res.data;
+        setRated(data);
+        console.log(data);
+      } catch (error) {}
     };
     fetchData();
   }, [user, rated]);

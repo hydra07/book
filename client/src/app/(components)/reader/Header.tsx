@@ -58,19 +58,26 @@ export default function Header({
       style={{ height: `${isNotNullOrUndefined(height) ? height : 40}px` }}
     >
       <div className="flex flex-row w-full justify-between text-white px-4 py-2">
-        <div className="flex items-center justify-start">
+        <div className="flex items-center justify-start space-x-4">
+          <button
+            onClick={() => {
+              window.history.back();
+            }}
+            children={`Back`}
+          />
           <button onClick={onNavToggle}>
             <img src="/svg/menu-white.svg" alt="menu" className="w-8 h-8" />
           </button>
+          {/* back to /bookdetails/${book.id} */}
         </div>
         <div className="justify-end pr-2 space-x-3 flex flex-row items-center">
-          {currentLocation && (
+          {/* {currentLocation && (
             <button
               // onClick={() => tieptuc(`epubcfi(/6/12!/14/12/1:290)`)}
               onClick={() => tieptuc(currentLocation.startCfi)}
               children={`Tiep tuc doc`}
             />
-          )}
+          )} */}
           <button onClick={onSelectToggle} children={`Select`} />
           {bookmarkButton}
           <button onClick={onBookmarkToggle}>

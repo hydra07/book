@@ -1,7 +1,7 @@
 'use client';
+import ChangePassword from '@/app/(components)/profile/ChangePassword';
 import EditProfile from '@/app/(components)/profile/EditProfile';
 import ShowProfile from '@/app/(components)/profile/ShowProfile';
-import ChangePassword from '@/app/(components)/profile/ChangePassword';
 import User from '@/types/user';
 import { useEffect, useState } from 'react';
 import { ToastContainer } from 'react-toastify';
@@ -38,10 +38,10 @@ export default ({ user }: { user: User }) => {
         )}
         {isChangePassword && (
           <ChangePassword
-          setIsChangePassword={setIsChangePassword}
-          isChangePassword={isChangePassword}
-          user={currentUser}
-        />        
+            setIsChangePassword={setIsChangePassword}
+            isChangePassword={isChangePassword}
+            user={currentUser}
+          />
         )}
       </div>
       <ToastContainer />
