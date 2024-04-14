@@ -3,7 +3,8 @@
 import axios from "@/lib/axios";
 import { Button, Input } from "@material-tailwind/react";
 import { ChangeEvent, useCallback, useState } from "react";
-interface TypeInfo {
+import { toast } from "react-toastify";
+export interface TypeInfo {
   name: string;
   id: number | null;
   description: string;
@@ -30,9 +31,12 @@ export default () => {
   );
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    
     try {
       const res = await axios.post(`/type/new`, type);
       console.log(res.data);
+      toast.success("Thêm thành công  ");
       setType(type);
     } catch (error) {
       console.error("Error adding author:", error);
