@@ -41,7 +41,7 @@ export default async ({ params }: { params: { id: number } }) => {
         <h2 className="text-4xl font-bold mb-4 text-white">{name}</h2>
         <h4 className="text-lg text-gray-700">{description}</h4>
       </div>
-      <div className="flex flex-col space-y-4 mt-8">
+      <div className="flex flex-col space-y-4">
         {books.map((book) => (
           <BookCard key={book.id} book={book} />
         ))}

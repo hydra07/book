@@ -7,8 +7,18 @@ import Carousel from "./Carousel";
 import Footer from "./Footer";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import SortByViews from "./SortByViews";
+import SortByLatest from "./SortByLatest";
 
-export default ({ listBook }: { listBook: Book[] }) => {
+export default ({
+  listBook,
+  sortByViews,
+  sortByLatest,
+}: {
+  listBook: Book[];
+  sortByViews: Book[];
+  sortByLatest: Book[];
+}) => {
   const [books, setBooks] = useState<Book[]>(listBook);
   const [types, setTypes] = useState<Type[]>(getAllTypesFromBooks(listBook!));
   console.log('from index.tsx')
@@ -16,7 +26,9 @@ export default ({ listBook }: { listBook: Book[] }) => {
     <div>
       <Carousel />
       <div className="h-auto w-screen">
-        <div className="pt-20">
+        <div className="">
+          <SortByViews books={sortByViews} />
+          <SortByLatest books={sortByLatest} />
           {types?.map((type) => {
             return (
               <TypeBook
@@ -29,7 +41,7 @@ export default ({ listBook }: { listBook: Book[] }) => {
         </div>
       </div>
       <Footer />
-	  <ToastContainer />
+      <ToastContainer />
     </div>
   );
 }
