@@ -66,6 +66,12 @@ export interface Highlight {
   pageNum: number;
   content: string;
 }
+
+export interface Color {
+  name: string;
+  code: string;
+}
+
 /**
  * Bookmarks
  */

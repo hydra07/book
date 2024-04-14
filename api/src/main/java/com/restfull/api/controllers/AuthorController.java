@@ -3,6 +3,7 @@ package com.restfull.api.controllers;
 import com.restfull.api.dtos.book.AuthorRequestDTO;
 import com.restfull.api.dtos.book.AuthorResponseDTO;
 import com.restfull.api.services.AuthorService;
+import com.restfull.api.services.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +17,8 @@ public class AuthorController {
 
     @Autowired
     private AuthorService authorService;
+    @Autowired
+    private BookService bookService;
 
     @GetMapping("/getAll")
     public ResponseEntity<?> getAll() {
@@ -48,5 +51,23 @@ public class AuthorController {
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
+    }
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody AuthorRequestDTO dto) {
+        try {
+            authorService.update(id, dto);
+            return ResponseEntity.ok("Successfully updated!");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+    @DeleteMapping("/delete/{id}")  // delete author by id
+    public ResponseEntity<?> delete(@PathVariable Long id) {
+              authorService.deleteBookByAuthorID(id);
+            authorService.deleteAuthor(id);
+            return ResponseEntity.ok("Successfully deleted!");
+
+
     }
 }

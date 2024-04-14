@@ -12,9 +12,13 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
 //    List<Comment> findByBookId(Long id);
     List<Comment> findByBook(Book book);
 
+    //Dùng để kiếm các comment không có parent => root comment
     List<Comment> findByParentIsNull();
 
     List<Comment> findByBookIdAndParentIsNull(Long bookId);
 
     List<Comment> findByBookIdOrderByLeftAsc(Long bookId);
+
+    //Dùng để kiếm các comment có bằng parentId
+    List<Comment> findByParent(Comment parent);
 }

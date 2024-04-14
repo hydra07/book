@@ -1,14 +1,15 @@
 package com.restfull.api.dtos.book;
 
 import com.restfull.api.entities.Book;
-import com.restfull.api.enums.Status;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.*;
+import java.text.SimpleDateFormat;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.stream.Collectors;
-
 
 @Setter
 @Getter
@@ -17,6 +18,7 @@ class BookAuthor {
     private Long id;
     private String name;
 }
+
 @Setter
 @Getter
 @AllArgsConstructor
@@ -24,6 +26,7 @@ class BookType {
     private Long id;
     private String name;
 }
+
 @Getter
 @Setter
 public class BookResponseDTO {
@@ -33,8 +36,8 @@ public class BookResponseDTO {
     private String description;
     private Set<BookType> types = new HashSet<>();
     private Long views;
-    private Date createdAt;
-    private Date lastUpdateAt;
+    private String createdAt;
+    private String lastUpdateAt;
     private Double rating;
     private Long reviews;
     private String imageUrl;
@@ -42,21 +45,22 @@ public class BookResponseDTO {
     private String status;
     private String Comment;
 
-    public BookResponseDTO (Book book){
+    public BookResponseDTO(Book book) {
         this.id = book.getId();
         this.title = book.getTitle();
         this.author = new BookAuthor(book.getAuthor().getId(), book.getAuthor().getName());
         this.description = book.getDescription();
         this.types = book.getTypes()
-                    .stream()
-                    .map(type ->
-                            new BookType(type.getId(), type.getName())
-                    ).collect(Collectors.toSet());
+                .stream()
+                .map(type -> new BookType(type.getId(), type.getName())).collect(Collectors.toSet());
         this.views = book.getViews();
-        this.createdAt = book.getCreatedAt();
-        this.lastUpdateAt = book.getLastUpdateAt();
-        this.rating = book.getAverageBookRate();
-        this.reviews = (long) book.getRateString().size();
+        // this.createdAt = book.getCreatedAt();
+        // this.lastUpdateAt = book.getLastUpdateAt();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        this.createdAt = dateFormat.format(book.getCreatedAt());
+        this.lastUpdateAt = dateFormat.format(book.getLastUpdateAt());
+        this.rating = book.getAverageRate();
+        this.reviews = (long) book.getRate().size();
         this.imageUrl = book.getImageUrl();
         this.url = book.getUrl();
         this.status = book.getStatus().toString();

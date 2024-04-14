@@ -12,6 +12,7 @@ import java.util.List;
 @Service
 public class AuthorService {
 
+
     @Autowired
     private AuthorRepository repository;
 
@@ -33,8 +34,17 @@ public class AuthorService {
         return repository.save(author);
     }
 
-    public void delete(Long id) {
+    public Author update(Long id, AuthorRequestDTO dto) {
+//        Author author = findById(dto.getId());
         Author author = findById(id);
-        repository.delete(author);
+        author.setName(dto.getName());
+        author.setDescription(dto.getDescription());
+        return repository.save(author);
+    }
+    public void deleteBookByAuthorID(Long authorId) {
+        repository.deleteByAuthorId(authorId);
+    }
+    public void deleteAuthor(Long id) {
+        repository.deleteAuthor(id);
     }
 }

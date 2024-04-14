@@ -27,8 +27,6 @@ public class BookReader {
 
     private Date lastAccess;
 
-
-
     //Page
     @Column(columnDefinition = "NVARCHAR(1000)")
     private String chapterName;
@@ -47,6 +45,9 @@ public class BookReader {
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Bookmark> bookmarks = new ArrayList<>();
 
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<Highlight> highlights = new ArrayList<>();
+
     public BookReader(User user, Book book) {
         this.user = user;
         this.book = book;
@@ -54,6 +55,10 @@ public class BookReader {
     
     public void addBookmark(Bookmark bookmark){
         bookmarks.add(bookmark);
+    }
+
+    public void addHighlight(Highlight highlight){
+        highlights.add(highlight);
     }
 
 }
