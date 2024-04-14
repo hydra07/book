@@ -6,11 +6,11 @@ const Footer = () => {
       <div className="mx-auto w-full p-4 py-6 lg:py-8">
         <div className="md:flex md:justify-between">
           <div className="mb-6 md:mb-0">
-            <a href="https://flowbite.com/" className="flex items-center">
+            <a className="flex items-center">
               <img
                 src="https://clipground.com/images/clipart-book-logo.jpg"
                 className="h-8 me-3"
-                alt="FlowBite Logo"
+                alt="Logo"
               />
               <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
                 BookApp
@@ -24,7 +24,7 @@ const Footer = () => {
               </h2>
               <ul className="text-gray-500 dark:text-gray-400 font-medium">
                 <li className="mb-4">
-                  <a href="https://flowbite.com/" className="hover:underline">
+                  <a href="#" className="hover:underline">
                     Book
                   </a>
                 </li>
@@ -45,7 +45,7 @@ const Footer = () => {
               <ul className="text-gray-500 dark:text-gray-400 font-medium">
                 <li className="mb-4">
                   <a
-                    href="https://github.com/themesberg/flowbite"
+                    href="https://github.com/hydra07/book"
                     className="hover:underline "
                   >
                     Facebook
@@ -53,7 +53,7 @@ const Footer = () => {
                 </li>
                 <li>
                   <a
-                    href="https://discord.gg/4eeurUVvTy"
+                    href="https://twitter.com/tailwindcss"
                     className="hover:underline"
                   >
                     Twitter
@@ -84,7 +84,7 @@ const Footer = () => {
         <div className="sm:flex sm:items-center sm:justify-between">
           <span className="text-sm text-gray-500 sm:text-center dark:text-gray-400">
             © 2023{" "}
-            <a href="https://flowbite.com/" className="hover:underline">
+            <a href="#" className="hover:underline">
               Book™
             </a>
             . All Rights Reserved.
