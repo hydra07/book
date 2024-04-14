@@ -184,5 +184,19 @@ public class BookController {
     // return ResponseEntity.badRequest().body(e.getMessage());
     // }
     // }
+    @PostMapping("/rate/{bookId}")
+    public ResponseEntity<?> rate(@PathVariable Long bookId, @RequestHeader("Authorization") String token, @RequestBody RateRequestDTO dto){
+        User user = jwtService.getUser(jwtService.validateRequestHeader(token));
+        Book book = bookService.findById(bookId);
+        Book ratedBook = bookService.rateBook(book, user, dto.getRate());
+        return ResponseEntity.ok(new BookResponseDTO(ratedBook));
+    }
+    @GetMapping("/rate/{bookId}")
+    public ResponseEntity<?> isRate(@PathVariable Long bookId,@RequestHeader("Authorization") String token){
+        User user = jwtService.getUser(jwtService.validateRequestHeader(token));
+        Book book = bookService.findById(bookId);
+        return ResponseEntity.ok(bookService.getRateBook(user,book));
+    }
+
 
 }

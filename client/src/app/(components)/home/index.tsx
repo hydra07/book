@@ -1,14 +1,14 @@
 'use client';
-import Book, { Type } from "@/types/book";
-import TypeBook from "./TypeBook";
+import Book, { Type } from '@/types/book';
 import { getAllTypesFromBooks, getBookByType } from '@/utils/sort.utils';
-import { useState } from "react";
-import Carousel from "./Carousel";
-import Footer from "./Footer";
+import { useState } from 'react';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import SortByViews from "./SortByViews";
-import SortByLatest from "./SortByLatest";
+import Carousel from './Carousel';
+import Footer from './Footer';
+import SortByLatest from './SortByLatest';
+import SortByViews from './SortByViews';
+import TypeBook from './TypeBook';
 
 export default ({
   listBook,
@@ -21,7 +21,7 @@ export default ({
 }) => {
   const [books, setBooks] = useState<Book[]>(listBook);
   const [types, setTypes] = useState<Type[]>(getAllTypesFromBooks(listBook!));
-  console.log('from index.tsx')
+  // console.log('from index.tsx')
   return (
     <div>
       <Carousel />
@@ -44,4 +44,4 @@ export default ({
       <ToastContainer />
     </div>
   );
-}
+};
