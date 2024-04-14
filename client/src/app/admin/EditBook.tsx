@@ -108,7 +108,7 @@ const type = () => {
     e.preventDefault();
     try {
       const res = await axios.put(`/book/update/${form.id}`, form);
-      console.log(res.data.success)
+      console.log(res.data)
       closeModal();
       toast.success ('Cập nhật thành công');
     } catch (error) {

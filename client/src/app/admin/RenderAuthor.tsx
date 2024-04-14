@@ -18,7 +18,7 @@ import { SetStateAction, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { timeFormatter } from "@/utils/epub.utils";
 import EditBook from "./EditBook";
-import SearchList from "./SearchList";
+
 import EditAuthor from "./EditAuthor";
 import { toast } from "react-toastify";
 
@@ -83,9 +83,7 @@ export default () => {
                 className="rounded-none bg-gray-700 flex "
                 placeholder={null}
             >
-                <div className="ml-auto">
-                    <SearchList />
-                </div>
+                <div className=""></div>
             </CardHeader>
             <CardBody placeholder={null} className=" overflow-scroll">
                 <table className=" bg-gray-600 w-full min-w-max table-auto text-left ">

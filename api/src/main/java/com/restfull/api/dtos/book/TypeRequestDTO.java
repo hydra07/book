@@ -8,8 +8,7 @@ import lombok.Setter;
 public class TypeRequestDTO {
 
     private Long id;
-    private String name;
-    private boolean license;    //nên xem xét việc xóa license
+    private String name;  //nên xem xét việc xóa license
     private String description;
 
 }
