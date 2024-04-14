@@ -38,6 +38,7 @@ public class BookResponseDTO {
     private Long views;
     private String createdAt;
     private String lastUpdateAt;
+
     private Double rating;
     private Long reviews;
     private String imageUrl;

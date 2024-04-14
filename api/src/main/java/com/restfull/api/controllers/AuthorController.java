@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.stream.Collectors;
 
-
 @RestController
 @RequestMapping("/author")
 public class AuthorController {
@@ -47,7 +46,8 @@ public class AuthorController {
         try {
             authorService.createAuthor(dto);
             return ResponseEntity.ok("Successfully added!");
-//            return ResponseEntity.ok(new AuthorResponseDTO(authorService.createAuthor(dto)));
+            // return ResponseEntity.ok(new
+            // AuthorResponseDTO(authorService.createAuthor(dto)));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -62,12 +62,12 @@ public class AuthorController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-    @DeleteMapping("/delete/{id}")  // delete author by id
-    public ResponseEntity<?> delete(@PathVariable Long id) {
-              authorService.deleteBookByAuthorID(id);
-            authorService.deleteAuthor(id);
-            return ResponseEntity.ok("Successfully deleted!");
 
+    @DeleteMapping("/delete/{id}") // delete author by id
+    public ResponseEntity<?> delete(@PathVariable Long id) {
+        authorService.deleteBookByAuthorID(id);
+        authorService.deleteAuthor(id);
+        return ResponseEntity.ok("Successfully deleted!");
 
     }
 }

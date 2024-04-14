@@ -66,8 +66,8 @@ public class TypeController {
     public ResponseEntity<?> newType(@RequestBody TypeRequestDTO dto) {
         try {
             Type type = typeService.createType(dto);
-//            return ResponseEntity.ok(new TypeResponseDTO(type));
-            return ResponseEntity.ok("Successfully added!");
+        return ResponseEntity.ok(new TypeResponseDTO(type));
+            // return ResponseEntity.ok("Successfully added!");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -83,11 +83,10 @@ public class TypeController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-
     @PutMapping("/update/{id}")
     public ResponseEntity<?> updateType(@RequestBody TypeRequestDTO dto) {
         try {
-            Type type = typeService.update(dto);
+            typeService.update(dto);
 //            return ResponseEntity.ok(new TypeResponseDTO(type));
             return ResponseEntity.ok("Successfully updated!");
         } catch (Exception e) {
