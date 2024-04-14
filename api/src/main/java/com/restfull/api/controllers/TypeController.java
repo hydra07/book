@@ -79,8 +79,10 @@ public class TypeController {
             typeService.deleteByTypeId(id);
             typeService.deleteType(id);
             return ResponseEntity.ok("Successfully deleted!");
-
-
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
     @PutMapping("/update/{id}")
     public ResponseEntity<?> updateType(@RequestBody TypeRequestDTO dto) {
         try {
