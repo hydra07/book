@@ -2,8 +2,9 @@
 import axios from "@/lib/axios";
 import { Button, Input, Textarea } from "@material-tailwind/react";
 import { ChangeEvent, useCallback, useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
 
-interface AuthorInfo {
+export interface AuthorInfo {
   id: number | null;
   name: string;
   description: string;
@@ -32,10 +33,16 @@ export default () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+    // const namePattern = /^[a-zA-Z0-9\s]+$/;
+    // if (!namePattern.test(author.name)) {
+    //   toast.error("thêm tầm bậy tầm bạ rồi  ");
+    //   return;
+    // }
+
     try {
       const res = await axios.post(`/author/add`, author);
       console.log(res.data);
+      toast.success("Thêm thành công  ");
       // Reset author state after successful submission
       setAuthor(author);
     } catch (error) {
@@ -76,6 +83,7 @@ export default () => {
         >
           Thêm
         </Button>
+      
       </form>
     </div>
   );
