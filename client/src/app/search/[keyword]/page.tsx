@@ -4,6 +4,13 @@ import axios from '../../../lib/axios';
 import Book from '@/types/book';
 // import Book, { Author, Type } from '@/types/book';
 import BookCard from '../../(components)/search/BookCard';
+import {
+  Tabs,
+  TabsHeader,
+  TabsBody,
+  Tab,
+  TabPanel,
+} from "@material-tailwind/react";
 
 interface Author {
   id: number;
@@ -36,39 +43,60 @@ const SearchPage: React.FC<{ params: { keyword: string } }> = ({ params }) => {
     fetchBooks();
   }, [params.keyword]);
 
+  const data = [
+    { label: 'Book', value: 'book' },
+    { label: 'Author', value: 'author' },
+    { label: 'Type', value: 'type' },
+  ];
+
   return (
-    <div className="container mx-auto px-4 py-8 mt-20">
-      <h2 className="text-2xl font-bold mb-8">Kết quả tìm kiếm</h2>
-      {books.length > 0 && (
-        <div>
-          <p className="text-xl font-semibold pl-4">Book found</p>
-          {books.map(book => (
-            <BookCard key={book.id} book={book} />
+    <div className="container mx-auto px-4 py-8 mt-24">
+      <h2 className="text-4xl font-bold mb-8">Kết quả tìm kiếm</h2>
+      <Tabs value="book">
+        <TabsHeader placeholder={null}>
+          {data.map(({ label, value }) => (
+            <Tab placeholder={null} key={value} value={value}>
+              {label}
+            </Tab>
           ))}
-        </div>
-      )}
-      {authors.length > 0 && (
-        <div className="mt-8">
-          <p className="text-xl font-semibold pl-4">Author found</p>
-          {authors.map(author => (
-            <div className="my-4" key={author.id}>
-              <div className="font-semibold pl-10">{author.name}</div>
-              <div className="text-gray-500 pl-14">{author.description}</div>
-            </div>
+        </TabsHeader>
+        <TabsBody placeholder={null}>
+          {data.map(({ value }) => (
+            <TabPanel key={value} value={value} className="text-white">
+              {value === 'book' && (
+                <div className="flex flex-col space-y-4">
+                  {/* <p className="text-xl font-semibold pl-4">Book found</p> */}
+                  {books.map(book => (
+                    <BookCard key={book.id} book={book} />
+                  ))}
+                </div>
+              )}
+              {value === 'author' && (
+                <div className="mt-8">
+                  {/* <p className="text-xl font-semibold pl-4">Author found</p> */}
+                  {authors.map(author => (
+                    <div className="text-2xl my-8" key={author.id}>
+                      <div className="font-semibold p-4 pl-10">{author.name}</div>
+                      <div className="text-gray-500 pl-20">{author.description}</div>
+                    </div>
+                  ))}
+                </div>
+              )}
+              {value === 'type' && (
+                <div className="mt-8">
+                  {/* <p className="text-xl font-semibold pl-4">Type found</p> */}
+                  {types.map(type => (
+                    <div className="text-2xl my-8" key={type.id}>
+                      <div className="font-semibold p-4 pl-10">{type.name}</div>
+                      <div className="text-gray-500 pl-20">{type.description}</div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </TabPanel>
           ))}
-        </div>
-      )}
-      {types.length > 0 && (
-        <div className="mt-8">
-          <p className="text-xl font-semibold pl-4">Type found</p>
-          {types.map(type => (
-            <div className="my-4" key={type.id}>
-              <div className="font-semibold pl-10">{type.name}</div>
-              <div className="text-gray-500 pl-14">{type.description}</div>
-            </div>
-          ))}
-        </div>
-      )}
+        </TabsBody>
+      </Tabs>
     </div>
   );
 };

@@ -3,7 +3,7 @@ import Book from '@/types/book';
 import { Rating } from '@material-tailwind/react';
 
 export default ({ book }: { book: Book }) => {
-  const rates = book.rating!;
+  const rates = Math.floor(book.rating!);
   const handleClick = () => {
     window.location.href = `/bookdetail/${book.id}`;
   };
@@ -27,11 +27,11 @@ export default ({ book }: { book: Book }) => {
             alt={book.title}
           />
         {/* </div> */}
-        <div className="p-5 mt-1 pr-5 space-y-2">
+        <div className="p-5 mt-1 space-y-2">
           <h1 className="text-lg font-semibold">{book.title}</h1>
           {/* <p><strong>Author:</strong> {book.author.name}</p> */}
           <p>
-            <strong>Author:</strong> {book.author as any}
+            <strong>Tác giả:</strong> {book.author as any}
           </p>
           <p className="text-gray-400">
             {book.description
@@ -44,7 +44,7 @@ export default ({ book }: { book: Book }) => {
           </div>
         </div>
         <div className="flex p-5">
-          <p className="top-0 pr-2">{book.rating}.0</p>
+          <p className="top-0 pr-2">{book.rating}</p>
           <div className="top-0"><Rating placeholder={null} value={rates} /></div>
         </div>
       </div>
